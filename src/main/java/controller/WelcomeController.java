@@ -11,7 +11,10 @@ public class WelcomeController {
     @FXML
     private MenuButton taskMenuButton;
 
-    public void setup() {}
+    public void setup() {
+        // check wat voor gebruiker de gebruiker is
+        // vul dropdown met juiste opties
+    }
 
     public void doLogout() {}
 }
