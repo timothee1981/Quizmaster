@@ -78,14 +78,18 @@ public class LoginController {
         }
 
         // Kijken welke rol iemand heeft
-        int userId;
-        String userName;
-        String userPassword;
-        String roleUser;
+        int userId = 0;
+        String userName = "";
+        String userPassword = "";
+        String roleUser = "";
         for (User user: Main.userList){
             if(user.getUserName().equals(usernameInput)){
                roleUser = user.getRole();
+               userName = user.getUserName();
+               userPassword = user.getPassword();
+               userId = user.getUserId();
             }
+
         }
 
         // Menu-items per rol laden
@@ -93,11 +97,15 @@ public class LoginController {
 
         switch (roleUser){
             case "Student":
-        }
+                Student student = new Student(userId,userName,userPassword,roleUser);
+                loggedInUsers.add(student);
+                break;
+            default:
+                break;
+            }
 
         // Maak een object aan
-        Student user = new Student(4, "Ankie", "Ankie", "Student");
-        loggedInUsers.add(user);
+
         Main.getSceneManager().showWelcomeScene();
         // als ze gelijk zijn -> ga door naar inlogschermen
 
