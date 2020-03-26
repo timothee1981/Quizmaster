@@ -72,7 +72,6 @@ public class LoginController {
             return;
         }
 
-
         // bepalen welke inlogscherm getoond moet worden
         // data ophalen uit database (rest van info)
         // gebruikersobject aanmaken (student / docent etc.) -> ? hoe bepalen we dit vanuit database ?

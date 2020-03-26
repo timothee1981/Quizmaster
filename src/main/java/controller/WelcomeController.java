@@ -9,6 +9,8 @@ import javafx.scene.control.MenuItem;
 import model.Student;
 import view.Main;
 
+import java.util.ArrayList;
+
 public class WelcomeController {
 
     @FXML
@@ -19,17 +21,22 @@ public class WelcomeController {
     public void setup() {
         // haal de lijst met ingelogde gebruikers op
 
-        // bepalen wat voor rol de gebruiker heeft
-        if (LoginController.loggedInUsers.get(0) instanceof Student) {
-            // toon menu items van Student
-            MenuItem item1 = new MenuItem("Selecteer quiz");
-            item1.setOnAction(new EventHandler<ActionEvent>() {
+        //Hier willen we een Arraylist met menu-items per gebruiker weergeven
+        ArrayList<MenuItem> menuItems = LoginController.loggedInUsers.get(0).getMenuItems();
+
+            // toon menu items van de gebruiker die ingelogd is
+            for(MenuItem menuItem: menuItems){
+                taskMenuButton.getItems().add(menuItem);
+            }
+
+            /*item1.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     Main.getSceneManager().showSelectQuizForStudent();
                 }
             });
-            taskMenuButton.getItems().add(item1);
+            */
+            //todo: Zorgen dat als je een menu-item aanklikt, dat de app naar die view navigeert
         }
         // haal de takenlijst op die bij die rol hoort
             // lijst per user
@@ -49,7 +56,10 @@ public class WelcomeController {
 
         // check wat voor gebruiker de gebruiker is
         // vul dropdown met juiste opties
+
+
+    public void doLogout() {
+        Main.getSceneManager().showLoginScene();
     }
 
-    public void doLogout() {}
 }
