@@ -59,8 +59,13 @@ public class LoginController {
                 // haal wachtwoord op, op basis van username
         //TODO:
         // gebruik userDAO om gebruikersgegevens op te halen en stop resultaat in opgehaaldeWachtwoord
-        String opgehaaldeWachtwoord = "Stefan"; // functie: haalWachtwoordOpObvGebruikersnaam(Gebruikersnaam)
+        String opgehaaldeWachtwoord = ""; // functie: haalWachtwoordOpObvGebruikersnaam(Gebruikersnaam)
 
+        for (User user: Main.userList){
+            if(user.getUserName().equals(usernameInput)){
+                opgehaaldeWachtwoord = user.getPassword();
+            }
+        }
 
         // TODO nog koppelen aan DAO -> in een try-catch zetten
 
