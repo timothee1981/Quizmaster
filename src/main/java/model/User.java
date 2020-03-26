@@ -1,3 +1,12 @@
 package model;
 
-public class User {}
+public abstract class User {
+
+
+
+
+
+
+    //get menuItems class die moet teruggeven menu item
+
+}
