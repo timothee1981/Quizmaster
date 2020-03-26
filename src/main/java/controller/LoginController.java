@@ -4,7 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import model.Student;
+import model.User;
 import view.Main;
+
+import java.util.ArrayList;
 
 public class LoginController {
 
@@ -12,6 +16,8 @@ public class LoginController {
     private TextField nameTextField;
     @FXML
     private TextField passwordField;
+
+    public static ArrayList<User> loggedInUsers = new ArrayList<>();
 
     public void doLogin() {
         // hier inloggen!
@@ -53,6 +59,9 @@ public class LoginController {
 
         // check of deze gelijk zijn -> zo niet -> geef foutmelding
         if (opgehaaldeWachtwoord.equals(wachtwoordInput)) {
+            // maak een student aan
+            Student user = new Student(4, "Ankie", "Ankie", "Student");
+            loggedInUsers.add(user);
             // als ze gelijk zijn -> ga door naar inlogschermen
             Main.getSceneManager().showWelcomeScene();
         } else{
@@ -62,6 +71,7 @@ public class LoginController {
             alert.show();
             return;
         }
+
 
         // bepalen welke inlogscherm getoond moet worden
         // data ophalen uit database (rest van info)
@@ -78,4 +88,5 @@ public class LoginController {
         // sluit applicatie?
             System.exit(0);
     }
+
 }
