@@ -59,6 +59,7 @@ public class WelcomeController {
 
 
     public void doLogout() {
+        LoginController.loggedInUsers.remove(0);
         Main.getSceneManager().showLoginScene();
     }
 
