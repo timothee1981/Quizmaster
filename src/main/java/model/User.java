@@ -20,6 +20,10 @@ public abstract class User {
     //get menuItems class die moet teruggeven menu item
     public abstract ArrayList<MenuItem> getMenuItems();
 
+    
+    public int getUserId() {
+        return userId;
+    }
 
     public String getUserName() {
         return userName;
@@ -29,4 +33,7 @@ public abstract class User {
         return password;
     }
 
+    public String getRole() {
+        return role;
+    }
 }

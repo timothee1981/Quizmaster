@@ -51,7 +51,6 @@ public class LoginController {
             return;
         }
 
-
         // checken of wachtwoord ingevoerd is gelijk aan wachtwoord user
             // van de opgehaalde user, check of wachtwoord gelijk is aan ingevoerd wachtwoord
                 // input ophalen uit wachtwoord vakje
@@ -68,21 +67,39 @@ public class LoginController {
         }
 
         // TODO nog koppelen aan DAO -> in een try-catch zetten
+        // Controleren of een gebruiker een geldig wachtwoord invoert.
 
-        // check of deze gelijk zijn -> zo niet -> geef foutmelding
-        if (opgehaaldeWachtwoord.equals(wachtwoordInput)) {
-            // maak een student aan
-            Student user = new Student(4, "Ankie", "Ankie", "Student");
-            loggedInUsers.add(user);
-            // als ze gelijk zijn -> ga door naar inlogschermen
-            Main.getSceneManager().showWelcomeScene();
-        } else{
-            // wachtwoord is onjuist
+        // Check of deze gelijk zijn -> zo niet -> geef foutmelding
+        if (!opgehaaldeWachtwoord.equals(wachtwoordInput)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Het wachtwoord is niet juist, probeer het nog eens.");
             alert.show();
             return;
         }
+
+        // Kijken welke rol iemand heeft
+        int userId;
+        String userName;
+        String userPassword;
+        String roleUser;
+        for (User user: Main.userList){
+            if(user.getUserName().equals(usernameInput)){
+               roleUser = user.getRole();
+            }
+        }
+
+        // Menu-items per rol laden
+
+
+        switch (roleUser){
+            case "Student":
+        }
+
+        // Maak een object aan
+        Student user = new Student(4, "Ankie", "Ankie", "Student");
+        loggedInUsers.add(user);
+        Main.getSceneManager().showWelcomeScene();
+        // als ze gelijk zijn -> ga door naar inlogschermen
 
         // bepalen welke inlogscherm getoond moet worden
         // data ophalen uit database (rest van info)
