@@ -21,5 +21,12 @@ public abstract class User {
     public abstract ArrayList<MenuItem> getMenuItems();
 
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
 }

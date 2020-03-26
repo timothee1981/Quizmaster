@@ -36,16 +36,21 @@ public class LoginController {
 
             // check of deze user bestaat in het systeem
                 // haal alle info van user op uit database
-            //TODO:
-            // gebruik userDAO om gebruikersgegevens op te halen en stop resultaat in opgehaaldeGebruikersnaam
-            String opgehaaldeGebruikersnaam = "Stefan"; // TODO nog koppelen aan DAO -> in een try-catch zetten
-            // als er geen info is opgehaald -> dan bestaat deze user niet
-            if (opgehaaldeGebruikersnaam.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Deze gebruikersnaam is niet bekend, probeer het nog eens.");
-                alert.show();
-                return;
+                //Totdat we een database hebben, gebruiken we een Arraylist met gebruikers
+        boolean userNameKnown = false;
+        for (User user: Main.userList){
+            if(user.getUserName().equals(usernameInput)){
+                userNameKnown = true;
             }
+        }
+
+        if(!userNameKnown){   //gebruikersnaam is onbekend
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Deze gebruikersnaam is niet bekend, probeer het nog eens.");
+            alert.show();
+            return;
+        }
+
 
         // checken of wachtwoord ingevoerd is gelijk aan wachtwoord user
             // van de opgehaalde user, check of wachtwoord gelijk is aan ingevoerd wachtwoord
@@ -54,7 +59,9 @@ public class LoginController {
                 // haal wachtwoord op, op basis van username
         //TODO:
         // gebruik userDAO om gebruikersgegevens op te halen en stop resultaat in opgehaaldeWachtwoord
-        String opgehaaldeWachtwoord = "Stefan";// functie: haalWachtwoordOpObvGebruikersnaam(Gebruikersnaam)
+        String opgehaaldeWachtwoord = "Stefan"; // functie: haalWachtwoordOpObvGebruikersnaam(Gebruikersnaam)
+
+
         // TODO nog koppelen aan DAO -> in een try-catch zetten
 
         // check of deze gelijk zijn -> zo niet -> geef foutmelding
