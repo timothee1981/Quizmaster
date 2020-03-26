@@ -2,6 +2,7 @@ package view;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import model.Coordinator;
 import model.Student;
 import model.User;
 
@@ -31,6 +32,7 @@ public class Main extends Application {
         userList.add(new Student(2, "Timothee", "Timothee", "Student"));
         userList.add(new Student(3, "Mireille", "Mireille", "Mireille"));
         userList.add(new Student(4, "Ankie", "Ankie", "Student"));
+        userList.add(new Coordinator(5,"Michel","Michel","Coordinator"));
     }
 
     public static SceneManager getSceneManager() {

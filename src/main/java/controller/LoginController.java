@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import model.Coordinator;
 import model.Student;
 import model.User;
 import view.Main;
@@ -99,6 +100,10 @@ public class LoginController {
             case "Student":
                 Student student = new Student(userId,userName,userPassword,roleUser);
                 loggedInUsers.add(student);
+                break;
+            case "Coordinator":
+                Coordinator coordinator = new Coordinator(userId,userName,userPassword,roleUser);
+                loggedInUsers.add(coordinator);
                 break;
             default:
                 break;
