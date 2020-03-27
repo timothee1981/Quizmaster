@@ -2,9 +2,7 @@ package view;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Coordinator;
-import model.Student;
-import model.User;
+import model.*;
 
 import java.util.ArrayList;
 
@@ -28,10 +26,10 @@ public class Main extends Application {
     }
     //Testgegevens van testgebruikers
     private void createUserList() {
-        userList.add(new Student(1, "Stefan", "Stefan", "Student"));
+        userList.add(new Teacher(1, "Stefan", "Stefan", "Docent"));
         userList.add(new Student(2, "Timothee", "Timothee", "Student"));
-        userList.add(new Student(3, "Mireille", "Mireille", "Mireille"));
-        userList.add(new Student(4, "Ankie", "Ankie", "Student"));
+        userList.add(new Administrator(3, "Mireille", "Mireille", "Administrator"));
+        userList.add(new TechnicalAdministrator(4, "Ankie", "Ankie", "Technisch beheerder"));
         userList.add(new Coordinator(5,"Michel","Michel","Coordinator"));
     }
 

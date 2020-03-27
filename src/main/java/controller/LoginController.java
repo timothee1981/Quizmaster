@@ -4,9 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import model.Coordinator;
-import model.Student;
-import model.User;
+import model.*;
 import view.Main;
 
 import java.util.ArrayList;
@@ -29,9 +27,7 @@ public class LoginController {
 
             // check of username-input een waarde heeft -> als leeg, geef melding
         if(usernameInput.trim().isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Deze gebruikersnaam is niet bekend, probeer het nog eens.");
-            alert.show();
+            showErrorMessage("Gebruikersnaam is verplicht.");
             return;
         }
 
@@ -46,9 +42,7 @@ public class LoginController {
         }
 
         if(!userNameKnown){   //gebruikersnaam is onbekend
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Deze gebruikersnaam is niet bekend, probeer het nog eens.");
-            alert.show();
+            showErrorMessage("Deze gebruikersnaam is niet bekend, probeer het nog eens.");
             return;
         }
 
@@ -72,9 +66,7 @@ public class LoginController {
 
         // Check of deze gelijk zijn -> zo niet -> geef foutmelding
         if (!opgehaaldeWachtwoord.equals(wachtwoordInput)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Het wachtwoord is niet juist, probeer het nog eens.");
-            alert.show();
+            showErrorMessage("Het wachtwoord is niet juist, probeer het nog eens.");
             return;
         }
 
@@ -94,35 +86,35 @@ public class LoginController {
         }
 
         // Menu-items per rol laden
-
-
         switch (roleUser){
             case "Student":
-                Student student = new Student(userId,userName,userPassword,roleUser);
-                loggedInUsers.add(student);
+                loggedInUsers.add(new Student(userId, userName, userPassword, roleUser));
+                break;
+            case "Docent":
+                loggedInUsers.add(new Teacher(userId, userName, userPassword, roleUser));
                 break;
             case "Coordinator":
-                Coordinator coordinator = new Coordinator(userId,userName,userPassword,roleUser);
-                loggedInUsers.add(coordinator);
+                loggedInUsers.add(new Coordinator(userId, userName, userPassword, roleUser));
+                break;
+            case "Administrator":
+                loggedInUsers.add(new Administrator(userId, userName, userPassword, roleUser));
+                break;
+            case "Technisch beheerder":
+                loggedInUsers.add(new TechnicalAdministrator(userId, userName, userPassword, roleUser));
                 break;
             default:
                 break;
             }
 
-        // Maak een object aan
-
+        // Ga naar welkomscherm
         Main.getSceneManager().showWelcomeScene();
-        // als ze gelijk zijn -> ga door naar inlogschermen
 
-        // bepalen welke inlogscherm getoond moet worden
-        // data ophalen uit database (rest van info)
-        // gebruikersobject aanmaken (student / docent etc.) -> ? hoe bepalen we dit vanuit database ?
-            // toon welkomst-scherm (welcomeScene.fxml)
-            // -> deze functionaliteit moet in het welkomst-scherm worden geregeld
-            // vul welkomst-scherm met juiste keuzes voor rol van gebruiker
-            // checken wat voor user de gebruiker is
+    }
 
-        // tonen van juiste inlogscherm
+    private void showErrorMessage(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(errorMessage);
+        alert.show();
     }
 
     public void doQuit() {
