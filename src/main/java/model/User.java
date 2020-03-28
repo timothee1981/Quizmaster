@@ -20,7 +20,8 @@ public abstract class User {
     //get menuItems class die moet teruggeven menu item
     public abstract ArrayList<MenuItem> getMenuItems();
 
-    
+
+
     public int getUserId() {
         return userId;
     }
