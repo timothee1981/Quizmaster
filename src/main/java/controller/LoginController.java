@@ -19,21 +19,20 @@ public class LoginController {
     public static ArrayList<User> loggedInUsers = new ArrayList<>();
 
     public void doLogin() {
-        // hier inloggen!
 
         // check of user bestaat
-            // input ophalen uit username-vakje
+        // input ophalen uit username-vakje
         String usernameInput = nameTextField.getText();
 
-            // check of username-input een waarde heeft -> als leeg, geef melding
+        // check of username-input een waarde heeft -> als leeg, geef melding
         if(usernameInput.trim().isEmpty()){
-            showErrorMessage("Gebruikersnaam is verplicht.");
+            showErrorMessage("Gebruikersnaam en/of wachtwoord onjuist. Probeer het nog eens.");
             return;
         }
 
-            // check of deze user bestaat in het systeem
-                // haal alle info van user op uit database
-                //Totdat we een database hebben, gebruiken we een Arraylist met gebruikers
+        // check of deze user bestaat in het systeem
+        // haal alle info van user op uit database
+        // totdat we een database hebben, gebruiken we een Arraylist met gebruikers
         boolean userNameKnown = false;
         for (User user: Main.userList){
             if(user.getUserName().equals(usernameInput)){
@@ -41,14 +40,15 @@ public class LoginController {
             }
         }
 
-        if(!userNameKnown){   //gebruikersnaam is onbekend
-            showErrorMessage("Deze gebruikersnaam is niet bekend, probeer het nog eens.");
+        // gebruikersnaam is onbekend
+        if(!userNameKnown){
+            showErrorMessage("Gebruikersnaam en/of wachtwoord onjuist. Probeer het nog eens.");
             return;
         }
 
         // checken of wachtwoord ingevoerd is gelijk aan wachtwoord user
-            // van de opgehaalde user, check of wachtwoord gelijk is aan ingevoerd wachtwoord
-                // input ophalen uit wachtwoord vakje
+        // van de opgehaalde user, check of wachtwoord gelijk is aan ingevoerd wachtwoord
+        // input ophalen uit wachtwoord vakje
         String wachtwoordInput = passwordField.getText();
                 // haal wachtwoord op, op basis van username
         //TODO:
@@ -62,15 +62,15 @@ public class LoginController {
         }
 
         // TODO nog koppelen aan DAO -> in een try-catch zetten
-        // Controleren of een gebruiker een geldig wachtwoord invoert.
+        // controleren of een gebruiker een geldig wachtwoord invoert.
 
-        // Check of deze gelijk zijn -> zo niet -> geef foutmelding
+        // check of deze gelijk zijn -> zo niet -> geef foutmelding
         if (!opgehaaldeWachtwoord.equals(wachtwoordInput)) {
-            showErrorMessage("Het wachtwoord is niet juist, probeer het nog eens.");
+            showErrorMessage("Gebruikersnaam en/of wachtwoord onjuist. Probeer het nog eens.");
             return;
         }
 
-        // Kijken welke rol iemand heeft
+        // kijken welke rol iemand heeft
         int userId = 0;
         String userName = "";
         String userPassword = "";
@@ -117,8 +117,8 @@ public class LoginController {
         alert.show();
     }
 
+    // sluit applicatie
     public void doQuit() {
-        // sluit applicatie?
             System.exit(0);
     }
 
