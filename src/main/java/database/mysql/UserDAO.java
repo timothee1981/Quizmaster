@@ -5,7 +5,6 @@ import model.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class UserDAO extends AbstractDAO {
 
@@ -51,25 +50,19 @@ public class UserDAO extends AbstractDAO {
                 // afhankelijk van de rol, creëer en return het juiste object
                 switch (role){
                     case "Student":
-                        Student student = new Student(userId, username, password, role);
-                        user = student;
+                        user = new Student(userId, username, password, role);
                         break;
                     case "Docent":
-                        Teacher teacher = new Teacher(userId, username, password, role);
-                        user = teacher;
+                        user = new Teacher(userId, username, password, role);
                         break;
                     case "Coordinator":
-                        Coordinator coordinator = new Coordinator(userId, username, password, role);
-                        user = coordinator;
+                        user = new Coordinator(userId, username, password, role);
                         break;
                     case "Administrator":
-                        Administrator administrator = new Administrator(userId, username, password, role);
-                        user = administrator;
+                        user = new Administrator(userId, username, password, role);
                         break;
                     case "Technisch beheerder":
-                        TechnicalAdministrator technicalAdministrator =
-                                new TechnicalAdministrator(userId, username, password, role);
-                        user = technicalAdministrator;
+                        user = new TechnicalAdministrator(userId, username, password, role);
                         break;
                     default:
                         user = null;

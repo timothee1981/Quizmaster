@@ -1,5 +1,7 @@
 package controller;
 
+import database.mysql.DBAccess;
+import database.mysql.UserDAO;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -32,81 +34,46 @@ public class LoginController {
 
         // check of deze user bestaat in het systeem
         // haal alle info van user op uit database
-        // totdat we een database hebben, gebruiken we een Arraylist met gebruikers
-        boolean userNameKnown = false;
-        for (User user: Main.userList){
-            if(user.getUserName().equals(usernameInput)){
-                userNameKnown = true;
-            }
-        }
-
-        // gebruikersnaam is onbekend
-        if(!userNameKnown){
+        User userToLogin;
+        userToLogin = getUserByUsername(usernameInput);
+        if(userToLogin == null){
             showErrorMessage("Gebruikersnaam en/of wachtwoord onjuist. Probeer het nog eens.");
             return;
         }
 
         // checken of wachtwoord ingevoerd is gelijk aan wachtwoord user
-        // van de opgehaalde user, check of wachtwoord gelijk is aan ingevoerd wachtwoord
-        // input ophalen uit wachtwoord vakje
+        // bepaal ingevoerde wachtwoord en wachtwoord waarmee het vergeleken moet worden
         String wachtwoordInput = passwordField.getText();
-                // haal wachtwoord op, op basis van username
-        //TODO:
-        // gebruik userDAO om gebruikersgegevens op te halen en stop resultaat in opgehaaldeWachtwoord
-        String opgehaaldeWachtwoord = ""; // functie: haalWachtwoordOpObvGebruikersnaam(Gebruikersnaam)
+        String opgehaaldeWachtwoord = userToLogin.getPassword(); // functie: haalWachtwoordOpObvGebruikersnaam(Gebruikersnaam)
 
-        for (User user: Main.userList){
-            if(user.getUserName().equals(usernameInput)){
-                opgehaaldeWachtwoord = user.getPassword();
-            }
-        }
-
-        // TODO nog koppelen aan DAO -> in een try-catch zetten
-        // controleren of een gebruiker een geldig wachtwoord invoert.
-
-        // check of deze gelijk zijn -> zo niet -> geef foutmelding
+        // controleren of een gebruiker een geldig wachtwoord invoert, zo niet: geef foutmelding
         if (!opgehaaldeWachtwoord.equals(wachtwoordInput)) {
             showErrorMessage("Gebruikersnaam en/of wachtwoord onjuist. Probeer het nog eens.");
             return;
         }
 
-        // kijken welke rol iemand heeft
-        int userId = 0;
-        String userName = "";
-        String userPassword = "";
-        String roleUser = "";
-        for (User user: Main.userList){
-            if(user.getUserName().equals(usernameInput)){
-               roleUser = user.getRole();
-               userName = user.getUserName();
-               userPassword = user.getPassword();
-               userId = user.getUserId();
-            }
-        }
+        // user mag inloggen ->
+        User loggedInUser = userToLogin;
 
-        // Menu-items per rol laden
-        switch (roleUser){
-            case "Student":
-                loggedInUsers.add(new Student(userId, userName, userPassword, roleUser));
-                break;
-            case "Docent":
-                loggedInUsers.add(new Teacher(userId, userName, userPassword, roleUser));
-                break;
-            case "Coordinator":
-                loggedInUsers.add(new Coordinator(userId, userName, userPassword, roleUser));
-                break;
-            case "Administrator":
-                loggedInUsers.add(new Administrator(userId, userName, userPassword, roleUser));
-                break;
-            case "Technisch beheerder":
-                loggedInUsers.add(new TechnicalAdministrator(userId, userName, userPassword, roleUser));
-                break;
-            default:
-                break;
-            }
+        // voeg user toe aan lijst met ingelogde users
+        loggedInUsers.add(loggedInUser);
 
         // Ga naar welkomscherm
         Main.getSceneManager().showWelcomeScene();
+    }
+
+    private User getUserByUsername(String username) {
+        //Creëer dbAccess object
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        // maak database-connectie
+        dbAccess.openConnection();
+        //creëer userDAO instantie
+        UserDAO userDAO = new UserDAO(dbAccess);
+        // roep save-methode aan
+        User user = userDAO.getUserByUsername(username);
+        // sluit database connectie
+        dbAccess.closeConnection();
+        return user;
     }
 
     private void showErrorMessage(String errorMessage) {
@@ -119,5 +86,4 @@ public class LoginController {
     public void doQuit() {
             System.exit(0);
     }
-
 }
