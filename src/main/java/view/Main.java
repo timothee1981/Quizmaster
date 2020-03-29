@@ -1,5 +1,7 @@
 package view;
 
+import database.mysql.DBAccess;
+import database.mysql.UserDAO;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.*;
@@ -18,12 +20,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        createUserList();
+
         Main.primaryStage = primaryStage;
         primaryStage.setTitle("Make IT Work - Project 1");
         getSceneManager().setWindowTool();
         primaryStage.show();
     }
+
+
+
     //Testgegevens van testgebruikers
     private void createUserList() {
         userList.add(new Teacher(1, "Stefan", "Stefan", "Docent"));

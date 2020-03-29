@@ -6,6 +6,10 @@ import java.sql.SQLException;
 
 public class DBAccess {
 
+    private final static String DATABASE_NAME = "Quizmaster";
+    private final static String MAIN_USER = "userQuizmaster";
+    private final static String MAIN_USER_PASSWORD = "pwQuizmaster";
+
     private Connection connection;
     private String databaseName;
     private String mainUser;
@@ -59,5 +63,17 @@ public class DBAccess {
 
     public Connection getConnection()  {
         return connection;
+    }
+
+    public static String getDatabaseName() {
+        return DATABASE_NAME;
+    }
+
+    public static String getMainUser() {
+        return MAIN_USER;
+    }
+
+    public static String getMainUserPassword() {
+        return MAIN_USER_PASSWORD;
     }
 }

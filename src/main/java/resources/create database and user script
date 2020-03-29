@@ -1,0 +1,17 @@
+--SQL DB Quizmaster - User-table
+
+CREATE SCHEMA Quizmaster;
+
+USE Quizmaster;
+
+CREATE TABLE `User` (
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `role` varchar(45) NOT NULL,
+  PRIMARY KEY (`userid`)
+);
+
+-- Gebruiker definiëren en toegang verlenen
+CREATE USER 'userQuizmaster'@'localhost' IDENTIFIED BY 'pwQuizmaster';
+GRANT ALL PRIVILEGES ON Quizmaster . * TO 'userQuizmaster'@'localhost';
