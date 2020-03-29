@@ -82,7 +82,6 @@ public class LoginController {
                userPassword = user.getPassword();
                userId = user.getUserId();
             }
-
         }
 
         // Menu-items per rol laden
@@ -108,7 +107,6 @@ public class LoginController {
 
         // Ga naar welkomscherm
         Main.getSceneManager().showWelcomeScene();
-
     }
 
     private void showErrorMessage(String errorMessage) {
