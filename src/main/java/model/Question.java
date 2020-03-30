@@ -8,13 +8,15 @@ public class Question {
     private String question;
     private ArrayList<Answer> answers;
     private Answer goodAnswer;
+    private Quiz quiz;
 
     //Auto increment?
 
 
-    public Question(String question, Answer goodAnswer) {
-        this.questionId ++;
+    public Question(int questionId, String question,Quiz quiz, Answer goodAnswer) {
+        this.questionId = questionId;
         this.question = question;
+        this.quiz = quiz;
         this.goodAnswer = goodAnswer;
         answers = new ArrayList<>();
 

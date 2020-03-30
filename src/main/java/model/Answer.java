@@ -10,4 +10,12 @@ public class Answer {
         this.answer = answer;
         this.answerId = answerId;
     }
+
+    public int getAnswerId() {
+        return answerId;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
 }
