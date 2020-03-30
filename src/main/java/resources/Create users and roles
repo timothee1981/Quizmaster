@@ -1,0 +1,20 @@
+-- voeg rollen toe aan database
+INSERT INTO `quizmaster`.`rol` (`rolId`, `rol_beschrijving`) VALUES ('1', 'Docent');
+INSERT INTO `quizmaster`.`rol` (`rolId`, `rol_beschrijving`) VALUES ('2', 'Student');
+INSERT INTO `quizmaster`.`rol` (`rolId`, `rol_beschrijving`) VALUES ('3', 'Administrator');
+INSERT INTO `quizmaster`.`rol` (`rolId`, `rol_beschrijving`) VALUES ('4', 'Technisch beheerder');
+INSERT INTO `quizmaster`.`rol` (`rolId`, `rol_beschrijving`) VALUES ('5', 'Coordinator');
+
+-- voeg gebruikers toe
+INSERT INTO `quizmaster`.`gebruiker` (`userId`, `gebruikersnaam`, `wachtwoord`) VALUES ('1', 'Stefan', 'Stefan');
+INSERT INTO `quizmaster`.`gebruiker` (`userId`, `gebruikersnaam`, `wachtwoord`) VALUES ('2', 'Timothee', 'Timothee');
+INSERT INTO `quizmaster`.`gebruiker` (`userId`, `gebruikersnaam`, `wachtwoord`) VALUES ('3', 'Mireille', 'Mireille');
+INSERT INTO `quizmaster`.`gebruiker` (`userId`, `gebruikersnaam`, `wachtwoord`) VALUES ('4', 'Ankie', 'Ankie');
+INSERT INTO `quizmaster`.`gebruiker` (`userId`, `gebruikersnaam`, `wachtwoord`) VALUES ('5', 'Michel', 'Michel');
+
+-- koppel gebruikers aan rol (1 rol)
+INSERT INTO `quizmaster`.`gebruikerrol` (`userId`, `roleId`) VALUES ('1', '1');
+INSERT INTO `quizmaster`.`gebruikerrol` (`userId`, `roleId`) VALUES ('2', '2');
+INSERT INTO `quizmaster`.`gebruikerrol` (`userId`, `roleId`) VALUES ('3', '3');
+INSERT INTO `quizmaster`.`gebruikerrol` (`userId`, `roleId`) VALUES ('4', '4');
+INSERT INTO `quizmaster`.`gebruikerrol` (`userId`, `roleId`) VALUES ('5', '5');
