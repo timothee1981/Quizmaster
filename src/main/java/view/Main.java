@@ -1,11 +1,8 @@
 package view;
 
-import database.mysql.DBAccess;
-import database.mysql.UserDAO;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.*;
-import unittest.UserUnitTest;
 
 import java.util.ArrayList;
 
