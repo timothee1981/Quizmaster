@@ -1,3 +1,5 @@
 package model;
 
-public class Quiz {}
+public class Quiz {
+
+}
