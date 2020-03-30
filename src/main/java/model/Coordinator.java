@@ -17,4 +17,16 @@ public class Coordinator extends User {
         menuItems.add(new MenuItem("Show quiz dashboard"));
         return menuItems;
     }
+
+    //methode maken die voegd een nieuw vraag met een 4 aantwoorden
+    //een aantwoord is de goede
+
+    //methode die antoord toevogd aan een bestaande quiz
+
+    //quiz Crud
+
+
+
+
+
 }
