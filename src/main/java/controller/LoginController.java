@@ -44,7 +44,7 @@ public class LoginController {
         // checken of wachtwoord ingevoerd is gelijk aan wachtwoord user
         // bepaal ingevoerde wachtwoord en wachtwoord waarmee het vergeleken moet worden
         String wachtwoordInput = passwordField.getText();
-        String opgehaaldeWachtwoord = userToLogin.getPassword(); // functie: haalWachtwoordOpObvGebruikersnaam(Gebruikersnaam)
+        String opgehaaldeWachtwoord = userToLogin.getPassword();
 
         // controleren of een gebruiker een geldig wachtwoord invoert, zo niet: geef foutmelding
         if (!opgehaaldeWachtwoord.equals(wachtwoordInput)) {
