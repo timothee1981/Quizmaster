@@ -96,7 +96,14 @@ CREATE TABLE IF NOT EXISTS `Quizmaster`.`Quiz` (
   `quiznummer` INT NOT NULL,
   `cursusnaam` VARCHAR(45) NOT NULL,
   `cesuur` DECIMAL NOT NULL,
-  PRIMARY KEY (`quiznummer`))
+  `cursusId` INT NOT NULL,
+  PRIMARY KEY (`quiznummer`),
+  INDEX `verzinzelf10_idx` (`cursusId` ASC) VISIBLE,
+  CONSTRAINT `verzinzelf10`
+    FOREIGN KEY (`cursusId`)
+    REFERENCES `Quizmaster`.`Cursus` (`cursusId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
