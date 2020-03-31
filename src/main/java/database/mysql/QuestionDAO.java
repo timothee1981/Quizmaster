@@ -22,7 +22,6 @@ public class QuestionDAO extends AbstractDAO {
      * DAO QUIZ en DAO vraag moet noog af om dit helemaal goed te doen
      */
     public ArrayList<Question> getAllQuestions() {
-
         String sql = "SELECT * FROM quizvraag";
         ArrayList<Question> result = new ArrayList<>();
         try {
@@ -43,6 +42,11 @@ public class QuestionDAO extends AbstractDAO {
         return  result;
     }
 
+    /**
+     * @param questionId
+     * @return
+     * geeft vraag terug vanuit DB op basis van vraagId
+     */
     public Question getQuestionById(int questionId){
         AnswerDAO answerDAO = new AnswerDAO(dBaccess);
         Question question = null;
@@ -64,7 +68,35 @@ public class QuestionDAO extends AbstractDAO {
 
         }
 
+        return question;
+    }
 
+
+    /**
+     * @param questionString
+     * @return
+     *
+     * geeft een vraag terug op basis van vraag
+     */
+    public Question getQuestionByQuestion(String questionString){
+        AnswerDAO answerDAO = new AnswerDAO(dBaccess);
+        Question question = null;
+        String sql = "SELECT * FROM quizvraag WHERE vraag = ?;";
+        try {
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setString(1,questionString);
+            ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
+            while(resultSet.next()){
+                int vraagId = resultSet.getInt("vraagId");
+                String question1= resultSet.getString("vraag");
+                Answer answer = answerDAO.getAnswerById(resultSet.getInt("aantwoordjuist"));
+                question = new Question(vraagId,question1,answer);
+            }
+
+        }catch (SQLException sqlFout){
+            System.out.println(sqlFout);
+
+        }
         return question;
     }
 
