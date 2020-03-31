@@ -6,25 +6,25 @@ public class Question {
 
     private int questionId = 0;
     private String question;
-    private ArrayList<Answer> answers;
-    private Answer goodAnswer;
+    private ArrayList<String> answers;
+    private String goodAnswer;
     private Quiz quiz;
 
     //Auto increment?
 
 
-    public Question(int questionId, String question,Quiz quiz, Answer goodAnswer) {
+    public Question(int questionId, String question,Quiz quiz) {
         this.questionId = questionId;
         this.question = question;
         this.quiz = quiz;
-        this.goodAnswer = goodAnswer;
         answers = new ArrayList<>();
 
     }
 
-    //
 
-    public void voegAntwoordAanVraag(Answer answer){
+    //methode die
+
+    public void voegAntwoordAanVraag(String answer){
         answers.add(goodAnswer);
         answers.add(answer);
     }
