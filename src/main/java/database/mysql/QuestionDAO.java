@@ -1,14 +1,9 @@
 package database.mysql;
 
-import model.Answer;
-import model.Question;
 import model.Quiz;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuestionDAO extends AbstractDAO {
     public QuestionDAO(DBAccess dBaccess) {
@@ -22,7 +17,7 @@ public class QuestionDAO extends AbstractDAO {
      * is een begin
      * DAO QUIZ en DAO vraag moet noog af om dit helemaal goed te doen
      */
-    public ArrayList<Question> getAllQuestions() {
+    /*public ArrayList<Question> getAllQuestions() {
 
         String sql = "SELECT * FROM quizvraag";
         ArrayList<Question> result = new ArrayList<>();
@@ -36,7 +31,7 @@ public class QuestionDAO extends AbstractDAO {
                 String question = resultSet.getString("vraag");
                 int quizID = resultSet.getInt("quiznummer");
                 int answerId = resultSet.getInt("cursusId");
-                questions = new Question(questionId, question, new Quiz(quizID,"bla", 50),new Answer(answerId,"blbla") );
+                questions = new Question(questionId, question, new Quiz(quizID,"bla", 50),new Answer(answerId,"blbla",new Question(1,"bla",)) );
                                                 ///moet nog een QUIZ DAO komen en een ANTOORD DAO KOMENT OM DIT HELEMAAL GOED TE DOEN.
                 result.add(questions);
             }
@@ -44,7 +39,7 @@ public class QuestionDAO extends AbstractDAO {
             System.out.println("SQL error " + e.getMessage());
         }
         return  result;
-    }
+    }*/
 
 
 
@@ -59,7 +54,7 @@ public class QuestionDAO extends AbstractDAO {
      * Sla vragen op in DB
      *
      */
-    public void storeNewQuestion(int questionId, String question, Quiz quiz, Answer goodAnswer){
+    public void storeNewQuestion(int questionId, String question, Quiz quiz, String goodAnswer){
 
 
         String sql = "INSERT INTO quizvraag VALUES (?,?,?,?);";
@@ -68,7 +63,7 @@ public class QuestionDAO extends AbstractDAO {
             preparedStatement.setInt(1,questionId);
             preparedStatement.setString(2,question);
             preparedStatement.setInt(3, quiz.getQuizId());
-            preparedStatement.setInt(4,goodAnswer.getAnswerId());
+            preparedStatement.setString(4,goodAnswer);
             preparedStatement.executeUpdate();
 
         }catch (SQLException sqlFout){
