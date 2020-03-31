@@ -2,6 +2,7 @@ package database.mysql;
 
 import model.Answer;
 import model.Question;
+import model.Quiz;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,5 +52,21 @@ public class AnswerDAO extends AbstractDAO{
         }
 
         return answer;
+    }
+
+
+    public void storeNewAnswer(int answerId, String answer, Question question){
+        String sql = "INSERT INTO antwoord VALUES (?,?,?);";
+        try{
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(1,answerId);
+            preparedStatement.setString(2,answer);
+            preparedStatement.setInt(3, question.getQuestionId());
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException sqlFout){
+            System.out.println(sqlFout);
+        }
+
     }
 }
