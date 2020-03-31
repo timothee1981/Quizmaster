@@ -7,17 +7,25 @@ public class Question {
     private int questionId;
     private String question;
     private ArrayList<Answer> answers;
-    private Answer goedAnswer;
+    private Answer correctAnswer;
 
 
-    public Question(String question) {
-        this.questionId += 1;
+
+
+    public Question(int questionId, String question, Answer correctAnswer) {
+        this.questionId = questionId;
         this.question = question;
+        this.correctAnswer = correctAnswer;
         answers = new ArrayList<>();
+
 
     }
 
+
+    //methode die
+
     public void voegAntwoordAanVraag(Answer answer){
+
         answers.add(answer);
     }
 

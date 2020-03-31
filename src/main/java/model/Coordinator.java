@@ -1,6 +1,7 @@
 package model;
 
 import javafx.scene.control.MenuItem;
+import view.Main;
 
 import java.util.ArrayList;
 
@@ -13,8 +14,17 @@ public class Coordinator extends User {
     @Override
     public ArrayList<MenuItem> getMenuItems() {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("Create/read/update/delete quiz"));
-        menuItems.add(new MenuItem("Show quiz dashboard"));
+        MenuItem menuItem1 = new MenuItem("Create/read/update/delete quiz");
+        MenuItem menuItem2 = new MenuItem("Show quiz dashboard");
+        menuItems.add(menuItem1);
+        menuItems.add(menuItem2);
+        menuItem2.setOnAction(actionEvent -> Main.getSceneManager().showCoordinatorDashboard());
         return menuItems;
     }
+
+
+
+
+
+
 }

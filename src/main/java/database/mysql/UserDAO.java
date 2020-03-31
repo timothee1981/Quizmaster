@@ -2,6 +2,7 @@ package database.mysql;
 
 import model.*;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,21 +19,60 @@ public class UserDAO extends AbstractDAO {
      * -- de databaseconnectie open is
      */
     public void storeNewUser(String name, String password, String role ){
-        String sql = "INSERT INTO user ( username, password, role ) VALUES (?,?,?);";
+        String sql = "INSERT INTO gebruiker ( gebruikersnaam, wachtwoord) VALUES (?,?);";
 
         try{
-            PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
+            // sla data van user op
+            PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, password);
-            preparedStatement.setString(3, role);
+            // sla key van gebruiker op
+            int userId = executeInsertPreparedStatement(preparedStatement);
+
+            // zoek de Id op van de rol die bij user hoort
+            int roleId = getRoleIdByName(role);
+
+            // vul de gebruikers-rol tabel met de userId en de Id van de bijbehorende rol
+            storeUserRole(userId, roleId);
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void storeUserRole(int userId, int roleId) {
+        String sql = "INSERT INTO gebruikerrol userId, roleId VALUES (?,?);";
+        try{
+            PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, userId );
+            preparedStatement.setInt(2, roleId);
             preparedStatement.executeUpdate();
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
     }
 
+    private int getRoleIdByName(String role) {
+        int roleId = 0;
+        String sql = "SELECT * FROM rol WHERE rol_beschrijving = ?";
+        try {
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setString(1, role);
+
+            ResultSet resultset = preparedStatement.executeQuery();
+            roleId = resultset.getInt(1);
+        } catch (SQLException e){
+        System.out.println(e.getMessage());
+        }
+        return roleId;
+    }
+
     public User getUserByUsername(String usernameInput){
-        String sql = "SELECT * FROM user WHERE username = ?";
+        // haal user-info op
+        String sql = "SELECT gebruiker.userId, gebruiker.gebruikersnaam, gebruiker.wachtwoord, rol.rol_beschrijving" +
+                " FROM gebruiker" +
+                " JOIN gebruikerrol ON gebruiker.userId = gebruikerrol.userId" +
+                " JOIN rol ON gebruikerrol.roleId = rol.rolId" +
+                " WHERE gebruikersnaam = ?";
         User user = null;
 
         try{
@@ -74,4 +114,5 @@ public class UserDAO extends AbstractDAO {
         }
         return user;
     }
+
 }

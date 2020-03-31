@@ -24,8 +24,6 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
-
     //Testgegevens van testgebruikers
     private void createUserList() {
         userList.add(new Teacher(1, "Stefan", "Stefan", "Docent"));
