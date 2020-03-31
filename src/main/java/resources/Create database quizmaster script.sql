@@ -31,8 +31,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Quizmaster`.`Cursus` (
   `cursusId` INT NOT NULL,
-  `userIdcoordinator` INT NOT NULL,
   `cursusnaam` VARCHAR(45) NOT NULL,
+  `userIdcoordinator` INT NOT NULL,
   PRIMARY KEY (`cursusId`),
   INDEX `verzinzelf5_idx` (`userIdcoordinator` ASC) VISIBLE,
   CONSTRAINT `verzinzelf5`
@@ -94,7 +94,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Quizmaster`.`Quiz` (
   `quiznummer` INT NOT NULL,
-  `cursusnaam` VARCHAR(45) NOT NULL,
+  `quiznaam` VARCHAR(45) NOT NULL,
   `cesuur` DECIMAL NOT NULL,
   `cursusId` INT NOT NULL,
   PRIMARY KEY (`quiznummer`),

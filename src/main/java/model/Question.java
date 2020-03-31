@@ -4,28 +4,28 @@ import java.util.ArrayList;
 
 public class Question {
 
-    private int questionId = 0;
+    private int questionId;
     private String question;
-    private ArrayList<String> answers;
-    private String goodAnswer;
-    private Quiz quiz;
-
-    //Auto increment?
+    private ArrayList<Answer> answers;
+    private Answer correctAnswer;
 
 
-    public Question(int questionId, String question,Quiz quiz) {
+
+
+    public Question(int questionId, String question, Answer correctAnswer) {
         this.questionId = questionId;
         this.question = question;
-        this.quiz = quiz;
+        this.correctAnswer = correctAnswer;
         answers = new ArrayList<>();
+
 
     }
 
 
     //methode die
 
-    public void voegAntwoordAanVraag(String answer){
-        answers.add(goodAnswer);
+    public void voegAntwoordAanVraag(Answer answer){
+
         answers.add(answer);
     }
 

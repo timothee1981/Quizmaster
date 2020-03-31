@@ -22,35 +22,6 @@ public class Coordinator extends User {
         return menuItems;
     }
 
-    //maak een vraag
-
-    /*public Question createQuestion(){
-
-    }*/
-
-    //maak een goede antwoord aan de vraag
-
-    //maak een aantwoord array gebaseerd aan
-
-    //methode maken die voegd een nieuw vraag met een 4 aantwoorden
-    // maak een nieuwe vraag aan en voeg antwoord bij deze vraag
-   /* public Question makeNewQuestion(Question question, String answer, String answer2, String answer3){
-        question.voegAntwoordAanVraag(answer);
-        question.voegAntwoordAanVraag(answer2);
-        question.voegAntwoordAanVraag(answer3);
-        return question;
-
-    }*/
-
-    //op basis van deze vraag maak een lijks van 4 antwoorden, waaronder eentje is de goede
-
-
-
-    //een aantwoord is de goede
-
-    //methode die antoord toevogd aan een bestaande quiz
-
-    //quiz Crud
 
 
 
