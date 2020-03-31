@@ -13,12 +13,12 @@ class UserDAOTest {
 
     @Test
     void getUserByUsername() {
-        //TODO zorgen dat dit werkt: krijgt bij draaien test een error
-        //TODO: bij draaien van applicatie gaat het goed, bij draaien van test krijg ik een nullpointerExceptie
         User expectedResult = new Teacher(1,"Stefan","Stefan","Docent");
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(),DBAccess.getMainUser(),DBAccess.getMainUserPassword());
+        dbAccess.openConnection();
         UserDAO userDAO = new UserDAO(dbAccess);
         User actualResult = userDAO.getUserByUsername("Stefan");
-        assertEquals(expectedResult, actualResult);
+        dbAccess.closeConnection();
+        assertEquals(expectedResult.toString(),actualResult.toString());
     }
 }

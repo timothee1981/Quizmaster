@@ -37,4 +37,9 @@ public abstract class User {
     public String getRole() {
         return role;
     }
+
+    @Override
+    public String toString() {
+        return String.format("userId: %s userName: %s role: %s",userId, userName, role);
+    }
 }
