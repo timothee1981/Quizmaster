@@ -7,6 +7,7 @@ import javafx.scene.control.ListView;
 import model.Course;
 import model.Question;
 import model.Quiz;
+import view.Main;
 
 public class CoordinatorDashboardController {
 
@@ -39,7 +40,10 @@ public class CoordinatorDashboardController {
 
     public void doEditQuiz() { }
 
-    public void doNewQuestion() { }
+    public void doNewQuestion() {
+
+
+    }
 
     public void doEditQuestion() { }
 

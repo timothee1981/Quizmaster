@@ -21,6 +21,9 @@ public class Question {
 
     }
 
+    public int getQuestionId() {
+        return questionId;
+    }
 
     //methode die
 
