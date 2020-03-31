@@ -4,6 +4,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuestionController">
+   <Label fx:id="titleLabel" layoutX="14.0" layoutY="68.0" text="Vull nieuwe vraag">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Label>
+   <TextField fx:id="niewevraag" layoutX="10.0" layoutY="104.0" prefHeight="52.0" prefWidth="336.0" />
+   <Label fx:id="titleLabel" layoutX="13.0" layoutY="169.0" text="Vull goede Aantwoord">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Label>
+   <TextField fx:id="goedeAntwoord" layoutX="16.0" layoutY="210.0" prefHeight="52.0" prefWidth="336.0" />
+   <Button fx:id="saveButton" layoutX="16.0" layoutY="274.0" mnemonicParsing="false" text="Save" />
+   <Button fx:id="menuButton" layoutX="12.0" layoutY="322.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
 </AnchorPane>

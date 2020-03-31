@@ -112,8 +112,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Quizmaster`.`Antwoord` (
   `aantwoordId` INT NOT NULL,
-  `vraagId` INT NOT NULL,
   `antwoord` VARCHAR(45) NOT NULL,
+  `vraagId` INT NOT NULL,
   PRIMARY KEY (`aantwoordId`, `vraagId`),
   INDEX `verzinzelf11_idx` (`vraagId` ASC) VISIBLE,
   CONSTRAINT `verzinzelf11`

@@ -14,10 +14,11 @@ public class Coordinator extends User {
     @Override
     public ArrayList<MenuItem> getMenuItems() {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
-        MenuItem menuItem1 = new MenuItem("Create/read/update/delete quiz");
+        MenuItem menuItem1 = new MenuItem("Create/read/update/delete quetion");
         MenuItem menuItem2 = new MenuItem("Show quiz dashboard");
         menuItems.add(menuItem1);
         menuItems.add(menuItem2);
+        menuItem1.setOnAction(actionEvent -> Main.getSceneManager().showManageQuestionsScene());
         menuItem2.setOnAction(actionEvent -> Main.getSceneManager().showCoordinatorDashboard());
         return menuItems;
     }
