@@ -5,4 +5,45 @@
 <?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+    <Label alignment="CENTER" layoutY="40.0" prefHeight="54.0" prefWidth="900.0" text="Cursus aanmaken">
+        <font>
+            <Font size="36.0"/>
+        </font>
+    </Label>
+    <Label alignment="CENTER" layoutY="84.0" prefHeight="29.0" prefWidth="900.0" text="Vul hieronder de cursusgegevens in">
+        <font>
+            <Font size="24.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="numberTextField" layoutX="410.0" layoutY="150.0" prefHeight="25.0" prefWidth="80.0"/>
+    <Label layoutX="254.0" layoutY="148.0" text="Cursusnummer: ">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="nameTextField" layoutX="410.0" layoutY="185.0" prefHeight="25.0" prefWidth="400.0"/>
+    <Label layoutX="275.0" layoutY="185.0" text="Cursusnaam: ">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="coordinatorTextField" layoutX="410.0" layoutY="220.0" prefHeight="25.0" prefWidth="80.0"/>
+    <Label layoutX="58.0" layoutY="220.0" text="Personeelsnummer cursuscoördinator:">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+
+    <Button defaultButton="true" layoutX="410.0" layoutY="275.0" mnemonicParsing="false" onAction="#doCreateCourse"
+            prefHeight="25.0" prefWidth="300.0" text="Cursus aanmaken">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Button>
+    <Button layoutX="410.0" layoutY="453.0" mnemonicParsing="false" onAction="#welcomeScene" prefHeight="25.0"
+            prefWidth="200.0" text="Terug naar menu">
+        <font>
+            <Font size="16.0"/>
+        </font>
+    </Button>
 </AnchorPane>
