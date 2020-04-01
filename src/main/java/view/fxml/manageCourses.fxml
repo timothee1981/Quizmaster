@@ -10,12 +10,12 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <Label layoutX="14.0" layoutY="49.0" text="Selecteer cursus">
+    <Label layoutX="14.0" layoutY="49.0" text="Selecteer een cursus">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="courseList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
+    <ListView fx:id="courseList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="381.0" />
     <Button fx:id="newCourseButton" layoutX="13.0" layoutY="285.0" mnemonicParsing="false" onAction="#doCreateCourse" text="Nieuw">
         <font>
             <Font size="14.0" />
@@ -31,7 +31,7 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Button fx:id="menuButton" layoutX="14.0" layoutY="329.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+    <Button fx:id="menuButton" layoutX="14.0" layoutY="429.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
         <font>
             <Font size="14.0" />
         </font>
