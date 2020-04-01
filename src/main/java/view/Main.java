@@ -1,5 +1,6 @@
 package view;
 
+import database.mysql.DBAccess;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.*;
@@ -11,6 +12,10 @@ public class Main extends Application {
     private static SceneManager sceneManager = null;
     private static Stage primaryStage = null;
     public static ArrayList<User> userList = new ArrayList<>(); //Lijst met dummy-gebruikers
+
+
+
+
 
     public static void main(String[] args) {
         launch(args);

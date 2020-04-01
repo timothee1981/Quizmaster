@@ -7,15 +7,15 @@ public class Question {
     private int questionId;
     private String question;
     private ArrayList<Answer> answers;
-    private Answer correctAnswer;
+    private Quiz quiz;
 
 
+    public Question() {
+    }
 
-
-    public Question(int questionId, String question, Answer correctAnswer) {
-        this.questionId = questionId;
+    public Question(String question) {
+        this.questionId ++ ;
         this.question = question;
-        this.correctAnswer = correctAnswer;
         answers = new ArrayList<>();
 
 
@@ -25,12 +25,27 @@ public class Question {
         return questionId;
     }
 
-    //methode die
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+
 
     public void voegAntwoordAanVraag(Answer answer){
 
         answers.add(answer);
     }
 
-
+    public ArrayList<Answer> getAnswers() {
+        return answers;
+    }
 }
