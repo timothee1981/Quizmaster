@@ -5,16 +5,12 @@ public class Group {
     // Group attributen: id, naam, id van de docent, id van de cursus
     private int groepId;
     private String groepnaam;
-    private int userDocentId; // afkomstig van klasse Teacher (?)
-    private int cursusId; //afkomstig van de klasse Course
 
 
     // constructor
-    public Group(int groepId, String groepnaam, int userDocentId, int cursusId) {
+    public Group(int groepId, String groepnaam) {
         this.groepId = groepId;
         this.groepnaam = groepnaam;
-        this.userDocentId = userDocentId;
-        this.cursusId = cursusId;
     }
 
     // getters en setters
