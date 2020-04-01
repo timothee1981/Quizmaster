@@ -19,13 +19,14 @@ public class AnswerDAO extends AbstractDAO{
         String sql = "SELECT * FROM Antwoord";
         ArrayList<Answer> result = new ArrayList<>();
         try {
+            QuestionDAO questionDAO = new QuestionDAO(dBaccess);
 
             PreparedStatement preparedStatement = getStatement(sql);
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             while (resultSet.next()) {
                 int answerId = resultSet.getInt("aantwoordId");
                 String answerString = resultSet.getString("antwoord");
-                Answer answer = new Answer(answerId, answerString);
+                Answer answer = new Answer(answerString);
                 result.add(answer);
             }
         } catch (SQLException e){
@@ -39,13 +40,13 @@ public class AnswerDAO extends AbstractDAO{
         Answer answer = null;
         String sql = "SELECT * FROM hond WHERE chipnr = ?;";
         try {
-
+            QuestionDAO questionDAO = new QuestionDAO(dBaccess);
             PreparedStatement preparedStatement = getStatement(sql);
             preparedStatement.setInt(1,answerId);
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             while(resultSet.next()){
                 String answerString = resultSet.getString("antwoord");
-                answer = new Answer(answerId,answerString);
+                answer = new Answer(answerString);
             }
         }catch (SQLException sqlFout){
             System.out.println(sqlFout);
@@ -55,13 +56,14 @@ public class AnswerDAO extends AbstractDAO{
     }
 
 
-    public void storeNewAnswer(int answerId, String answer, Question question){
+    public void storeNewAnswer(Answer answer){
         String sql = "INSERT INTO antwoord VALUES (?,?,?);";
         try{
+
             PreparedStatement preparedStatement = getStatement(sql);
-            preparedStatement.setInt(1,answerId);
-            preparedStatement.setString(2,answer);
-            preparedStatement.setInt(3, question.getQuestionId());
+            preparedStatement.setInt(1,answer.getAnswerId());
+            preparedStatement.setString(2,answer.getAnswer());
+            preparedStatement.setInt(3, answer.getQuestion().getQuestionId());
             preparedStatement.executeUpdate();
 
         }catch (SQLException sqlFout){

@@ -1,37 +1,94 @@
 package controller;
 
+import database.mysql.AnswerDAO;
+import database.mysql.DBAccess;
+import database.mysql.QuestionDAO;
+import database.mysql.UserDAO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import model.Answer;
 import model.Question;
+import model.Quiz;
+import model.User;
 import view.Main;
+
+import java.util.ArrayList;
 
 public class CreateUpdateQuestionController {
 
     private Question question;
+    private ArrayList<Question> questions;
+
 
     @FXML
-    private TextField niewevraag;
+    private TextField vraagTextField;
 
     @FXML
-    private  TextField goedeAntwoord;
+    private  TextField goodAnswerTextField;
+
+    @FXML
+    private  TextField answer2TextField;
+
+    @FXML
+    private TextField answer3TextField;
+
+    @FXML
+    private TextField answer4TextField;
+
+
 
     public void setup(Question question) {}
 
     public void doMenu() {
         Main.getSceneManager().showCoordinatorDashboard();
+
     }
 
-    public void doCreateUpdateQuestion() {}
+    @FXML
+    public void doCreateUpdateQuestion(ActionEvent actionEvent) {
+        createQuestion();
+
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        // maak database-connectie
+        dbAccess.openConnection();
+        //creëer userDAO instantie
+        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+        AnswerDAO answerDAO = new AnswerDAO(dbAccess);
+        // roep save-methode aan
+
+        if (question != null) {
+            questionDAO.storeNewQuestion(question);
+        }else
+            System.out.println("geen klant");
+
+
+
+
+        //answerDAO.storeNewAnswer(question.getCorrectAnswer().getAnswerId(),question.getCorrectAnswer().getAnswer(),question.getCorrectAnswer().getQuestion());
+        // sluit database connectie
+        dbAccess.closeConnection();
+
+
+    }
 
     private void createQuestion() {
 
+        StringBuilder warningText = new StringBuilder();
+        boolean correcteInvoer = true;
 
-        String questionString = niewevraag.getText();
-        String correctAnswer = goedeAntwoord.getText();
+        question = new Question(vraagTextField.getText());
+        Answer answer = new Answer(goodAnswerTextField.getText());
+        Answer answer2 = new Answer(answer2TextField.getText());
+        Answer answer3 = new Answer(answer3TextField.getText());
+        Answer answer4 = new Answer(answer4TextField.getText());
+        question.voegAntwoordAanVraag(answer);
+        question.voegAntwoordAanVraag(answer2);
+        question.voegAntwoordAanVraag(answer3);
+        question.voegAntwoordAanVraag(answer4);
 
-       Question question = new Question(1,questionString,new Answer(1,correctAnswer));
+        }
 
     }
-}
+
