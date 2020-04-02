@@ -93,7 +93,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO {
         }
     }
 
-    private int getRoleIdByName(String role) {
+    public int getRoleIdByName(String role) {
         int roleId = 0;
         String sql = "SELECT * FROM rol WHERE rol_beschrijving = ?";
         try {
