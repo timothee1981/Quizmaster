@@ -6,8 +6,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class UserDAO extends AbstractDAO {
+public class UserDAO extends AbstractDAO implements GenericDAO {
 
     public UserDAO(DBAccess dbAccess){super(dbAccess);}
 
@@ -106,6 +108,120 @@ public class UserDAO extends AbstractDAO {
         System.out.println(e.getMessage());
         }
         return roleId;
+    }
+
+    @Override
+    public ArrayList getAll() {
+
+// haal user-info op
+        String sql = "SELECT gebruiker.userId, gebruiker.gebruikersnaam, gebruiker.wachtwoord, rol.rol_beschrijving" +
+                " FROM gebruiker" +
+                " JOIN gebruikerrol ON gebruiker.userId = gebruikerrol.userId" +
+                " JOIN rol ON gebruikerrol.roleId = rol.rolId ;";
+
+        User user = null;
+        ArrayList<User> userList = new ArrayList<>();
+
+        try{
+            PreparedStatement preparedStatement = getStatement(sql);
+            
+            ResultSet resultset = preparedStatement.executeQuery();
+            while(resultset.next()){
+
+                int userId = resultset.getInt(1);
+                String username = resultset.getString(2) ;
+                String password = resultset.getString(3);
+                String role = resultset.getString(4);
+
+                // afhankelijk van de rol, creëer en return het juiste object
+                switch (role){
+                    case "Student":
+                        user = new Student(userId, username, password, role);
+                        break;
+                    case "Docent":
+                        user = new Teacher(userId, username, password, role);
+                        break;
+                    case "Coordinator":
+                        user = new Coordinator(userId, username, password, role);
+                        break;
+                    case "Administrator":
+                        user = new Administrator(userId, username, password, role);
+                        break;
+                    case "Technisch beheerder":
+                        user = new TechnicalAdministrator(userId, username, password, role);
+                        break;
+                    default:
+                        user = null;
+                        break;
+                }
+                userList.add(user);
+            }
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return userList;
+    }
+
+    @Override
+    public Object getOneById(int id) {
+
+        // haal user-info op
+        String sql = "SELECT gebruiker.userId, gebruiker.gebruikersnaam, gebruiker.wachtwoord, rol.rol_beschrijving" +
+                " FROM gebruiker" +
+                " JOIN gebruikerrol ON gebruiker.userId = gebruikerrol.userId" +
+                " JOIN rol ON gebruikerrol.roleId = rol.rolId" +
+                " WHERE userId = ?";
+        User user = null;
+
+        try{
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultset = preparedStatement.executeQuery();
+            while(resultset.next()){
+
+                int userId = resultset.getInt(1);
+                String username = resultset.getString(2) ;
+                String password = resultset.getString(3);
+                String role = resultset.getString(4);
+
+                // afhankelijk van de rol, creëer en return het juiste object
+                switch (role){
+                    case "Student":
+                        user = new Student(userId, username, password, role);
+                        break;
+                    case "Docent":
+                        user = new Teacher(userId, username, password, role);
+                        break;
+                    case "Coordinator":
+                        user = new Coordinator(userId, username, password, role);
+                        break;
+                    case "Administrator":
+                        user = new Administrator(userId, username, password, role);
+                        break;
+                    case "Technisch beheerder":
+                        user = new TechnicalAdministrator(userId, username, password, role);
+                        break;
+                    default:
+                        user = null;
+                        break;
+                }
+            }
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return user;
+    }
+
+    @Override
+    public void storeOne(Object type) {
+        // Id is auto-increment dus Id moet niet meegegeven worden bij het opslaan
+        User user = (User) type;
+
+        String username = user.getUserName();
+        String password = user.getPassword();
+        String role = user.getRole();
+        storeNewUser(username, password, role);
     }
 
     public User getUserByUsername(String usernameInput){
