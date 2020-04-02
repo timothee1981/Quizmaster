@@ -20,6 +20,7 @@ public class CreateUpdateQuestionController {
 
     private Question question;
     private ArrayList<Question> questions;
+    private ArrayList<Answer> answers;
 
 
     @FXML
@@ -49,7 +50,6 @@ public class CreateUpdateQuestionController {
     @FXML
     public void doCreateUpdateQuestion(ActionEvent actionEvent) {
         createQuestion();
-
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         // maak database-connectie
         dbAccess.openConnection();
@@ -58,11 +58,15 @@ public class CreateUpdateQuestionController {
         AnswerDAO answerDAO = new AnswerDAO(dbAccess);
         // roep save-methode aan
 
+
         if (question != null) {
-            questionDAO.storeNewQuestion(question);
+
+            questionDAO.storeOne(question);
+            answerDAO.storeOne(question.getAnswers().get(0));
+
+
         }else
             System.out.println("geen klant");
-
 
 
 
@@ -71,22 +75,26 @@ public class CreateUpdateQuestionController {
         dbAccess.closeConnection();
 
 
+
     }
 
     private void createQuestion() {
+
 
         StringBuilder warningText = new StringBuilder();
         boolean correcteInvoer = true;
 
         question = new Question(vraagTextField.getText());
-        Answer answer = new Answer(goodAnswerTextField.getText());
-        Answer answer2 = new Answer(answer2TextField.getText());
-        Answer answer3 = new Answer(answer3TextField.getText());
-        Answer answer4 = new Answer(answer4TextField.getText());
+        Answer answer = new Answer(goodAnswerTextField.getText(),question);
+        Answer answer2 = new Answer(answer2TextField.getText(),question);
+        Answer answer3 = new Answer(answer3TextField.getText(),question);
+        Answer answer4 = new Answer(answer4TextField.getText(),question);
         question.voegAntwoordAanVraag(answer);
         question.voegAntwoordAanVraag(answer2);
         question.voegAntwoordAanVraag(answer3);
         question.voegAntwoordAanVraag(answer4);
+
+
 
         }
 

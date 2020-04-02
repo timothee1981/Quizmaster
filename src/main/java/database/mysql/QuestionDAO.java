@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class QuestionDAO extends AbstractDAO {
+public class QuestionDAO extends AbstractDAO implements GenericDAO{
+
     public QuestionDAO(DBAccess dBaccess) {
         super(dBaccess);
     }
@@ -21,7 +22,9 @@ public class QuestionDAO extends AbstractDAO {
      * is een begin
      * DAO QUIZ en DAO vraag moet noog af om dit helemaal goed te doen
      */
-    public ArrayList<Question> getAllQuestions() {
+
+    @Override
+    public ArrayList<Question> getAll() {
         String sql = "SELECT * FROM quizvraag";
         ArrayList<Question> result = new ArrayList<>();
         try {
@@ -31,6 +34,7 @@ public class QuestionDAO extends AbstractDAO {
             Question questions;
             while (resultSet.next()) {
                 String question = resultSet.getString("vraag");
+                int questionId = resultSet.getInt("vraagId");
                 questions = new Question( question);
                 result.add(questions);
             }
@@ -45,7 +49,8 @@ public class QuestionDAO extends AbstractDAO {
      * @return
      * geeft vraag terug vanuit DB op basis van vraagId
      */
-    public Question getQuestionById(int questionId){
+    @Override
+    public Question getOneById(int questionId){
         Question question = null;
         String sql = "SELECT * FROM quizvraag WHERE vraagId = ?;";
         try {
@@ -54,7 +59,7 @@ public class QuestionDAO extends AbstractDAO {
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             while(resultSet.next()){
                 String questionString = resultSet.getString("vraag");
-                question = new Question(questionString);
+                question = new Question( questionString);
 
             }
 
@@ -82,6 +87,7 @@ public class QuestionDAO extends AbstractDAO {
             preparedStatement.setString(1,questionString);
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             while(resultSet.next()){
+                int questionId = resultSet.getInt("vraagId");
                 String question1= resultSet.getString("vraag");
                 question = new Question( question1);
             }
@@ -106,21 +112,22 @@ public class QuestionDAO extends AbstractDAO {
      * Sla vragen op in DB
      *
      */
-    public void storeNewQuestion(Question question){
+    @Override
+    public void storeOne(Object type){
+        Question question = (Question) type;
 
 
-        String sql = "INSERT INTO quizvraag VALUES(?,?,?,?);";
+        String sql = "INSERT INTO quizvraag VALUES(DEFAULT,?,?,?);";
 
         try{
-            Quiz quiz = new Quiz();
+
+            Question question1 = new Question();
 
             PreparedStatement preparedStatement = getStatementWithKey(sql);
-            preparedStatement.setInt(1,question.getQuestionId());
-            preparedStatement.setString(2,question.getQuestion());
-            preparedStatement.setInt(3,question.getQuiz().getQuizId());
-            preparedStatement.setInt(4,question.getAnswers().get(0).getAnswerId());
-            executeInsertPreparedStatement(preparedStatement);
-
+            preparedStatement.setString(1,question.getQuestion());
+            preparedStatement.setInt(2,1);
+            preparedStatement.setInt(3,question.getAnswers().get(0).getAnswerId());
+            preparedStatement.executeUpdate();
 
 
         }catch (SQLException sqlFout){
