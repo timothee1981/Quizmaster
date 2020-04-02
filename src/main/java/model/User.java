@@ -5,8 +5,9 @@ import javafx.scene.control.MenuItem;
 import java.util.ArrayList;
 
 public abstract class User {
-    final static protected int DEFAULT_USER_ID = -1;
-    final static  protected String DEFAULT_USERNAME = "";
+
+    final static public int DEFAULT_USER_ID = -1;
+    final static protected String DEFAULT_USERNAME = "";
     final static protected String DEFAULT_PASSWORD = "";
     final static protected String DEFAULT_ROLE = "";
 

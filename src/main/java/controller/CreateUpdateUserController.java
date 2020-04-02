@@ -17,6 +17,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static model.User.DEFAULT_USER_ID;
+
 public class CreateUpdateUserController {
 
     @FXML
@@ -46,6 +48,7 @@ public class CreateUpdateUserController {
 
     String userInputRole;
 
+    //todo: zorgen dat deze handler niet meer nodig is
     // deze handler werkt de String userInputRole bij als er een item wijzigt in een dropdownmenu
     // de menu-items moeten zich 'subscriben' voor deze handler, dit wordt gedaan in setup-methode
     // vlak voordat ze worden toegevoegd aan het menu
@@ -57,22 +60,33 @@ public class CreateUpdateUserController {
     };
 
     public void setup(User user) {
-        // maak alle invulvakken leeg
-        emptyTextFields();
 
-        // koppel rollen-lijst aan comboBox
-        // haal rollenlijst op uit database
-        ArrayList<MenuItem> roleItems = getAllRoleItems();
+        fillRoleDropdown();
 
-        // koppel opgehaalde lijst aan comboBox
-        // subscribe items aan 'haal waarde uit menuitem-event'
-        for (MenuItem menuItem : roleItems) {
-            //subscribe menu-item to event
-            menuItem.setOnAction(getTextOfSelectedMenuItem);
-
-            // add to menu
-            roleMenuButton.getItems().add(menuItem);
+        // check of user een echte user is of een dummy (id = DEFAULT_USER_ID)
+        if(user.getUserId() == User.DEFAULT_USER_ID){
+            // toon velden voor aanmaak nieuwe user -> verberg id-veld
+            userIdTextField.setVisible(false);
+            userIdLabel.setVisible(false);
+        } else{
+            // vul waaarden van velden met velden van de user
+            fillTextFieldsOfUser(user);
+            setRoleDropdownOfUser(user);
         }
+    }
+
+    private void setRoleDropdownOfUser(User user) {
+        //todo: implement
+    }
+
+    private void fillTextFieldsOfUser(User user) {
+        //setId
+        int userId = user.getUserId();
+        String userIdString = String.format("%d",userId);
+        userIdTextField.setText(userIdString);
+
+        usernameTextField.setText(user.getUserName());
+        passwordTextField.setText(user.getPassword());
     }
 
     private ArrayList<MenuItem> getAllRoleItems() {
@@ -91,14 +105,6 @@ public class CreateUpdateUserController {
 
         return menuItems;
     }
-
-    private void emptyTextFields() {
-        //todo: methode aanpassen zodat die zelf alle texfields zoekt en leeg maakt
-        userIdTextField.clear();
-        usernameTextField.clear();
-        passwordTextField.clear();
-    }
-
 
     public void doMenu() {
         // Ga naar welkomscherm
@@ -153,5 +159,23 @@ public class CreateUpdateUserController {
         userDAO.storeNewUser(username, password, role);
         // sluit database connectie
         dbAccess.closeConnection();
+    }
+
+    private void fillRoleDropdown() {
+        //todo: menuItem vervangen voor listbox
+
+        // koppel rollen-lijst aan comboBox
+        // haal rollenlijst op uit database
+        ArrayList<MenuItem> roleItems = getAllRoleItems();
+
+        // koppel opgehaalde lijst aan comboBox
+        // subscribe items aan 'haal waarde uit menuitem-event'
+        for (MenuItem menuItem : roleItems) {
+            //subscribe menu-item to event
+            menuItem.setOnAction(getTextOfSelectedMenuItem);
+
+            // add to menu
+            roleMenuButton.getItems().add(menuItem);
+        }
     }
 }
