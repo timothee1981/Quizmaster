@@ -4,18 +4,22 @@ import java.util.ArrayList;
 
 public class Course {
 
-    //Cursus attributen: id, naam en de userID van de cursuscoördinator
+    //Cursus attributen: cursus-id, en cursus-naam. De Administrator kent separaat de coordinator(Id) toe.
     private int cursusId;
     private String cursusNaam;
-    private int cursusCoordinatorId; //Deze 'krijgt' de cursus van de User-Class
+    public int userIdCoordinator;
     public ArrayList<Course> cursusLijst; //Een overzicht met alle cursussen, ter bewerking door Administrator
 
-
     //Cursus constructor
-    public Course(int cursusId, String cursusNaam, int cursusCoordinatorId){
+    public Course(int cursusId, String cursusNaam, int userIdCoordinator){
         this.cursusId = cursusId;
         this.cursusNaam = cursusNaam;
-        this.cursusCoordinatorId = cursusCoordinatorId;
+        this.userIdCoordinator = userIdCoordinator;
+    }
+
+    //Default constructor, waarbij de default-waarden aangegeven zijn (want in DB als not null)
+    public Course() {
+        this(0,"cursusNaam", 0);
     }
 
     //Cursus getters en setters. Hiermee kan de Administrator straks cursussen bekijken en bewerken.
@@ -34,6 +38,10 @@ public class Course {
     public void setCursusNaam(String cursusNaam) {
         this.cursusNaam = cursusNaam;
     }
+
+    public int getUserIdCoordinator() { return userIdCoordinator; }
+
+    public void setUserIdCoordinator(int userIdCoordinator) { this.userIdCoordinator = userIdCoordinator; }
 
     public ArrayList<Course> getCursusLijst() {
         return cursusLijst;
