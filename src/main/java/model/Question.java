@@ -50,6 +50,12 @@ public class Question {
         return answers;
     }
 
+    @Override
+    public String toString() {
+
+      return question;
+    }
+
 
 
 }

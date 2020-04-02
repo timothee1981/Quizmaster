@@ -28,13 +28,11 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         String sql = "SELECT * FROM quizvraag";
         ArrayList<Question> result = new ArrayList<>();
         try {
-            AnswerDAO answerDAO = new AnswerDAO(dBaccess);
             PreparedStatement preparedStatement = getStatement(sql);
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             Question questions;
             while (resultSet.next()) {
                 String question = resultSet.getString("vraag");
-                int questionId = resultSet.getInt("vraagId");
                 questions = new Question( question);
                 result.add(questions);
             }
@@ -125,8 +123,8 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
 
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1,question.getQuestion());
-            preparedStatement.setInt(2,1);
-            preparedStatement.setInt(3,question.getAnswers().get(0).getAnswerId());
+            preparedStatement.setInt(2,question.getAnswers().get(0).getAnswerId());
+            preparedStatement.setInt(3,1);
             preparedStatement.executeUpdate();
 
 

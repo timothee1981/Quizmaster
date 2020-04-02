@@ -62,7 +62,7 @@ public class CreateUpdateQuestionController {
         if (question != null) {
 
             questionDAO.storeOne(question);
-            answerDAO.storeOne(question.getAnswers().get(0));
+
 
 
         }else
