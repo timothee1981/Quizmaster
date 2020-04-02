@@ -42,7 +42,7 @@ public class UserDAO extends AbstractDAO {
     public void updateUser(int userId, String username, String password, String role){
 
         String sql = "UPDATE gebruiker SET " +
-                "( gebruikersnaam = ?, wachtwoord = ?) " +
+                " gebruikersnaam = ?, wachtwoord = ? " +
                 "WHERE userId = ?; ";
 
         try{
@@ -51,6 +51,8 @@ public class UserDAO extends AbstractDAO {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.setInt(3,userId);
+
+            executeManipulatePreparedStatement(preparedStatement);
 
             // zoek de Id op van de rol die bij user hoort
             int roleId = getRoleIdByName(role);
@@ -65,7 +67,7 @@ public class UserDAO extends AbstractDAO {
     private void updateUserRole(int userId, int roleId) {
 
         String sql = "UPDATE gebruikerrol SET " +
-                "(roleId = ?) " +
+                "roleId = ? " +
                 "WHERE userId = ? ;";
         try{
             PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
