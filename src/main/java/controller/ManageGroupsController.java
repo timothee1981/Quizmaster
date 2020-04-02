@@ -1,15 +1,21 @@
 package controller;
 
+import database.mysql.DBAccess;
+import database.mysql.GroupDAO;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import model.Group;
 import view.Main;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ManageGroupsController {
+    private GroupDAO gdao;
+    private DBAccess db;
+
 
     @FXML
     private ListView groupList;
@@ -24,11 +30,15 @@ public class ManageGroupsController {
     // de gebruiker kan ook kiezen om een nieuwe groep aan te maken.
 
     public void setup() {
+        /*this.gdao = new GroupDAO(db.getConnection());
+            List<Group> allCustomers = gdao.getAllCustomers();
+            for (Customer c : allCustomers) { customerList.getItems().add(c);*/
         // haal de lijst met groepen op
 
         //In het tekstvak willen we een Arraylist met groepen weergeven
         // ArrayList<Group> groepenLijst =
         }
+
 
     // ga naar het Welkomscherm door op de knop 'menu' te klikken
     public void doMenu() {
@@ -38,13 +48,17 @@ public class ManageGroupsController {
     // ga naar het CreateUpdateGroups scherm door op de knop 'nieuw' te klikken
     // er hoeft geen groep uit de lijst geselecteerd te zijn om deze actie te kunnen uitvoeren
     // in het scherm 'naam van de groep' moet (cursief) "voer de naam van de nieuwe groep in" verschijnen
-    public void doCreateGroup() {}
+    public void doCreateGroup() {
+        Main.getSceneManager().showCreateUpdateGroupScene(new Group());
+    }
 
     // ga naar het CreateUpdateGroups scherm door op de knop 'wijzig' te klikken
     // de gebruiker moet een groep geselecteerd hebben om naar het volgende scherm te kunnen.
     // de methode checkt dit eerst
     // in het scherm 'naam van de groep' moet de naam van de cursus verschijnen
-    public void doUpdateGroup() {}
+    public void doUpdateGroup() {
+        /*Main.getSceneManager().showCreateUpdateGroupScene(Group group);*/
+    }
 
     // de gebruiker selecteert een groep om te verwijderen.
     // indien er geen groep geselecteerd is krijgt de gebruiker een melding 'geen groep geselecteerd'

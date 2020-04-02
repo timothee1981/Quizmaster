@@ -4,17 +4,20 @@ import java.util.ArrayList;
 
 public class Question {
 
+
     private int questionId;
     private String question;
     private ArrayList<Answer> answers;
-    private Quiz quiz;
+    Quiz quiz;
+
+
 
 
     public Question() {
     }
 
     public Question(String question) {
-        this.questionId ++ ;
+
         this.question = question;
         answers = new ArrayList<>();
 
@@ -25,9 +28,7 @@ public class Question {
         return questionId;
     }
 
-    public void setQuestionId(int questionId) {
-        this.questionId = questionId;
-    }
+
 
     public String getQuestion() {
         return question;
@@ -48,4 +49,13 @@ public class Question {
     public ArrayList<Answer> getAnswers() {
         return answers;
     }
+
+    @Override
+    public String toString() {
+
+      return question;
+    }
+
+
+
 }
