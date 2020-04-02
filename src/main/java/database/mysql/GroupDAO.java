@@ -76,7 +76,17 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
 
     @Override
     public ArrayList getAll() {
-        return null;
+        String sql = "SELECT * FROM course;";
+        try {
+            PreparedStatement preparedStatement = getStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                int groepId = resultSet.getInt(1);
+                String groepnaam = resultSet.getString(2);
+            }
+        } catch (SQLException sqlFout){
+            System.out.println(sqlFout.getMessage());
+        } return getGroups();
     }
 
     @Override

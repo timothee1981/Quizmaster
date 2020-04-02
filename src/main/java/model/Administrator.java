@@ -30,10 +30,6 @@ public class Administrator extends User {
         menuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageGroupsScene());
         menuItems.add(menuItem3);
 
-        MenuItem menuItem4 = new MenuItem("Maak/wijzig groep");
-        menuItem4.setOnAction(actionEvent -> Main.getSceneManager().showCreateUpdateGroupScene(new Group()));
-        menuItems.add(menuItem4);
-
         return menuItems;
     }
 }
