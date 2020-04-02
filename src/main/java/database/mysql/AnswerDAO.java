@@ -60,18 +60,19 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
         return answer;
     }
 
-
-    public void storeNewAnswer(Answer answer){
+    @Override
+    public void storeOne(Object type){
+        Answer answer1 = (Answer) type;
         String sql = "INSERT INTO antwoord(antwoord,vraagId) VALUES (?,?);";
         try{
-            QuestionDAO questionDAO = new QuestionDAO(dBaccess);
+
 
 
             PreparedStatement preparedStatement = getStatementWithKey(sql);
-            preparedStatement.setString(1,answer.getAnswer());
-            preparedStatement.setInt(2,answer.getQuestion().getQuestionId());
+            preparedStatement.setString(1,answer1.getAnswer());
+            preparedStatement.setInt(2,answer1.getQuestion().getQuestionId());
             int key = executeInsertPreparedStatement(preparedStatement);
-            answer.setAnswerId(key);
+            answer1.setAnswerId(key);
 
         }catch (SQLException sqlFout){
             System.out.println(sqlFout);
@@ -81,16 +82,7 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
 
     }
 
-    @Override
-    public void storeOne(Object type) {
-        // Id is auto-increment dus Id moet niet meegegeven worden bij het opslaan
-        Answer answer1 = (Answer) type;
 
-        String answerString = answer1.getAnswer();
-        Question question = answer1.getQuestion();
-
-        storeNewAnswer(new Answer(answerString,question));
-    }
 
 
 

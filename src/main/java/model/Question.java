@@ -24,6 +24,10 @@ public class Question {
 
     }
 
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+
     public int getQuestionId() {
         return questionId;
     }
