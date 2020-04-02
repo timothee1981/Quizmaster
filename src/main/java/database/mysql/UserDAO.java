@@ -39,8 +39,46 @@ public class UserDAO extends AbstractDAO {
         }
     }
 
+    public void updateUser(int userId, String username, String password, String role){
+
+        String sql = "UPDATE gebruiker SET " +
+                "( gebruikersnaam = ?, wachtwoord = ?) " +
+                "WHERE userId = ?; ";
+
+        try{
+            // sla data van user op
+            PreparedStatement preparedStatement = getStatementWithKey(sql);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setInt(3,userId);
+
+            // zoek de Id op van de rol die bij user hoort
+            int roleId = getRoleIdByName(role);
+
+            // vul de gebruikers-rol tabel met de userId en de Id van de bijbehorende rol
+            updateUserRole(userId, roleId);
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void updateUserRole(int userId, int roleId) {
+
+        String sql = "UPDATE gebruikerrol SET " +
+                "(roleId = ?) " +
+                "WHERE userId = ? ;";
+        try{
+            PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, roleId );
+            preparedStatement.setInt(2, userId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void storeUserRole(int userId, int roleId) {
-        String sql = "INSERT INTO gebruikerrol userId, roleId VALUES (?,?);";
+        String sql = "INSERT INTO gebruikerrol (userId, roleId) VALUES (?,?);";
         try{
             PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, userId );
@@ -59,7 +97,9 @@ public class UserDAO extends AbstractDAO {
             preparedStatement.setString(1, role);
 
             ResultSet resultset = preparedStatement.executeQuery();
-            roleId = resultset.getInt(1);
+            while(resultset.next()) {
+                roleId = resultset.getInt(1);
+            }
         } catch (SQLException e){
         System.out.println(e.getMessage());
         }

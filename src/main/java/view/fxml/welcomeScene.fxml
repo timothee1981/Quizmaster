@@ -15,12 +15,12 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <MenuButton fx:id="taskMenuButton" layoutX="191.0" layoutY="70.0" mnemonicParsing="false" text="Kies taak">
+    <MenuButton fx:id="taskMenuButton" onAction="#goToScreenOf" layoutX="191.0" layoutY="70.0" mnemonicParsing="false" text="Kies taak">
         <font>
             <Font size="14.0" />
         </font>
     </MenuButton>
-    <Button layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#doLogout" text="Log out">
+    <Button layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#doLogout" text="Log uit">
         <font>
             <Font size="14.0" />
         </font>

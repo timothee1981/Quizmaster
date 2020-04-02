@@ -4,6 +4,53 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateUserController">
+    <Label fx:id="headerLabel" alignment="CENTER" layoutY="32.0" prefHeight="27.0" prefWidth="900.0" text="Maak nieuwe gebruikers aan en onderhoud gebruikers">
+        <font>
+            <Font size="24.0" />
+        </font>
+    </Label>
+
+    <Label fx:id="userIdLabel" layoutX="154.0" layoutY="100.0" text="Gebruikers-Id">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <TextField fx:id="userIdTextField" layoutX="320.0" layoutY="100.0" prefHeight="25.0" prefWidth="301.0" />
+
+    <Label fx:id="usernameLabel" layoutX="154.0" layoutY="150.0" text="Gebruikersnaam">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <TextField fx:id="usernameTextField" layoutX="320.0" layoutY="150.0" prefHeight="25.0" prefWidth="301.0" />
+
+    <Label fx:id="passwordLabel" layoutX="154.0" layoutY="200.0" text="Wachtwoord:">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <TextField fx:id="passwordTextField" layoutX="320.0" layoutY="200.0" prefHeight="25.0" prefWidth="301.0" />
+
+    <Label fx:id="roleLabel" layoutX="154.0" layoutY="250.0" prefHeight="27.0" prefWidth="142.0" text="Rol:">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+    <MenuButton fx:id="roleMenuButton" layoutX="320.0" layoutY="250.0" prefHeight="0.0" prefWidth="301.0" mnemonicParsing="false">
+        <items>
+        </items>
+    </MenuButton>
+
+
+    <Button fx:id="addNewUserButton" layoutX="320.0" layoutY="346.0" mnemonicParsing="false" onAction="#doCreateUpdateUser" prefHeight="49.0" prefWidth="301.0" text="Voeg nieuwe gebruiker toe / pas aan" />
+
+    <Button fx:id="goToMenu" layoutX="320.0" layoutY="468.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="25.0" prefWidth="91.0" text="Menu" />
+
+
+    <Button fx:id="setupButton" mnemonicParsing="false" onAction="#fakeSetup" text="Setup" />
+
+
+
+
 </AnchorPane>
