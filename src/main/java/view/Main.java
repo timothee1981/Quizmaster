@@ -13,8 +13,7 @@ public class Main extends Application {
     private static Stage primaryStage = null;
     public static ArrayList<User> userList = new ArrayList<>(); //Lijst met dummy-gebruikers
     public static ArrayList<Course> courseList = new ArrayList<>(); //Lijst met dummy-cursussen
-
-
+    public static ArrayList<Group> groupList = new ArrayList<>(); // Lijst met dummy-groepen
 
 
 
@@ -53,6 +52,12 @@ public class Main extends Application {
         courseList.add(new Course(3, "ExpertCursus", 102));
     }
 
+    //Testgegevens met verzonnen groepen
+    public void createGroupList() {
+        groupList.add(new Group(1, "Basisgroep"));
+        groupList.add(new Group(2, "Gevorderdengroep"));
+        groupList.add(new Group(3, "Expertgroep"));
+    }
 
     public static Stage getPrimaryStage() {
         return primaryStage;

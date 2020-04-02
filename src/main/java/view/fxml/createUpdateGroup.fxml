@@ -2,18 +2,24 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            fx:controller="controller.CreateUpdateGroupController" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="123.0" layoutY="62.0" text="Naam van de groep" />
+      <Label layoutX="120.0" layoutY="60.0" text="Naam van de groep" BorderPane.alignment="CENTER" />
       <ListView layoutX="120.0" layoutY="150.0" prefHeight="150.0" prefWidth="200.0" />
-      <TextField layoutX="252.0" layoutY="58.0" />
+      <TextField layoutX="250.0" layoutY="60.0" />
       <Label layoutX="120.0" layoutY="120.0" text="Ingedeeld in groep" />
       <ListView layoutX="350.0" layoutY="150.0" prefHeight="150.0" prefWidth="200.0" />
       <Label layoutX="350.0" layoutY="120.0" text="Ingeschreven voor cursus" />
       <Button layoutX="350.0" layoutY="313.0" mnemonicParsing="false" text=" Voeg toe aan groep" />
       <Button layoutX="122.0" layoutY="313.0" mnemonicParsing="false" text=" Verwijder uit groep" />
       <Button layoutX="120.0" layoutY="352.0" mnemonicParsing="false" text="Sla wijzigingen op" />
-      <Button layoutX="120.0" layoutY="422.0" mnemonicParsing="false" text="Menu" />
+      <Button layoutX="350.0" layoutY="420.0" mnemonicParsing="false" onAction= "#doMenu" text="Menu" />
+      <Button layoutX="120.0" layoutY="420.0" mnemonicParsing="false" onAction="#doTerugNaarGroepenbeheer"
+              text="Terug naar Groepenbeheer" />
+
    </children>
 </AnchorPane>
