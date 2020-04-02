@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class GroupDAO extends AbstractDAO {
+public class GroupDAO extends AbstractDAO implements GenericDAO {
 
     //Toegang tot de Quizmaster database
     public GroupDAO(DBAccess dbAccess){
@@ -72,5 +72,20 @@ public class GroupDAO extends AbstractDAO {
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout.getMessage());
         }
+    }
+
+    @Override
+    public ArrayList getAll() {
+        return null;
+    }
+
+    @Override
+    public Object getOneById(int id) {
+        return null;
+    }
+
+    @Override
+    public void storeOne(Object type) {
+
     }
 }

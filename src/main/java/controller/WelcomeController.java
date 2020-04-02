@@ -1,13 +1,9 @@
 package controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import model.Student;
-import model.User;
 import view.Main;
 
 import java.util.ArrayList;
@@ -27,6 +23,7 @@ public class WelcomeController {
 
         // toon menu items van de gebruiker die ingelogd is
         for (MenuItem menuItem : menuItems) {
+            // add listener that triggers goToScreenOf
             taskMenuButton.getItems().add(menuItem);
         }
     }

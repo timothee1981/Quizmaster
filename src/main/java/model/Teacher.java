@@ -15,4 +15,5 @@ public class Teacher extends User {
         ArrayList<MenuItem> menuItems = new ArrayList<>();
         return  menuItems;
     }
+
 }
