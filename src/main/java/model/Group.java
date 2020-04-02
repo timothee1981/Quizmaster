@@ -13,6 +13,11 @@ public class Group {
         this.groepnaam = groepnaam;
     }
 
+    //Default constructor, waarbij de default-waarden aangegeven zijn (want in DB als not null)
+    public Group(){
+        this(0,"groepnaam");
+    }
+
     // getters en setters
     public int getGroepId() {
         return groepId;
