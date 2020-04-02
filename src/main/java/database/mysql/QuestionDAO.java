@@ -115,17 +115,16 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         Question question = (Question) type;
 
 
-        String sql = "INSERT INTO quizvraag VALUES(DEFAULT,?,?,?);";
+        String sql = "INSERT INTO quizvraag (vraag, antwoordJuist,quiznummer ) VALUES(?,?,?);";
 
         try{
-
-            Question question1 = new Question();
 
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1,question.getQuestion());
             preparedStatement.setInt(2,question.getAnswers().get(0).getAnswerId());
             preparedStatement.setInt(3,1);
-            preparedStatement.executeUpdate();
+            int key = executeInsertPreparedStatement(preparedStatement);
+            question.setQuestionId(key);
 
 
         }catch (SQLException sqlFout){

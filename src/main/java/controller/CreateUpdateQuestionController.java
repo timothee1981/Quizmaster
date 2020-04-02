@@ -63,6 +63,9 @@ public class CreateUpdateQuestionController {
 
             questionDAO.storeOne(question);
 
+            for(Answer answer1: answers)
+            answerDAO.storeOne(answer1);
+
 
 
         }else
@@ -93,6 +96,7 @@ public class CreateUpdateQuestionController {
         question.voegAntwoordAanVraag(answer2);
         question.voegAntwoordAanVraag(answer3);
         question.voegAntwoordAanVraag(answer4);
+        answers = question.getAnswers();
 
 
 
