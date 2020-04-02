@@ -3,6 +3,7 @@ package controller;
 import database.mysql.DBAccess;
 import database.mysql.UserDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import model.Teacher;
 import model.User;
@@ -82,9 +83,15 @@ public class ManageUsersController {
         dbAccess.closeConnection();
 
         // toon melding dat user verwijderd is
-        //todo: toon melding
+        showInformationMessage("De gebruiker is verwijderd");
 
         // draai setup van pagina nogmaals (page-refresh)
         setup();
+    }
+
+    private void showInformationMessage(String informationMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(informationMessage);
+        alert.show();
     }
 }

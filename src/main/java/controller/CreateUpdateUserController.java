@@ -21,43 +21,19 @@ import static model.User.DEFAULT_USER_ID;
 
 public class CreateUpdateUserController {
 
+
     @FXML
-    public MenuButton roleMenuButton;
+    public ComboBox roleComboBox;
     @FXML
-    private Label headerLabel;
+    public Label headerLabel;
     @FXML
     private TextField userIdTextField;
     @FXML
     private Label userIdLabel;
     @FXML
-    private Label usernameLabel;
-    @FXML
     private TextField usernameTextField;
     @FXML
-    private Label passwordLabel;
-    @FXML
     private TextField passwordTextField;
-    @FXML
-    private Label roleLabel;
-    @FXML
-    private Button addNewUserButton;
-    @FXML
-    private Button goToMenu;
-    @FXML
-    private Button setupButton;
-
-    String userInputRole;
-
-    //todo: zorgen dat deze handler niet meer nodig is
-    // deze handler werkt de String userInputRole bij als er een item wijzigt in een dropdownmenu
-    // de menu-items moeten zich 'subscriben' voor deze handler, dit wordt gedaan in setup-methode
-    // vlak voordat ze worden toegevoegd aan het menu
-    EventHandler<ActionEvent> getTextOfSelectedMenuItem = new EventHandler<ActionEvent>() {
-        public void handle(ActionEvent e)
-        {
-            userInputRole = ((MenuItem)e.getSource()).getText();
-        }
-    };
 
     public void setup(User user) {
 
@@ -68,15 +44,17 @@ public class CreateUpdateUserController {
             // toon velden voor aanmaak nieuwe user -> verberg id-veld
             userIdTextField.setVisible(false);
             userIdLabel.setVisible(false);
+            headerLabel.setText("Maak een nieuwe gebruiker aan");
         } else{
-            // vul waaarden van velden met velden van de user
+            // vul waarden van velden met velden van de user
             fillTextFieldsOfUser(user);
             setRoleDropdownOfUser(user);
+            headerLabel.setText("Pas een bestaande gebruiker aan");
         }
     }
 
     private void setRoleDropdownOfUser(User user) {
-        //todo: implement
+        roleComboBox.setValue(user.getRole());
     }
 
     private void fillTextFieldsOfUser(User user) {
@@ -89,7 +67,7 @@ public class CreateUpdateUserController {
         passwordTextField.setText(user.getPassword());
     }
 
-    private ArrayList<MenuItem> getAllRoleItems() {
+    private ArrayList<String> getAllRoleItems() {
 
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
@@ -97,13 +75,7 @@ public class CreateUpdateUserController {
         ArrayList<String> menuStringItems = roleDAO.getAllRoles();
         dbAccess.closeConnection();
 
-        ArrayList<MenuItem> menuItems = new ArrayList<>();
-        for(String role:menuStringItems){
-            MenuItem menuItem = new MenuItem(role);
-            menuItems.add(menuItem);
-        }
-
-        return menuItems;
+        return menuStringItems;
     }
 
     public void doMenu() {
@@ -117,21 +89,52 @@ public class CreateUpdateUserController {
         String userInputIdString = userIdTextField.getText();
         String userInputUsername = usernameTextField.getText();
         String userInputPassword = passwordTextField.getText();
+        String userRoleInput = "";
+        if(!(roleComboBox.getValue() == null)) {
+            // roleComboBox has value, now get it!
+            userRoleInput = roleComboBox.getValue().toString();
+        } else{
+            showErrorMessage("Er is geen rol geselecteerd");
+        }
+
+        if((!validateUsername(userInputUsername))||(!validatePassword(userInputPassword))){
+            return;
+        }
+
         // role is stored globally in class due to event listener
         int userInputIdInt;
         if(userInputIdString.trim().isEmpty()){
             // maak nieuwe user aan
-            createNewUser(userInputUsername, userInputPassword, userInputRole);
+            createNewUser(userInputUsername, userInputPassword, userRoleInput);
         } else{
             try {
                 userInputIdInt = Integer.parseInt(userInputIdString);
             } catch(NumberFormatException e){
-                //todo: show errormessage
-                //ERROR ERROR
+                showErrorMessage("Het id moet een geheel getal zijn");
                 return;
             }
             // pas bestaande gebruiker aan
-            updateUserById(userInputIdInt, userInputUsername, userInputPassword, userInputRole);
+            updateUserById(userInputIdInt, userInputUsername, userInputPassword, userRoleInput);
+        }
+    }
+
+    private boolean validatePassword(String password) {
+        if(password.trim().equals("")){
+            // wachtwoord moet gevuld zijn
+            showErrorMessage("Het wachtwoord is niet ingevuld");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean validateUsername(String username) {
+        if(username.trim().equals("")){
+            // gebruikersnaam moet gevuld zijn
+            showErrorMessage("De gebruikersnaam is niet ingevuld");
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -162,20 +165,16 @@ public class CreateUpdateUserController {
     }
 
     private void fillRoleDropdown() {
-        //todo: menuItem vervangen voor listbox
 
-        // koppel rollen-lijst aan comboBox
-        // haal rollenlijst op uit database
-        ArrayList<MenuItem> roleItems = getAllRoleItems();
-
-        // koppel opgehaalde lijst aan comboBox
-        // subscribe items aan 'haal waarde uit menuitem-event'
-        for (MenuItem menuItem : roleItems) {
-            //subscribe menu-item to event
-            menuItem.setOnAction(getTextOfSelectedMenuItem);
-
-            // add to menu
-            roleMenuButton.getItems().add(menuItem);
+        ArrayList<String> roleStrings = getAllRoleItems();
+        for(String roleString: roleStrings){
+            roleComboBox.getItems().add(roleString);
         }
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(errorMessage);
+        alert.show();
     }
 }

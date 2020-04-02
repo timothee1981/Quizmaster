@@ -16,7 +16,7 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <TextField fx:id="userIdTextField" layoutX="320.0" layoutY="100.0" prefHeight="25.0" prefWidth="301.0" />
+    <TextField fx:id="userIdTextField" editable="false" layoutX="320.0" layoutY="100.0" prefHeight="25.0" prefWidth="301.0" />
 
     <Label fx:id="usernameLabel" layoutX="154.0" layoutY="150.0" text="Gebruikersnaam">
         <font>
@@ -37,14 +37,12 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <MenuButton fx:id="roleMenuButton" layoutX="320.0" layoutY="250.0" prefHeight="0.0" prefWidth="301.0" mnemonicParsing="false">
-        <items>
-        </items>
-    </MenuButton>
 
+    <ComboBox fx:id="roleComboBox" layoutX="320.0" layoutY="251.0" prefHeight="25.0" prefWidth="301.0" />
 
     <Button fx:id="addNewUserButton" layoutX="320.0" layoutY="346.0" mnemonicParsing="false" onAction="#doCreateUpdateUser" prefHeight="49.0" prefWidth="301.0" text="Voeg nieuwe gebruiker toe / pas aan" />
 
     <Button fx:id="goToMenu" layoutX="320.0" layoutY="468.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="25.0" prefWidth="91.0" text="Menu" />
+
 
 </AnchorPane>
