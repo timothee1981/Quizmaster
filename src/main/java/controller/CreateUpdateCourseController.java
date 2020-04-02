@@ -47,16 +47,24 @@ public class CreateUpdateCourseController {
         courseList.add(new Course(3, "ExpertCursus", 5));
     }
 
-    public void setup(Course course) {}
+    //Methode voor updaten? Dan naar Cursusbeheerscherm
+    public void setup(Course course) {
+        Main.getSceneManager().showManageCoursesScene();
+    }
 
     //Gaat terug naar het keuzemenu van de administrator
     public void doMenu() {
-        Main.getSceneManager().showManageCoursesScene(); //hier moet nog showAdministratorDashboard komen
+        Main.getSceneManager().showWelcomeScene();
     }
+
+    //Gaat naar het Cursusbeheerscherm
+    public void manageCourses(){
+            Main.getSceneManager().showManageCoursesScene();
+        }
 
     //Maak een cursus aan in de db, en later, pas een cursus aan in de db
     @FXML
-    public void doCreateUpdateCourse(ActionEvent actionEvent) {
+    public void doCreateCourse(ActionEvent actionEvent) {
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(),
                 DBAccess.getMainUser(), DBAccess.getMainUserPassword()); //toegang tot db
         dbAccess.openConnection(); //connectie openen

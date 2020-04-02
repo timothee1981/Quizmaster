@@ -18,7 +18,9 @@ public class ManageCoursesController {
     }
 
     //Toevoegen van een nieuwe cursus
-    public void doCreateCourse(){}
+    public void doCreateCourse(){
+        Main.getSceneManager().showCreateUpdateCourseScene(new Course());
+    }
 
     //Wijzigen van een cursus(id, naam en coordinator)
     public void doUpdateCourse(){}

@@ -68,7 +68,6 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
         } return course;
     }
 
-
     //Cursus wegschrijven in Quizmaster database
     public void storeNewCourse(int cursusId, String cursusNaam, int userIdCoordinator){
         String sql = "INSERT INTO cursus (cursusId, cursusNaam, userIdCoordinator) VALUES (?,?,?);";
