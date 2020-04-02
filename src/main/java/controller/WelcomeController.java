@@ -26,9 +26,15 @@ public class WelcomeController {
             // add listener that triggers goToScreenOf
             taskMenuButton.getItems().add(menuItem);
         }
+
+        //toon welkom 'username'
+        String userName = LoginController.loggedInUsers.get(0).getUserName();
+        String userRole = LoginController.loggedInUsers.get(0).getRole();
+        String welkomstTekst = String.format("Welkom %s (%s)",userName, userRole);
+        welcomeLabel.setText(welkomstTekst);
     }
 
-    //todo: Zorgen dat als je een menu-item aanklikt, dat de app naar die view navigeert
+
     @FXML
      public void goToScreenOf(){
     }
