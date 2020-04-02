@@ -68,7 +68,7 @@ public class CoordinatorDashboardController {
 
         if(question == null){
             Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText("Je moet een customer aanklikken\n");
+            foutmelding.setContentText("Je moet een vraag aanklikken\n");
             foutmelding.show();
             return;
 
