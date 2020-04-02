@@ -12,11 +12,6 @@ public class Main extends Application {
     private static SceneManager sceneManager = null;
     private static Stage primaryStage = null;
     public static ArrayList<User> userList = new ArrayList<>(); //Lijst met dummy-gebruikers
-    public static ArrayList<Course> courseList = new ArrayList<>(); //Lijst met dummy-cursussen
-
-
-
-
 
     public static void main(String[] args) {
         launch(args);
@@ -45,14 +40,6 @@ public class Main extends Application {
         }
         return sceneManager;
     }
-
-    //Testgegevens met verzonnen cursussen
-    public void createCourseList(){
-        courseList.add(new Course(1, "BasisCursus", 100));
-        courseList.add(new Course(2, "GevorderdenCursus", 101));
-        courseList.add(new Course(3, "ExpertCursus", 102));
-    }
-
 
     public static Stage getPrimaryStage() {
         return primaryStage;

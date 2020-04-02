@@ -2,6 +2,7 @@ package controller;
 
 import database.mysql.CourseDAO;
 import model.Course;
+import view.Main;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,9 @@ public class ManageCoursesController {
     //ArrayList<Course> cursusLijst = CreateUpdateCourseController.getCourses();
 
     //Ga naar het menu met taken van de Administrator
-    public void doMenu(){}
+    public void doMenu(){
+        Main.getSceneManager().showManageCoursesScene();
+    }
 
     //Toevoegen van een nieuwe cursus
     public void doCreateCourse(){}
