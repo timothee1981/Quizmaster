@@ -47,10 +47,4 @@
 
     <Button fx:id="goToMenu" layoutX="320.0" layoutY="468.0" mnemonicParsing="false" onAction="#doMenu" prefHeight="25.0" prefWidth="91.0" text="Menu" />
 
-
-    <Button fx:id="setupButton" mnemonicParsing="false" onAction="#fakeSetup" text="Setup" />
-
-
-
-
 </AnchorPane>

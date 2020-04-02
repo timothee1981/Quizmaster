@@ -2,12 +2,10 @@ package database.mysql;
 
 import model.*;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserDAO extends AbstractDAO implements GenericDAO {
 
@@ -111,9 +109,9 @@ public class UserDAO extends AbstractDAO implements GenericDAO {
     }
 
     @Override
-    public ArrayList getAll() {
+    public ArrayList<User> getAll() {
 
-// haal user-info op
+        // haal user-info op
         String sql = "SELECT gebruiker.userId, gebruiker.gebruikersnaam, gebruiker.wachtwoord, rol.rol_beschrijving" +
                 " FROM gebruiker" +
                 " JOIN gebruikerrol ON gebruiker.userId = gebruikerrol.userId" +
@@ -273,4 +271,39 @@ public class UserDAO extends AbstractDAO implements GenericDAO {
         return user;
     }
 
+    public void deleteUser(User user){
+
+        String sql = "DELETE FROM gebruiker WHERE userId = ?";
+
+        try{
+            //verwijdere eerst de rol-referentie
+            // zoek de Id op van de rol die bij user hoort
+            int roleId = getRoleIdByName(user.getRole());
+
+            // vul de gebruikers-rol tabel met de userId en de Id van de bijbehorende rol
+            deleteUserRole(user.getUserId());
+
+            // verwijder daarna de user-recordp
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(3,user.getUserId());
+
+            executeManipulatePreparedStatement(preparedStatement);
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void deleteUserRole(int userId) {
+
+        String sql = "DELETE FROM gebruikerrol WHERE userId = ?";
+
+        try{
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(1, userId);
+            executeManipulatePreparedStatement(preparedStatement);
+
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
 }

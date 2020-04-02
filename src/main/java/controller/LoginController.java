@@ -34,8 +34,7 @@ public class LoginController {
 
         // check of deze user bestaat in het systeem
         // haal alle info van user op uit database
-        User userToLogin;
-        userToLogin = getUserByUsername(usernameInput);
+        User userToLogin = getUserByUsername(usernameInput);
         if(userToLogin == null){
             showErrorMessage("Gebruikersnaam en/of wachtwoord onjuist. Probeer het nog eens.");
             return;

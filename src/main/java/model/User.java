@@ -5,6 +5,11 @@ import javafx.scene.control.MenuItem;
 import java.util.ArrayList;
 
 public abstract class User {
+    final static protected int DEFAULT_USER_ID = -1;
+    final static  protected String DEFAULT_USERNAME = "";
+    final static protected String DEFAULT_PASSWORD = "";
+    final static protected String DEFAULT_ROLE = "";
+
     private int userId;
     private String userName;
     private String password;
@@ -15,6 +20,10 @@ public abstract class User {
         this.userName = userName;
         this.password = password;
         this.role = role;
+    }
+
+    public User(){
+        this(DEFAULT_USER_ID, DEFAULT_USERNAME, DEFAULT_PASSWORD, DEFAULT_ROLE);
     }
 
     //get menuItems class die moet teruggeven menu item

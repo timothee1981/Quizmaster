@@ -19,10 +19,6 @@ public class TechnicalAdministrator extends User {
         menuItem1.setOnAction(actionEvent -> Main.getSceneManager().showManageUserScene());
         menuItems.add(menuItem1);
 
-        MenuItem menuItem2 = new MenuItem("Maak/wijzig gebruikers");
-        menuItem2.setOnAction(actionEvent -> Main.getSceneManager().showCreateUpdateUserScene(LoginController.loggedInUsers.get(0)));
-        menuItems.add(menuItem2);
-
         return menuItems;
     }
 

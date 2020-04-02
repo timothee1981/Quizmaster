@@ -102,7 +102,7 @@ public class CreateUpdateUserController {
 
     public void doMenu() {
         // Ga naar welkomscherm
-        Main.getSceneManager().showWelcomeScene();
+        Main.getSceneManager().showManageUserScene();
     }
 
     public void doCreateUpdateUser() {
@@ -153,10 +153,5 @@ public class CreateUpdateUserController {
         userDAO.storeNewUser(username, password, role);
         // sluit database connectie
         dbAccess.closeConnection();
-    }
-
-    public void fakeSetup(ActionEvent actionEvent) {
-        User user = new Teacher(1,"Stefan","Stefan","Docent");
-        setup(user);
     }
 }

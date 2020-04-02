@@ -10,6 +10,10 @@ public class Teacher extends User {
         super(userId, userName, password, role);
     }
 
+    public Teacher(){
+        this(DEFAULT_USER_ID, DEFAULT_USERNAME, DEFAULT_PASSWORD, DEFAULT_ROLE);
+    }
+
     @Override
     public ArrayList<MenuItem> getMenuItems() {
         ArrayList<MenuItem> menuItems = new ArrayList<>();

@@ -10,6 +10,10 @@ public class Student extends User {
         super(userId, userName, password, role);
     }
 
+    public Student(){
+        this(DEFAULT_USER_ID, DEFAULT_USERNAME, DEFAULT_PASSWORD, DEFAULT_ROLE);
+    }
+
     //De dingen die een student kan doen komen hier
     @Override
     public ArrayList<MenuItem> getMenuItems() {
