@@ -47,9 +47,9 @@ public class CreateUpdateCourseController {
         courseList.add(new Course(3, "ExpertCursus", 5));
     }
 
-    //Methode voor updaten? Dan naar Cursusbeheerscherm
+    //Methode voor het prepareren van de pagina en het checken van de user-gegevens en velden
     public void setup(Course course) {
-        Main.getSceneManager().showManageCoursesScene();
+
     }
 
     //Gaat terug naar het keuzemenu van de administrator
