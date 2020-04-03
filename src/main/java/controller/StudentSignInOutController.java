@@ -3,6 +3,7 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import model.Course;
+import view.Main;
 
 public class StudentSignInOutController {
 
@@ -13,7 +14,10 @@ public class StudentSignInOutController {
 
     public void setup() {}
 
-    public void doMenu() {}
+    public void doMenu() {
+        // Ga naar welkomscherm
+        Main.getSceneManager().showManageUserScene();
+    }
 
     public void doSignIn() {}
 
