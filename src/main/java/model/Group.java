@@ -5,21 +5,26 @@ import java.util.ArrayList;
 public class Group {
 
     // Group attributen: id, naam, id van de docent, id van de cursus
+    final public static int DEFAULT_GROUP_ID = 0;
+
     private int groepId;
     private String groepnaam;
+    private Teacher teacher;
     public ArrayList<Group> groepenLijst; // overzicht van alle groepen
 
 
     // constructor
-    public Group(int groepId, String groepnaam) {
+    public Group(int groepId, String groepnaam, Teacher teacher) {
         this.groepId = groepId;
         this.groepnaam = groepnaam;
+        this.teacher = teacher;
     }
 
     //Default constructor, waarbij de default-waarden aangegeven zijn (want in DB als not null)
     public Group(){
-        this(0,"groepnaam");
+        this(DEFAULT_GROUP_ID,"groepnaam", new Teacher());
     }
+    //todo: remove magic numbers
 
     // getters en setters
     public int getGroepId() {
@@ -40,6 +45,10 @@ public class Group {
 
     public ArrayList<Group> getGroepenLijst() {
         return groepenLijst;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
     }
 
     public void setGroepenLijst(ArrayList<Group> groepenLijst) {
