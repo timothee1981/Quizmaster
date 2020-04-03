@@ -20,11 +20,11 @@ public class ManageGroupsController {
     @FXML
     private ListView groupList;
     @FXML
-    private Button Nieuw;
+    private Button nieuweGroepButton;
     @FXML
-    private Button Wijzig;
+    private Button wijzigGroepButton;
     @FXML
-    private Button Verwijder;
+    private Button verwijderGroepButton;
 
     // in dit scherm kan de gebruiker een groep kiezen om aan te passen of te verwijderen.
     // de gebruiker kan ook kiezen om een nieuwe groep aan te maken.

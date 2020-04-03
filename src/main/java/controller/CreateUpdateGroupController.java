@@ -27,16 +27,14 @@ public class CreateUpdateGroupController {
     }
 
     // ga naar het scherm Groepenbeheer door op de knop 'Terug naar Groepenbeheer' te klikken
-    public void doTerugNaarGroepenbeheer() {
+    public void doCreateUpdateGroup() {
         Main.getSceneManager().showManageGroupsScene();
     }
 
     // ga naar het scherm Cursusbeheer door op de knop 'Naar Cursusbeheer' te klikken
-    public void doNaarCursusbeheer() {
+    public void doCreateUpdateCourse() {
             Main.getSceneManager().showManageCoursesScene();
     }
-
-    public void doCreateUpdateGroup() {}
 
     //Testgegevens met verzonnen groepen
     public void createGroupList() {
