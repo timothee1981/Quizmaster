@@ -22,10 +22,6 @@ public class Administrator extends User {
         menuItem1.setOnAction(actionEvent -> Main.getSceneManager().showManageCoursesScene());
         menuItems.add(menuItem1);
 
-        MenuItem menuItem2 = new MenuItem("Maak/wijzig cursus");
-        menuItem2.setOnAction(actionEvent -> Main.getSceneManager().showCreateUpdateCourseScene(new Course()));
-        menuItems.add(menuItem2);
-
         MenuItem menuItem3 = new MenuItem("Groepenbeheer");
         menuItem3.setOnAction(actionEvent -> Main.getSceneManager().showManageGroupsScene());
         menuItems.add(menuItem3);
