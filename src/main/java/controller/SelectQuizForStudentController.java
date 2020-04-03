@@ -3,6 +3,7 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import model.Quiz;
+import view.Main;
 
 public class SelectQuizForStudentController {
 
@@ -11,7 +12,10 @@ public class SelectQuizForStudentController {
 
     public void setup() {}
 
-    public void doMenu() {}
+    public void doMenu() {
+        // Ga naar welkomscherm
+        Main.getSceneManager().showManageUserScene();
+    }
 
     public void doQuiz() {}
 }
