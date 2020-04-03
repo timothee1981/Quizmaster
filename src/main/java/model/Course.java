@@ -10,15 +10,14 @@ public class Course {
     public int userIdCoordinator;
 
     //Cursus constructor
-    public Course(int cursusId, String cursusNaam, int userIdCoordinator){
-        this.cursusId = cursusId;
+    public Course(String cursusNaam, int userIdCoordinator){
         this.cursusNaam = cursusNaam;
         this.userIdCoordinator = userIdCoordinator;
     }
 
     //Default constructor, waarbij de default-waarden aangegeven zijn (want in DB als not null)
     public Course() {
-        this(0,"cursusNaam", 0);
+        this("cursusNaam", 0);
     }
 
     //String representatie van Cursus
