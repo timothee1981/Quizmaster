@@ -24,17 +24,17 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="113.0" layoutY="285.0" mnemonicParsing="false" onAction="#doUpdateCourse" text="Wijzig">
+    <Button fx:id="wijzigCursusButton" layoutX="113.0" layoutY="285.0" mnemonicParsing="false" onAction="#doUpdateCourse" text="Wijzig">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="217.0" layoutY="285.0" mnemonicParsing="false" onAction="#doDeleteCourse" text="Verwijder">
+    <Button fx:id="verwijderCursusButton" layoutX="217.0" layoutY="285.0" mnemonicParsing="false" onAction="#doDeleteCourse" text="Verwijder">
         <font>
             <Font size="14.0" />
         </font>
     </Button>
-    <Button fx:id="menuButton" layoutX="14.0" layoutY="429.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+    <Button fx:id="terugNaarMenuButton" layoutX="14.0" layoutY="429.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
         <font>
             <Font size="14.0" />
         </font>

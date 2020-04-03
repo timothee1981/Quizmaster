@@ -29,11 +29,12 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         ArrayList<Question> result = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = getStatement(sql);
-            ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
+            ResultSet resultSet = super.executeSelectPreparedStatement(preparedStatement);
             Question questions;
             while (resultSet.next()) {
                 String question = resultSet.getString("vraag");
                 questions = new Question( question);
+                questions.setQuestionId(resultSet.getInt("vraagId"));
                 result.add(questions);
             }
         } catch (SQLException e){
@@ -58,7 +59,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
             while(resultSet.next()){
                 String questionString = resultSet.getString("vraag");
                 question = new Question( questionString);
-
+                question.setQuestionId(resultSet.getInt("vraagId"));
             }
 
         }catch (SQLException sqlFout){
@@ -77,7 +78,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
      * geeft een vraag terug op basis van vraag
      */
     public Question getQuestionByQuestion(String questionString){
-        AnswerDAO answerDAO = new AnswerDAO(dBaccess);
+
         Question question = null;
         String sql = "SELECT * FROM quizvraag WHERE vraag = ?;";
         try {
@@ -85,9 +86,9 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
             preparedStatement.setString(1,questionString);
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             while(resultSet.next()){
-                int questionId = resultSet.getInt("vraagId");
                 String question1= resultSet.getString("vraag");
-                question = new Question( question1);
+                question = new Question(question1);
+                question.setQuestionId(resultSet.getInt("vraagId"));
             }
 
         }catch (SQLException sqlFout){
@@ -135,12 +136,38 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
 
     public void deleteQuestion(Question question) {
 
+
         String sql = "DELETE FROM quizvraag WHERE vraag = ?";
 
         try{
             PreparedStatement preparedStatement = getStatement(sql);
             preparedStatement.setString(1, question.getQuestion());
             executeManipulatePreparedStatement(preparedStatement);
+
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateQuestion(Question question){
+
+
+        String sql = "UPDATE quizvraag SET " +
+                " vraag = ? " +
+                "WHERE vraagId = ?; ";
+
+        try{
+            // sla data van user op
+            PreparedStatement preparedStatement = getStatementWithKey(sql);
+            preparedStatement.setString(1, question.getQuestion());
+            preparedStatement.setInt(2, question.getQuestionId());
+
+            executeManipulatePreparedStatement(preparedStatement);
+
+            // zoek de Id op van de rol die bij user hoort
+
+
+            // vul de gebruikers-rol tabel met de userId en de Id van de bijbehorende rol
 
         } catch (SQLException e){
             System.out.println(e.getMessage());
