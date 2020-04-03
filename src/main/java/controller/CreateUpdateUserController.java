@@ -27,6 +27,8 @@ public class CreateUpdateUserController {
     @FXML
     public Label headerLabel;
     @FXML
+    public Button addNewUserButton;
+    @FXML
     private TextField userIdTextField;
     @FXML
     private Label userIdLabel;
@@ -41,15 +43,17 @@ public class CreateUpdateUserController {
 
         // check of user een echte user is of een dummy (id = DEFAULT_USER_ID)
         if(user.getUserId() == User.DEFAULT_USER_ID){
-            // toon velden voor aanmaak nieuwe user -> verberg id-veld
+            // toon velden voor aanmaak NIEUWE USER -> verberg id-veld
             userIdTextField.setVisible(false);
             userIdLabel.setVisible(false);
             headerLabel.setText("Maak een nieuwe gebruiker aan");
+            addNewUserButton.setText("Voeg nieuwe gebruiker toe");
         } else{
-            // vul waarden van velden met velden van de user
+            // vul waarden van velden met velden van de AAN TE PASSEN user
             fillTextFieldsOfUser(user);
             setRoleDropdownOfUser(user);
             headerLabel.setText("Pas een bestaande gebruiker aan");
+            addNewUserButton.setText("Pas de gebruiker aan");
         }
     }
 
@@ -101,21 +105,25 @@ public class CreateUpdateUserController {
             return;
         }
 
-        // role is stored globally in class due to event listener
         int userInputIdInt;
         if(userInputIdString.trim().isEmpty()){
             // maak nieuwe user aan
             createNewUser(userInputUsername, userInputPassword, userRoleInput);
+            String informationMessage = String.format("De nieuwe gebruiker met de username: %s is aangemaakt.",userInputUsername);
+            showInformationMessage(informationMessage);
         } else{
             try {
                 userInputIdInt = Integer.parseInt(userInputIdString);
             } catch(NumberFormatException e){
-                showErrorMessage("Het id moet een geheel getal zijn");
+                showErrorMessage("Het id moet een geheel getal zijn.");
                 return;
             }
             // pas bestaande gebruiker aan
             updateUserById(userInputIdInt, userInputUsername, userInputPassword, userRoleInput);
+            String informationMessage = String.format("De gebruiker met de username: %s is aangepast.",userInputUsername);
+            showInformationMessage(informationMessage);
         }
+        doMenu();
     }
 
     private boolean validatePassword(String password) {
@@ -175,6 +183,12 @@ public class CreateUpdateUserController {
     private void showErrorMessage(String errorMessage) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(errorMessage);
+        alert.show();
+    }
+
+    private void showInformationMessage(String informationMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(informationMessage);
         alert.show();
     }
 }

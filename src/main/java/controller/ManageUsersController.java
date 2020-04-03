@@ -83,7 +83,8 @@ public class ManageUsersController {
         dbAccess.closeConnection();
 
         // toon melding dat user verwijderd is
-        showInformationMessage("De gebruiker is verwijderd");
+        String informationMessage = String.format("De gebruiker met de username: %s is verwijderd.",user.getUserName());
+        showInformationMessage(informationMessage);
 
         // draai setup van pagina nogmaals (page-refresh)
         setup();
