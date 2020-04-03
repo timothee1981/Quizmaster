@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import model.Group;
+import model.User;
 import view.Main;
 
 import java.util.ArrayList;
@@ -15,10 +16,11 @@ import java.util.List;
 public class ManageGroupsController {
     private GroupDAO gdao;
     private DBAccess db;
+    private ArrayList<Group> groupList = new ArrayList<>(); //Lijst met dummy-groepen
 
 
-    @FXML
-    private ListView groupList;
+    /*@FXML
+    private ListView groupList;*/
     @FXML
     private Button nieuweGroepButton;
     @FXML
@@ -30,6 +32,18 @@ public class ManageGroupsController {
     // de gebruiker kan ook kiezen om een nieuwe groep aan te maken.
 
     public void setup() {
+
+        /*// clear list view
+        groupList.getItems().clear();
+
+        // get all users
+        ArrayList<User> userArrayList = getAllUsers();
+
+        // show users in grid/box-thing
+        for(User user:userArrayList) {
+            userList.getItems().add(user);*/
+        }
+
         /*this.gdao = new GroupDAO(db.getConnection());
             List<Group> allCustomers = gdao.getAllCustomers();
             for (Customer c : allCustomers) { customerList.getItems().add(c);*/
@@ -37,7 +51,7 @@ public class ManageGroupsController {
 
         //In het tekstvak willen we een Arraylist met groepen weergeven
         // ArrayList<Group> groepenLijst =
-        }
+        //}
 
 
     // ga naar het Welkomscherm door op de knop 'menu' te klikken
@@ -67,5 +81,13 @@ public class ManageGroupsController {
     // de gebruiker krijgt de keuze 'Ja/Nee'
     // na "ja" maakt de methode een connectie met de database om de gekozen groep uit de tabel te verwijderen.
     public void doDeleteGroup() {}
+
+    //Testgegevens met verzonnen groepen
+    public void createGroupList() {
+        groupList.add(new Group(1, "Basisgroep"));
+        groupList.add(new Group(2, "Gevorderdengroep"));
+        groupList.add(new Group(3, "Expertgroep"));
+
+    }
 
 }

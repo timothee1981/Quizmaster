@@ -2,26 +2,67 @@ package controller;
 
 import database.mysql.DBAccess;
 import database.mysql.GroupDAO;
+import database.mysql.UserDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import model.Course;
 import model.Group;
+import model.Teacher;
+import model.User;
 import view.Main;
 
 import java.util.ArrayList;
 
 
 public class CreateUpdateGroupController {
+    @FXML
+    public TextField groupName;
+    @FXML
+    public ComboBox teacherDropdown;
+
+
     private Group group;
-    private ArrayList<Group> groupList = new ArrayList<>(); //Lijst met dummy-groepen
 
+    public void setup(Group group) {
+        // teacherDropdown vullen met items
+        // haal alle docenten op
+        // geef lijst van docenten
+        ArrayList<Teacher> teacherArrayList = getTeachers();
+        for (Teacher teacher:teacherArrayList) {
+            teacherDropdown.getItems().add(teacher);
+        }
+        // bepalen of het een bestaande groep is of een nieuwe groep
+        // als het een nieuwe groep is: geen actie
+        // als het een bestaande groep is: velden vullen
+    }
 
-    public void setup(Group group) {}
+    private ArrayList<Teacher> getTeachers() {
+        // todo: teachers ophalen
+        // alle users ophalen
+        ArrayList<User> userList = new ArrayList<>();
+
+        //Creëer dbAccess object
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        // maak database-connectie
+        dbAccess.openConnection();
+        //creëer userDAO instantie
+        UserDAO userDAO = new UserDAO(dbAccess);
+        // roep save-methode aan
+        userList = userDAO.getAll();
+        // sluit database connectie
+        dbAccess.closeConnection();
+
+        // teachers eruit filteren
+        ArrayList<Teacher> teacherArrayList = new ArrayList<>();
+        for (User user: userList) {
+            if (user instanceof Teacher) {
+                teacherArrayList.add((Teacher) user);
+            }
+        } return teacherArrayList;
+    }
+
 
     // ga naar het Welkomscherm door op de knop 'menu' te klikken
-
     public void doMenu() {
         Main.getSceneManager().showWelcomeScene();
     }
@@ -36,12 +77,6 @@ public class CreateUpdateGroupController {
             Main.getSceneManager().showManageCoursesScene();
     }
 
-    //Testgegevens met verzonnen groepen
-    public void createGroupList() {
-        groupList.add(new Group(1, "Basisgroep"));
-        groupList.add(new Group(2, "Gevorderdengroep"));
-        groupList.add(new Group(3, "Expertgroep"));
 
-    }
 
 }
