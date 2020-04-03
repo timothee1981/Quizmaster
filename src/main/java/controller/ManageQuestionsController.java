@@ -1,5 +1,6 @@
 package controller;
 
+import database.mysql.AnswerDAO;
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import javafx.fxml.FXML;
@@ -34,7 +35,8 @@ public class ManageQuestionsController {
     }
 
     public void doCreateQuestion(){
-        Main.getSceneManager().showCreateUpdateQuestionScene(new Question());
+        Question question = new Question();
+        Main.getSceneManager().showCreateUpdateQuestionScene(question);
 
     }
 
@@ -55,7 +57,10 @@ public class ManageQuestionsController {
     public void doDeleteQuestion(){
         dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
+        AnswerDAO answerDAO = new AnswerDAO(dbAccess);
         Question question = questionList.getSelectionModel().getSelectedItem();
+        int questionId = question.getQuestionId();
+        answerDAO.deleteAnswerfromQuestion(questionId);
 
         if(question == null) {
 

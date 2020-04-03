@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Quiz {
 
+    final static public int DEFAULT_QUIZ = -1;
+
     private int quizId;
     private String quizName;
     private double cesuur;
@@ -11,10 +13,11 @@ public class Quiz {
     private ArrayList<Question> questions;
 
     public Quiz() {
+        quizId =DEFAULT_QUIZ;
     }
 
-    public Quiz(int quizId, String quizName, double cesuur) {
-        this.quizId = quizId;
+    public Quiz(String quizName, double cesuur) {
+        this.quizId = getQuizId();
         this.quizName = quizName;
         this.cesuur = cesuur;
         this.questions = new ArrayList<>();
@@ -28,6 +31,8 @@ public class Quiz {
         return quizName;
     }
 
+
+
     public double getCesuur() {
         return cesuur;
     }
@@ -39,5 +44,15 @@ public class Quiz {
     public ArrayList<Question> voegQuestionAanQuiz(Question question){
         questions.add(question);
         return questions;
+    }
+
+    public void setQuizId(int quizId) {
+        this.quizId = quizId;
+    }
+
+    @Override
+    public String toString() {
+
+        return quizName;
     }
 }

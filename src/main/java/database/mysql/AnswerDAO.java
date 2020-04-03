@@ -30,6 +30,7 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
                 String answerString = resultSet.getString("antwoord");
                 Question question = questionDAO.getOneById(resultSet.getInt("vraagId"));
                 Answer answer = new Answer(answerString,question);
+                answer.setAnswerId(resultSet.getInt("aantwoordId"));
                 result.add(answer);
             }
         } catch (SQLException e){
@@ -42,7 +43,7 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
     public Answer getOneById(int answerId){
 
         Answer answer = null;
-        String sql = "SELECT * FROM hond WHERE chipnr = ?;";
+        String sql = "SELECT * FROM antwoord WHERE aantwoordId = ?;";
         try {
             QuestionDAO questionDAO = new QuestionDAO(dBaccess);
             PreparedStatement preparedStatement = getStatement(sql);
@@ -60,27 +61,100 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
         return answer;
     }
 
-    @Override
-    public void storeOne(Object type){
-        Answer answer1 = (Answer) type;
-        String sql = "INSERT INTO antwoord(antwoord,vraagId) VALUES (?,?);";
-        try{
 
+    public ArrayList<Answer> getAnswersByQuestionId(int vraagId){
 
-
-            PreparedStatement preparedStatement = getStatementWithKey(sql);
-            preparedStatement.setString(1,answer1.getAnswer());
-            preparedStatement.setInt(2,answer1.getQuestion().getQuestionId());
-            int key = executeInsertPreparedStatement(preparedStatement);
-            answer1.setAnswerId(key);
-
+       ArrayList<Answer> answers = new ArrayList<>();
+        String sql = "SELECT * FROM antwoord WHERE vraagId = ?;";
+        try {
+            QuestionDAO questionDAO = new QuestionDAO(dBaccess);
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(1,vraagId);
+            ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
+            while(resultSet.next()){
+                String answerString = resultSet.getString("antwoord");
+                Question question = questionDAO.getOneById(resultSet.getInt("vraagId"));
+                Answer answer = new Answer(answerString,question);
+                answers.add(answer);
+            }
         }catch (SQLException sqlFout){
             System.out.println(sqlFout);
         }
 
-
-
+        return answers;
     }
+
+    @Override
+    public void storeOne(Object type) {
+        Answer answer1 = (Answer) type;
+        String sql = "INSERT INTO antwoord(antwoord,vraagId) VALUES (?,?);";
+        try {
+
+            PreparedStatement preparedStatement = getStatementWithKey(sql);
+            preparedStatement.setString(1, answer1.getAnswer());
+            preparedStatement.setInt(2, answer1.getQuestion().getQuestionId());
+            int key = executeInsertPreparedStatement(preparedStatement);
+            answer1.setAnswerId(key);
+
+        } catch (SQLException sqlFout) {
+            System.out.println(sqlFout);
+        }
+    }
+
+
+    public void updateAnswer(Answer answer){
+
+            String sql = "UPDATE antwoord SET  antwoord = ? WHERE aantwoordId = ?; ";
+            try{
+                // sla data van user op
+                PreparedStatement preparedStatement = getStatement(sql);
+                preparedStatement.setString(1, answer.getAnswer());
+                preparedStatement.setInt(2,answer.getAnswerId());
+                preparedStatement.executeUpdate();
+
+
+            } catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+    public int getAnswerIdByName(String answerName){
+
+        int answerId = 0 ;
+        String sql = "SELECT * FROM antwoord WHERE antwoord = ?;";
+        QuestionDAO questionDAO = new QuestionDAO(dBaccess);
+        try {
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setString(1,answerName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                answerId = resultSet.getInt(1);
+
+            }
+
+        }catch (SQLException sqlFout){
+            System.out.println(sqlFout);
+
+        }
+        return answerId;
+    }
+
+    public void deleteAnswerfromQuestion(int questionId) {
+        String sql = "DELETE FROM antwoord WHERE vraagId = ?";
+
+        try{
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(1, questionId);
+            executeManipulatePreparedStatement(preparedStatement);
+
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
+
 
 
 
