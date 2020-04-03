@@ -1,12 +1,24 @@
 package controller;
 
-import database.mysql.CourseDAO;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import model.Course;
 import view.Main;
 
-import java.util.ArrayList;
-
 public class ManageCoursesController {
+
+    @FXML
+    private Button newCourseButton;
+
+    @FXML
+    private Button wijzigCursusButton;
+
+    @FXML
+    private Button verwijderCursusButton;
+
+    @FXML
+    private Button terugNaarMenuButton;
+
 
     public void setup() {}
     //Opvragen van alle cursussen
@@ -14,9 +26,8 @@ public class ManageCoursesController {
 
     //Ga naar het menu met taken van de Administrator
     public void doMenu(){
-        Main.getSceneManager().showManageCoursesScene();
+        Main.getSceneManager().showWelcomeScene();
     }
-
     //Toevoegen van een nieuwe cursus
     public void doCreateCourse(){
         Main.getSceneManager().showCreateUpdateCourseScene(new Course());

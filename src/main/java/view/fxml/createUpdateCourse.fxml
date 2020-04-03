@@ -37,7 +37,7 @@
     </Label>
 
     <Button fx:id="CursusAanmakenKnop" defaultButton="true" layoutX="410.0" layoutY="275.0" mnemonicParsing="false"
-            onAction="#doCreateCourse" prefHeight="25.0" prefWidth="300.0" text="Cursus aanmaken">
+            onAction="#doCreateUpdateCourse" prefHeight="25.0" prefWidth="300.0" text="Cursus aanmaken">
         <font>
             <Font size="16.0" />
         </font>

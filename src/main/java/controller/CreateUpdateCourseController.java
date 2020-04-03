@@ -64,7 +64,7 @@ public class CreateUpdateCourseController {
 
     //Maak een cursus aan in de db, en later, pas een cursus aan in de db
     @FXML
-    public void doCreateCourse(ActionEvent actionEvent) {
+    public void doCreateUpdateCourse(ActionEvent actionEvent) {
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(),
                 DBAccess.getMainUser(), DBAccess.getMainUserPassword()); //toegang tot db
         dbAccess.openConnection(); //connectie openen
