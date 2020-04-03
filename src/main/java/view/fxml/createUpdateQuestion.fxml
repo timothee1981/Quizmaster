@@ -48,4 +48,10 @@
             </font></Label>
       </children>
    </GridPane>
+   <Label fx:id="titelLabel" layoutX="188.0" layoutY="60.0" text="Label" />
+   <Label fx:id="idQuestion" layoutX="23.0" layoutY="102.0" text="Label" visible="false"/>
+   <Label fx:id="idGoodAnswer" layoutX="23.0" layoutY="154.0" text="Label" visible="false"/>
+   <Label fx:id="idAnswer2" layoutX="23.0" layoutY="191.0" text="Label" visible="false"/>
+   <Label fx:id="idAnswer3" layoutX="23.0" layoutY="228.0" text="Label" visible="false"/>
+   <Label fx:id="idAnswer4" layoutX="23.0" layoutY="260.0" text="Label" visible="false"/>
 </AnchorPane>

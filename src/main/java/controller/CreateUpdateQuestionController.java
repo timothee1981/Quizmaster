@@ -7,6 +7,7 @@ import database.mysql.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Answer;
 import model.Question;
@@ -21,7 +22,14 @@ public class CreateUpdateQuestionController {
     private Question question;
     private ArrayList<Question> questions;
     private ArrayList<Answer> answers;
+    private String labelvul;
+    private String labelwijzig;
 
+    @FXML
+    private  Label idQuestion, idGoodAnswer,idAnswer1,idAnswer2,idAnswer3,idAnswer4;
+
+    @FXML
+    private Label titelLabel;
 
     @FXML
     private TextField vraagTextField;
@@ -40,7 +48,43 @@ public class CreateUpdateQuestionController {
 
 
 
-    public void setup(Question question) {}
+    public void setup(Question question) {
+        ArrayList<Answer> answers = new ArrayList<>();
+
+        if (question.getQuestionId() == Question.DEFAULT_VRAAG) {
+            labelvul = "Vull Vraag en antwoord";
+            titelLabel.setText(labelvul);
+        } else {
+
+            labelwijzig = "Wijzig Vraag";
+            titelLabel.setText(labelwijzig);
+            vraagTextField.setText(question.getQuestion());
+            int questionId = question.getQuestionId();
+            String questionIdString = String.format("%d",questionId);
+            idQuestion.setText(questionIdString);
+            answers = returnArrayAnswers(question.getQuestionId());
+
+            goodAnswerTextField.setText(answers.get(0).getAnswer());
+            answer2TextField.setText(answers.get(1).getAnswer());
+            answer3TextField.setText(answers.get(2).getAnswer());
+            answer4TextField.setText(answers.get(3).getAnswer());
+
+
+
+        }
+    }
+
+
+
+    public ArrayList<Answer> returnArrayAnswers(int questionId){
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        dbAccess.openConnection();
+        AnswerDAO answerDAO = new AnswerDAO(dbAccess);
+        ArrayList<Answer> answers = new ArrayList<>();
+        answers = answerDAO.getAnswersByQuestionId(questionId);
+        return answers;
+
+    }
 
     public void doMenu() {
         Main.getSceneManager().showCoordinatorDashboard();
@@ -56,30 +100,42 @@ public class CreateUpdateQuestionController {
         //creëer userDAO instantie
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
         AnswerDAO answerDAO = new AnswerDAO(dbAccess);
-        // roep save-methode aan
 
 
-        if (question != null) {
-
+            // roep save-methode aan
+        if(titelLabel.getText().equals(labelvul)) {
             questionDAO.storeOne(question);
+            for (Answer answer1 : answers) {
+                answerDAO.storeOne(answer1);
+                System.out.println("opgeslagen");
+            }
+        }else if(titelLabel.getText().equals(labelwijzig)) {
+            int id = Integer.valueOf(idQuestion.getText());
+            question.setQuestionId(id);
+            updateQuestionById(question);
+            System.out.println(("gewijzigd"));
+        }
 
-            for(Answer answer1: answers)
-            answerDAO.storeOne(answer1);
 
 
-
-        }else
-            System.out.println("geen klant");
-
-
-
-        //answerDAO.storeNewAnswer(question.getCorrectAnswer().getAnswerId(),question.getCorrectAnswer().getAnswer(),question.getCorrectAnswer().getQuestion());
+            dbAccess.closeConnection();
+    }
+    private void updateQuestionById(Question question) {
+        //Creëer dbAccess object
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        // maak database-connectie
+        dbAccess.openConnection();
+        //creëer userDAO instantie
+        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+        // roep save-methode aan
+        questionDAO.updateQuestion(question);
         // sluit database connectie
         dbAccess.closeConnection();
-
-
-
     }
+
+
+
+
 
     private void createQuestion() {
 
@@ -102,5 +158,8 @@ public class CreateUpdateQuestionController {
 
         }
 
+
+
     }
+
 
