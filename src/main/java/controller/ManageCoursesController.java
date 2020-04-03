@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import model.Course;
 import view.Main;
 
@@ -18,6 +19,9 @@ public class ManageCoursesController {
 
     @FXML
     private Button terugNaarMenuButton;
+
+    @FXML
+    private ListView courseList;
 
 
     public void setup() {}

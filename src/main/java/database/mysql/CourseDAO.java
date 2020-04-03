@@ -21,65 +21,82 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
     @Override
     public ArrayList getAll() {
         ArrayList<Course> cursusLijst = new ArrayList<>();
-        return cursusLijst;
+        {
+            String sql = "SELECT * FROM course;";
+            try {
+                PreparedStatement preparedStatement = getStatement(sql);
+                ResultSet resultSet = super.executeSelectPreparedStatement(preparedStatement);
+                Course course;
+                while (resultSet.next()){
+                    String cursusNaam = resultSet.getString("cursusNaam");
+                    int userIdcoordinator = resultSet.getInt("userIdcoordinator");
+                    course = new Course(cursusNaam, userIdcoordinator);
+                    course.setCursusId(resultSet.getInt(1));
+                }
+            } catch (SQLException sqlFout){
+                System.out.println(sqlFout.getMessage());
+            }
+        }return cursusLijst;
     }
 
     //Een specifieke cursus opvragen op basis van zijn cursusId
     @Override
-    public Object getOneById(int id) {
-        return null;
-    }
+    public Object getOneById(int cursusId) {
+        Course course = null;
+            String sql = "SELECT * FROM course WHERE cursusID = ?";
+            try {
+                PreparedStatement preparedStatement = getStatement(sql);
+                preparedStatement.setInt(1, cursusId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()){
+                    String cursusNaam = resultSet.getString(2);
+                    int userIdcoordinator = resultSet.getInt("userIdcoordinator");
+                    course.setCursusId(resultSet.getInt(1));
+                }
+            } catch (SQLException sqlFout){
+                System.out.println(sqlFout.getMessage());
+            } return course;
+        }
 
     //Een specifieke cursus in database wegschrijven
-    @Override
+    @Override //override de methode uit de interface
     public void storeOne(Object type) {
-    }
-
-    //CursusLijst ophalen uit database
-    public ArrayList<Course> getCourses(){
-        String sql = "SELECT * FROM course;";
-        try {
-            PreparedStatement preparedStatement = getStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                int cursusId = resultSet.getInt(1);
-                String cursusNaam = resultSet.getString(2);
+        Course course = (Course) type; //type casten als course
+            String sql = "INSERT INTO cursus (cursusNaam, userIdCoordinator) VALUES (?,?);";
+            try{
+                UserDAO userDAO = new UserDAO(dBaccess);
+                PreparedStatement preparedStatement = getStatementWithKey(sql);
+                preparedStatement.setString(1, course.getCursusNaam());
+                preparedStatement.setInt(2, userDAO.getRoleIdByName("Coordinator"));
+                int key = executeInsertPreparedStatement(preparedStatement);
+                course.setCursusId(key);
+            } catch (SQLException sqlFout){
+                System.out.println(sqlFout.getMessage());
             }
-        } catch (SQLException sqlFout){
-            System.out.println(sqlFout.getMessage());
-        } return getCourses();
     }
 
-
-    //Specifieke cursus ophalen uit de Quizmaster database
-    Course course = null;
-    public Course getCourseById(int cursusId){
-        String sql = "SELECT * FROM course WHERE cursusID = ?";
-        try {
-            PreparedStatement preparedStatement = getStatement(sql);
-            preparedStatement.setInt(1, cursusId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                cursusId = resultSet.getInt(1);
-                String cursusNaam = resultSet.getString(2);
-            }
-        } catch (SQLException sqlFout){
-            System.out.println(sqlFout.getMessage());
-        } return course;
-    }
-
-    //Cursus wegschrijven in Quizmaster database
-    public void storeNewCourse(int cursusId, String cursusNaam, int userIdCoordinator){
-        String sql = "INSERT INTO cursus (cursusId, cursusNaam, userIdCoordinator) VALUES (?,?,?);";
+    //Cursus verwijderen (let op: constraint aanpassen om te verwijderen ondanks aanwezigheid quiz/vraag/antwoord)
+    public void deleteCourse(Course course) {
+        String sql = "DELETE FROM cursus WHERE cursusId = ?";
         try{
-            UserDAO userDAO = new UserDAO(dBaccess);
-            PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, cursusId);
-            preparedStatement.setString(2, cursusNaam);
-            preparedStatement.setInt(3, userDAO.getRoleIdByName("Coordinator"));
-            preparedStatement.executeUpdate();
-        } catch (SQLException sqlFout){
-            System.out.println(sqlFout.getMessage());
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(1, course.getCursusId());
+            executeManipulatePreparedStatement(preparedStatement);
+        } catch (SQLException SQLuitzondering){
+            System.out.println(SQLuitzondering.getMessage());
+        }
+    }
+
+    //Cursusnaam updaten
+    public void updateCourseName(Course course){
+        String sql = "UPDATE cursus SET cursusNaam = ? WHERE cursusId = ?;";
+        try{
+            PreparedStatement preparedStatement = getStatementWithKey(sql);
+            preparedStatement.setString(1, course.getCursusNaam());
+            preparedStatement.setInt(2, course.getCursusId());
+            executeManipulatePreparedStatement(preparedStatement);
+        } catch (SQLException sqlUitzondering){
+            System.out.println(sqlUitzondering.getMessage());
         }
     }
 

@@ -17,12 +17,6 @@
             <Font size="24.0" />
         </font>
     </Label>
-    <TextField fx:id="CursusnummerTextField" layoutX="410.0" layoutY="150.0" prefHeight="25.0" prefWidth="80.0" />
-    <Label layoutX="254.0" layoutY="148.0" text="Cursusnummer: ">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
     <TextField fx:id="CursusnaamTextField" layoutX="410.0" layoutY="185.0" prefHeight="25.0" prefWidth="400.0" />
     <Label layoutX="275.0" layoutY="185.0" text="Cursusnaam: ">
         <font>

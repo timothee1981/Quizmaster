@@ -41,11 +41,11 @@ public class CreateUpdateCourseController {
 
 
     //Testgegevens met verzonnen cursussen om aan te maken in de db
-    public void createCourseList(){
+    /*public void createCourseList(){
         courseList.add(new Course(1, "BasisCursus", 5));
         courseList.add(new Course(2, "GevorderdenCursus", 5));
         courseList.add(new Course(3, "ExpertCursus", 5));
-    }
+    }*/
 
     //Methode voor het prepareren van de pagina en het checken van de user-gegevens en velden
     public void setup(Course course) {
@@ -65,18 +65,17 @@ public class CreateUpdateCourseController {
     //Maak een cursus aan in de db, en later, pas een cursus aan in de db
     @FXML
     public void doCreateUpdateCourse(ActionEvent actionEvent) {
-        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(),
-                DBAccess.getMainUser(), DBAccess.getMainUserPassword()); //toegang tot db
+        String cursusNaam = CursusnaamTextField.getText();
+        int coordinatorId = Integer.parseInt(CoordinatornummerTextField.getText());
+        Course course = new Course(cursusNaam, coordinatorId);
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword()); //toegang tot db
         dbAccess.openConnection(); //connectie openen
         CourseDAO courseDAO = new CourseDAO(dbAccess); //CursusDAO instantieren
-
         if (course != null){
-            courseDAO.storeNewCourse(course.getCursusId(), course.getCursusNaam(), course.getUserIdCoordinator());
+            courseDAO.storeOne(course);
         } else
             System.out.println("Geen cursus aangemaakt");
-
         dbAccess.closeConnection(); //connectie sluiten
     }
-
 
 }
