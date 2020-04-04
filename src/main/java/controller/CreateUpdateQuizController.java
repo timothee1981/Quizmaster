@@ -3,6 +3,7 @@ package controller;
 import database.mysql.DBAccess;
 import database.mysql.QuizDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Answer;
 import model.Question;
@@ -14,6 +15,8 @@ import view.Main;
 
 public class CreateUpdateQuizController {
     Quiz quiz;
+    private String labelvul;
+    private String labelwijzig;
 
     @FXML
     private TextField quizNameTextField;
@@ -21,7 +24,24 @@ public class CreateUpdateQuizController {
     @FXML
     private  TextField cesuurTextField;
 
-    public void setup(Quiz quiz) {}
+    @FXML
+    private Label titelLable, idLabel;
+
+    public void setup(Quiz quiz) {
+        if (quiz.getQuizId() == Question.DEFAULT_VRAAG) {
+            labelvul = "Vull quiz en bijhorende vragen";
+            titelLable.setText(labelvul);
+        } else {
+
+            labelwijzig = "Wijzig Quiz";
+            titelLable.setText(labelwijzig);
+            quizNameTextField.setText(quiz.getQuizName());
+            cesuurTextField.setText(String.valueOf(quiz.getCesuur()));
+            int quizId = quiz.getQuizId();
+            String quizIDString = String.format("%d",quizId);
+            idLabel.setText(quizIDString);
+        }
+    }
 
     public void doMenu() {
         Main.getSceneManager().showCoordinatorDashboard();
@@ -33,9 +53,24 @@ public class CreateUpdateQuizController {
         dbAccess.openConnection();
         QuizDAO quizDAO = new QuizDAO(dbAccess);
 
-        quizDAO.storeOne(quiz);
+        if(titelLable.getText().equals(labelvul)){
+            quizDAO.storeOne(quiz);
+            System.out.println("Toegevoegd");
+            /*for (Answer answer1 : answers) {
+                answerDAO.storeOne(answer1);
+                System.out.println("opgeslagen");*/
+           // }
+        }else if(titelLable.getText().equals(labelwijzig)){
+            int id = Integer.valueOf(idLabel.getText());
+            quiz.setQuizId(id);
+            quizDAO.updateQuiz(quiz);
+            System.out.println(("gewijzigd"));
+        }
+
+
         dbAccess.closeConnection();
     }
+
 
     private void createQuiz() {
 

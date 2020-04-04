@@ -2,17 +2,16 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuizController">
    <children>
       <AnchorPane prefHeight="452.0" prefWidth="652.0">
          <children>
-            <Label layoutX="101.0" layoutY="14.0" text="Label" />
+            <Label fx:id="titelLable" layoutX="101.0" layoutY="14.0" text="TLabel" />
             <Button fx:id="menuButton1" layoutX="14.0" layoutY="271.0" mnemonicParsing="false" onAction="#doMenu" text="Dashboard" />
-            <Button fx:id="opslaanButton" layoutX="99.0" layoutY="271.0" mnemonicParsing="false"  onAction="#doCreateUpdateQuiz" text="Opslaan" />
+            <Button fx:id="opslaanButton" layoutX="99.0" layoutY="271.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" text="Opslaan" />
             <ListView layoutX="368.0" layoutY="58.0" prefHeight="194.0" prefWidth="267.0" />
-            <Label layoutX="14.0" layoutY="78.0" text="Label" />
+            <Label fx:id="idLabel" layoutX="14.0" layoutY="78.0" text="IdLabel" visible="false" />
             <Button layoutX="368.0" layoutY="271.0" mnemonicParsing="false" text="Wijzijg Vraag" />
             <Button layoutX="468.0" layoutY="271.0" mnemonicParsing="false" text="Verwijder Vraag" />
             <Button layoutX="226.0" layoutY="271.0" mnemonicParsing="false" text="Voeg Vraag toe" />
