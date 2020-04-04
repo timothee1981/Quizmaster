@@ -14,8 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManageGroupsController {
+    @FXML
+    public ListView groupListView;
+
+    //??
     private GroupDAO gdao;
     private DBAccess db;
+
+    @FXML
     private ArrayList<Group> groupList = new ArrayList<>(); //Lijst met dummy-groepen
 
 
@@ -33,29 +39,35 @@ public class ManageGroupsController {
 
     public void setup() {
 
-        /*// clear list view
-        groupList.getItems().clear();
+        // clear list view
+        groupListView.getItems().clear();
 
         // get all users
-        ArrayList<User> userArrayList = getAllUsers();
+        ArrayList<Group> groupArrayList = getAllGroups();
 
         // show users in grid/box-thing
-        for(User user:userArrayList) {
-            userList.getItems().add(user);*/
+        for (Group group : groupArrayList) {
+            groupListView.getItems().add(group);
         }
+    }
 
-        /*this.gdao = new GroupDAO(db.getConnection());
-            List<Group> allCustomers = gdao.getAllCustomers();
-            for (Customer c : allCustomers) { customerList.getItems().add(c);*/
-        // haal de lijst met groepen op
+    private ArrayList<Group> getAllGroups() {
+        //Creëer dbAccess object
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        // maak database-connectie
+        dbAccess.openConnection();
+        //creëer userDAO instantie
+        GroupDAO groupDAO = new GroupDAO(dbAccess);
+        // roep save-methode aan
+        ArrayList<Group> groupArrayList = groupDAO.getAll();
+        // sluit database connectie
+        dbAccess.closeConnection();
 
-        //In het tekstvak willen we een Arraylist met groepen weergeven
-        // ArrayList<Group> groepenLijst =
-        //}
-
+        return groupArrayList;
+    }
 
     // ga naar het Welkomscherm door op de knop 'menu' te klikken
-    public void doMenu() {
+    public void doMenu(){
         Main.getSceneManager().showWelcomeScene();
     }
 
@@ -71,8 +83,8 @@ public class ManageGroupsController {
     // de methode checkt dit eerst
     // in het scherm 'naam van de groep' moet de naam van de cursus verschijnen
     public void doUpdateGroup() {
-        //todo: get group
-        /*Main.getSceneManager().showCreateUpdateGroupScene(Group group);*/
+        Group group = (Group)groupListView.getSelectionModel().getSelectedItem();
+        Main.getSceneManager().showCreateUpdateGroupScene(group);
     }
 
     // de gebruiker selecteert een groep om te verwijderen.
@@ -81,7 +93,9 @@ public class ManageGroupsController {
     // u zeker dat u groep <naam> wilt verwijderen?"
     // de gebruiker krijgt de keuze 'Ja/Nee'
     // na "ja" maakt de methode een connectie met de database om de gekozen groep uit de tabel te verwijderen.
-    public void doDeleteGroup() {}
+    public void doDeleteGroup() {
+        //todo: implement
+    }
 
 
 }

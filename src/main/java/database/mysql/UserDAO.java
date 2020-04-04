@@ -177,7 +177,6 @@ public class UserDAO extends AbstractDAO implements GenericDAO {
 
             ResultSet resultset = preparedStatement.executeQuery();
             while(resultset.next()){
-
                 int userId = resultset.getInt(1);
                 String username = resultset.getString(2) ;
                 String password = resultset.getString(3);

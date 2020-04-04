@@ -16,7 +16,7 @@
             <Font size="18.0" />
         </font>
     </Label>
-    <ListView fx:id="groupList" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
+    <ListView fx:id="groupListView" layoutX="14.0" layoutY="78.0" prefHeight="200.0" prefWidth="281.0" />
     <Button fx:id="nieuweGroepButton" layoutX="14.0" layoutY="288.0" mnemonicParsing="false" onAction="#doCreateGroup" text="Nieuw">
         <font>
             <Font size="14.0" />

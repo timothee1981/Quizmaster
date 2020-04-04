@@ -58,4 +58,10 @@ public class Group {
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s", groepnaam);
+    }
 }
+

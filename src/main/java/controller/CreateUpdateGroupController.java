@@ -116,8 +116,6 @@ public class CreateUpdateGroupController {
             // sla de groep op via een update
             saveUpdateGroup(group);
         }
-
-
     }
 
     private void saveNewGroup(Group group) {

@@ -1,6 +1,8 @@
 package database.mysql;
 
 import model.Group;
+import model.Teacher;
+import model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,21 +14,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
     //Toegang tot de Quizmaster database
     public GroupDAO(DBAccess dbAccess){
         super(dbAccess);
-    }
-
-    // Groepenlijst ophalen uit database
-    public ArrayList<Group> getGroups(){
-        String sql = "SELECT * FROM course;";
-        try {
-            PreparedStatement preparedStatement = getStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()){
-                int groepId = resultSet.getInt(1);
-                String groepnaam = resultSet.getString(2);
-            }
-        } catch (SQLException sqlFout){
-            System.out.println(sqlFout.getMessage());
-        } return getGroups();
     }
 
     //Specifieke groep ophalen uit de Quizmaster database
@@ -68,17 +55,27 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
     @Override
     public ArrayList getAll() {
         //todo:
-        String sql = "SELECT * FROM course;";
+        ArrayList<Group> groupArrayList = new ArrayList<>();
+        String sql = "SELECT * FROM groep;";
         try {
             PreparedStatement preparedStatement = getStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 int groepId = resultSet.getInt(1);
                 String groepnaam = resultSet.getString(2);
+                Teacher teacher = getTeacher(3);
+                groupArrayList.add(new Group(groepId, groepnaam, teacher));
             }
         } catch (SQLException sqlFout){
             System.out.println(sqlFout.getMessage());
-        } return getGroups();
+        } return groupArrayList;
+    }
+
+    private Teacher getTeacher(int id) {
+        UserDAO userDAO = new UserDAO(dBaccess);
+        //todo: make this work
+        Teacher teacher = (Teacher)userDAO.getOneById(id);
+        return teacher;
     }
 
     @Override
@@ -105,6 +102,19 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
     }
 
     public void updateOne(Group group){
-        //todo: implement
+        String sql = "UPDATE groep SET " +
+                " groepNaam = ?, userdocentId = ? " +
+                "WHERE groepId = ?; ";
+        try{
+            // sla data van user op
+            PreparedStatement preparedStatement = getStatementWithKey(sql);
+            preparedStatement.setString(1, group.getGroepnaam());
+            preparedStatement.setInt(2, group.getTeacher().getUserId());
+            preparedStatement.setInt(3,group.getGroepId());
+
+            executeManipulatePreparedStatement(preparedStatement);
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
