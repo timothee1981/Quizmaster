@@ -26,7 +26,6 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
             PreparedStatement preparedStatement = getStatement(sql);
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             while (resultSet.next()) {
-                int answerId = resultSet.getInt("aantwoordId");
                 String answerString = resultSet.getString("antwoord");
                 Question question = questionDAO.getOneById(resultSet.getInt("vraagId"));
                 Answer answer = new Answer(answerString,question);

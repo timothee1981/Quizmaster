@@ -20,6 +20,7 @@ public class ManageCoursesController {
     private Button terugNaarMenuButton;
 
 
+
     public void setup() {}
     //Opvragen van alle cursussen
     //ArrayList<Course> cursusLijst = CreateUpdateCourseController.getCourses();

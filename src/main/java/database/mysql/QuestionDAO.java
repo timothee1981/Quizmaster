@@ -30,12 +30,12 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         try {
             PreparedStatement preparedStatement = getStatement(sql);
             ResultSet resultSet = super.executeSelectPreparedStatement(preparedStatement);
-            Question questions;
+            Question question;
             while (resultSet.next()) {
-                String question = resultSet.getString("vraag");
-                questions = new Question( question);
-                questions.setQuestionId(resultSet.getInt("vraagId"));
-                result.add(questions);
+                String questions = resultSet.getString("vraag");
+                question = new Question( questions);
+                question.setQuestionId(resultSet.getInt("vraagId"));
+                result.add(question);
             }
         } catch (SQLException e){
             System.out.println("SQL error " + e.getMessage());
@@ -157,17 +157,13 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
                 "WHERE vraagId = ?; ";
 
         try{
-            // sla data van user op
+
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1, question.getQuestion());
             preparedStatement.setInt(2, question.getQuestionId());
 
             executeManipulatePreparedStatement(preparedStatement);
 
-            // zoek de Id op van de rol die bij user hoort
-
-
-            // vul de gebruikers-rol tabel met de userId en de Id van de bijbehorende rol
 
         } catch (SQLException e){
             System.out.println(e.getMessage());
