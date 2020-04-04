@@ -29,7 +29,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
         } return getGroups();
     }
 
-
     //Specifieke groep ophalen uit de Quizmaster database
     Group group = null;
     public Group getGroupById(int groepId){
@@ -47,28 +46,18 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
         } return group;
     }
 
-
-    //Groep wegschrijven in Quizmaster database
-    public void storeNewGroup(int groepId, String groepnaam){
-        String sql = "INSERT INTO group (groepId, groepnaam) VALUES (?,?);";
-        try{
-            PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, groepId);
-            preparedStatement.setString(2, groepnaam);
-            preparedStatement.executeUpdate();
-        } catch (SQLException sqlFout){
-            System.out.println(sqlFout.getMessage());
-        }
-    }
-
     // Groep verwijderen uit Quizmaster database
     public void deleteGroup(int groepId, String groepnaam) {
         String sql = "DELETE FROM group (groepId, groepnaam) VALUES (?,?);";
         try {
+            //todo: remove reference to teacher object
+
             PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, groepId);
             preparedStatement.setString(2, groepnaam);
             preparedStatement.executeUpdate();
+
+
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout.getMessage());
         }
@@ -95,7 +84,24 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
     }
 
     @Override
-    public void storeOne(Object type) {
+    public void storeOne(Object groupObject) {
 
+        String sql = "INSERT INTO groep (groepNaam, userdocentId) VALUES (?,?);";
+        try{
+            // zet inkomend object om in een group
+            Group group = (Group)groupObject;
+
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setString(1, group.getGroepnaam());
+            preparedStatement.setString(2, String.valueOf(group.getTeacher().getUserId()));
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException sqlFout){
+            System.out.println(sqlFout.getMessage());
+        }
+    }
+
+    public void updateOne(Group group){
+        //todo: implement
     }
 }

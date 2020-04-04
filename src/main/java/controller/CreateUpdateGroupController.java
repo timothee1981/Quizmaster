@@ -1,6 +1,7 @@
 package controller;
 
 import database.mysql.DBAccess;
+import database.mysql.GroupDAO;
 import database.mysql.UserDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -36,11 +37,8 @@ public class CreateUpdateGroupController {
             // als het een bestaande groep is: velden vullen
             groupNameTextBox.setText(group.getGroepnaam());
             teacherDropdown.setValue(group.getTeacher());
-            // setId and hide textbox
+            // setId in hidden textfield
             groupIdTextbox.setText(String.format("%d",group.getGroepId()));
-            //todo: hide groupIdTextbox
-
-
         }
         // als het een nieuwe groep is: geen actie
     }
@@ -80,30 +78,89 @@ public class CreateUpdateGroupController {
     // ga naar het scherm Groepenbeheer door op de knop 'Terug naar Groepenbeheer' te klikken
     public void doCreateUpdateGroup() {
         // get values of group to add/update
-
-
-
         // get name
         String groupname = groupNameTextBox.getText();
         // get Teacher
+        Teacher teacher = null;
         try{
-        Teacher teacher = (Teacher)teacherDropdown.getValue();
+        teacher = (Teacher)teacherDropdown.getValue();
         } catch (NullPointerException e){
-            //todo: show message to user
-            System.out.println("er is geen docent geselecteerd");
+            showErrorMessage("Er is geen docent geselecteerd.");
         }
 
         // get Id
+        String groupIdString = groupIdTextbox.getText();
         //todo: get Id en bepaal of nieuwe groep of update moet zijn
         
         // If id = not filled -> create new Group
+        if(groupIdString == null || groupIdString.trim().equals("")){
+            // maak nieuwe group, zet waarden erin, maar vul id niet in
+            Group group = new Group();
+            group.setGroepnaam(groupname);
+            group.setTeacher(teacher);
 
-        // if id = filled -> update Group
+            // sla groep op al nieuwe groep
+            saveNewGroup(group);
 
+        } else{
+            // if id = filled -> update Group
+            // zet Id-string om in int
+            int groupId = 0;
+            try {
+                groupId = Integer.parseInt(groupIdString);
+            } catch (NumberFormatException e){
+                showErrorMessage("Het groepsId moet een getal zijn.");
+                return;
+            }
+            // maak group-object
+            Group group = new Group(groupId, groupname, teacher);
+            // sla de groep op via een update
+            saveUpdateGroup(group);
+        }
+
+
+    }
+
+    private void saveUpdateGroup(Group group) {
+        //Creëer dbAccess object
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        // maak database-connectie
+        dbAccess.openConnection();
+        //creëer userDAO instantie
+        GroupDAO groupDAO = new GroupDAO(dbAccess);
+        // roep save-methode aan
+        groupDAO.storeOne(group);
+        // sluit database connectie
+        dbAccess.closeConnection();
+    }
+
+    private void saveNewGroup(Group group) {
+        //Creëer dbAccess object
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        // maak database-connectie
+        dbAccess.openConnection();
+        //creëer userDAO instantie
+        GroupDAO groupDAO = new GroupDAO(dbAccess);
+        // roep save-methode aan
+        groupDAO.updateOne(group);
+        // sluit database connectie
+        dbAccess.closeConnection();
     }
 
     // ga naar het scherm Cursusbeheer door op de knop 'Naar Cursusbeheer' te klikken
     public void doCreateUpdateCourse() {
             Main.getSceneManager().showManageCoursesScene();
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(errorMessage);
+        alert.show();
+    }
+
+    private void showInformationMessage(String informationMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(informationMessage);
+        alert.show();
     }
 }

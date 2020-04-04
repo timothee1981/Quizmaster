@@ -54,4 +54,8 @@ public class Group {
     public void setGroepenLijst(ArrayList<Group> groepenLijst) {
         this.groepenLijst = groepenLijst;
     }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 }
