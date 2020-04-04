@@ -30,12 +30,12 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         try {
             PreparedStatement preparedStatement = getStatement(sql);
             ResultSet resultSet = super.executeSelectPreparedStatement(preparedStatement);
-            Question questions;
+            Question question;
             while (resultSet.next()) {
-                String question = resultSet.getString("vraag");
-                questions = new Question( question);
-                questions.setQuestionId(resultSet.getInt("vraagId"));
-                result.add(questions);
+                String questions = resultSet.getString("vraag");
+                question = new Question( questions);
+                question.setQuestionId(resultSet.getInt("vraagId"));
+                result.add(question);
             }
         } catch (SQLException e){
             System.out.println("SQL error " + e.getMessage());

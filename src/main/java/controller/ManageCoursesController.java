@@ -24,6 +24,7 @@ public class ManageCoursesController {
     private ListView courseList;
 
 
+
     public void setup() {}
     //Opvragen van alle cursussen
     //ArrayList<Course> cursusLijst = CreateUpdateCourseController.getCourses();

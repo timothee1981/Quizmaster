@@ -19,13 +19,13 @@ public class ManageQuestionsController {
     private ListView<Question> questionList;
 
     public void setup() {
-        dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-        dbAccess.openConnection();
-        this.questionDAO = new QuestionDAO(dbAccess);
-        ArrayList<Question> getAllQuestion = questionDAO.getAll();
-        for(Question question: getAllQuestion){
-            questionList.getItems().add(question);
-        }
+            dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+            dbAccess.openConnection();
+            this.questionDAO = new QuestionDAO(dbAccess);
+            ArrayList<Question> getAllQuestion = questionDAO.getAll();
+            for(Question question: getAllQuestion){
+                questionList.getItems().add(question);
+            }
 
     }
 
