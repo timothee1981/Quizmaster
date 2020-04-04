@@ -1,5 +1,6 @@
 package controller;
 
+import database.mysql.AnswerDAO;
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
@@ -24,6 +25,7 @@ public class ManageQuizzesController {
         dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
         this.quizDAO = new QuizDAO(dbAccess);
+        quizList.getItems().clear();
         ArrayList<Quiz> getAllQuiz = quizDAO.getAll();
         for(Quiz quiz: getAllQuiz){
             quizList.getItems().add(quiz);
@@ -54,5 +56,24 @@ public class ManageQuizzesController {
         Main.getSceneManager().showCreateUpdateQuizScene(quiz);
     }
 
-    public void doDeleteQuiz(){}
+    public void doDeleteQuiz(){
+        dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        dbAccess.openConnection();
+   //   Question questioDAO = new QuestionDAO(dbAccess);
+        Quiz quiz = (Quiz) quizList.getSelectionModel().getSelectedItem();
+        int quizId = quiz.getQuizId();
+     //   questioDAO.deleteAnswerfromQuestion(questionId);
+
+        if(quiz == null) {
+
+            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+            foutmelding.setContentText("Je moet een customer aanklikken\n");
+            foutmelding.show();
+            return;
+
+        }
+
+        quizDAO.deleteQuizBiId(quizId);
+        setup();
+    }
 }

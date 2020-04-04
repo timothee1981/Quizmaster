@@ -17,6 +17,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
     @Override
     public ArrayList<Quiz> getAll(){
 
+
         String sql = "SELECT * FROM quiz";
         ArrayList<Quiz> result = new ArrayList<>();
         try {
@@ -85,14 +86,14 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
 
     }
 
-    public void deleteQuiz(Quiz quiz) {
+    public void deleteQuizBiId(int quizId) {
 
-        String sql = "DELETE FROM quiz WHERE quiz = ?";
+        String sql = "DELETE FROM quiz WHERE quiznummer = ?";
 
         try{
 
             PreparedStatement preparedStatement = getStatement(sql);
-            preparedStatement.setString(1, quiz.getQuizName());
+            preparedStatement.setInt(1, quizId);
             executeManipulatePreparedStatement(preparedStatement);
 
         } catch (SQLException e){

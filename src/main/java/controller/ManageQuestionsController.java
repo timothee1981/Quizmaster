@@ -22,6 +22,7 @@ public class ManageQuestionsController {
             dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
             dbAccess.openConnection();
             this.questionDAO = new QuestionDAO(dbAccess);
+            questionList.getItems().clear();
             ArrayList<Question> getAllQuestion = questionDAO.getAll();
             for(Question question: getAllQuestion){
                 questionList.getItems().add(question);
@@ -72,6 +73,7 @@ public class ManageQuestionsController {
         }
 
         questionDAO.deleteQuestion(question);
+        setup();
 
 
     }

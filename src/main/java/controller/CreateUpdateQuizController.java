@@ -3,6 +3,7 @@ package controller;
 import database.mysql.DBAccess;
 import database.mysql.QuizDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Answer;
@@ -27,6 +28,9 @@ public class CreateUpdateQuizController {
     @FXML
     private Label titelLable, idLabel;
 
+    @FXML
+    private Button  menuButton1, returnCourseButton;
+
     public void setup(Quiz quiz) {
         if (quiz.getQuizId() == Question.DEFAULT_VRAAG) {
             labelvul = "Vull quiz en bijhorende vragen";
@@ -43,8 +47,13 @@ public class CreateUpdateQuizController {
         }
     }
 
-    public void doMenu() {
+    public void doDashBoard(){
+
         Main.getSceneManager().showCoordinatorDashboard();
+    }
+
+    public void doManageQuiz(){
+        Main.getSceneManager().showManageQuizScene();
     }
 
     public void doCreateUpdateQuiz() {
