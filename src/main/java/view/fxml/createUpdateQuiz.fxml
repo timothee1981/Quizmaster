@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateQuizController">
    <children>
@@ -9,7 +10,7 @@
          <children>
             <Label layoutX="101.0" layoutY="14.0" text="Label" />
             <Button fx:id="menuButton1" layoutX="14.0" layoutY="271.0" mnemonicParsing="false" onAction="#doMenu" text="Dashboard" />
-            <Button fx:id="opslaanButton" layoutX="575.0" layoutY="271.0" mnemonicParsing="false" text="Opslaan" />
+            <Button fx:id="opslaanButton" layoutX="99.0" layoutY="271.0" mnemonicParsing="false"  onAction="#doCreateUpdateQuiz" text="Opslaan" />
             <ListView layoutX="368.0" layoutY="58.0" prefHeight="194.0" prefWidth="267.0" />
             <Label layoutX="14.0" layoutY="78.0" text="Label" />
             <Button layoutX="368.0" layoutY="271.0" mnemonicParsing="false" text="Wijzijg Vraag" />
@@ -17,8 +18,8 @@
             <Button layoutX="226.0" layoutY="271.0" mnemonicParsing="false" text="Voeg Vraag toe" />
             <GridPane layoutX="71.0" layoutY="59.0" prefHeight="163.0" prefWidth="253.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="76.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="178.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="102.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="152.4" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -26,10 +27,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField prefHeight="26.0" prefWidth="132.0" GridPane.columnIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="quizNameTextField" prefHeight="26.0" prefWidth="132.0" GridPane.columnIndex="1" />
+                  <TextField fx:id="questionTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Quiz Naam" />
                   <Label text="New Vraag" GridPane.rowIndex="1" />
+                  <Label text="Bepaal Quizcesuur" GridPane.rowIndex="2" />
+                  <TextField fx:id="cesuurTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Label layoutX="14.0" layoutY="132.0" text="Label" />

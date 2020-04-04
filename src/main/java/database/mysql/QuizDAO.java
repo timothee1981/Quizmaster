@@ -25,7 +25,9 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
             Quiz quiz;
             while (resultSet.next()) {
                 String question = resultSet.getString("quizNaam");
-                quiz = new Quiz();
+                double cesuur = resultSet.getDouble("cesuur");
+                int courseId = resultSet.getInt("cursusId");
+                quiz = new Quiz(question,cesuur);
                 quiz.setQuizId(resultSet.getInt("quiznummer"));
                 result.add(quiz);
             }
@@ -46,8 +48,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
             preparedStatement.setInt(1,quizId);
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             while(resultSet.next()){
-                int quiznummer = resultSet.getInt("quiznummer");
-                String quizname = resultSet.getString("quiznaam");
+                String quizname = resultSet.getString("quizNaam");
                 double cesuur = resultSet.getDouble("cesuur");
                 quiz = new Quiz(quizname,cesuur);
                 quiz.setQuizId(resultSet.getInt("quiznummer"));
@@ -67,13 +68,13 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
         Quiz quiz = (Quiz) t;
 
 
-        String sql = "INSERT INTO quiz(quiznummer,cesuur,cursusId) VALUES(?,?,?);";
+        String sql = "INSERT INTO quiz(quizNaam,cesuur,cursusId) VALUES(?,?,?);";
 
         try{
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1,quiz.getQuizName());
             preparedStatement.setDouble(2,quiz.getCesuur());
-            preparedStatement.setInt(3,quiz.getCourse().getCursusId());
+            preparedStatement.setInt(3,1);
             int key = executeInsertPreparedStatement(preparedStatement);
             quiz.setQuizId(key);
 
@@ -84,14 +85,34 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
 
     }
 
-    public void deleteQuestion(Quiz quiz) {
+    public void deleteQuiz(Quiz quiz) {
 
         String sql = "DELETE FROM quiz WHERE quiz = ?";
 
         try{
+
             PreparedStatement preparedStatement = getStatement(sql);
             preparedStatement.setString(1, quiz.getQuizName());
             executeManipulatePreparedStatement(preparedStatement);
+
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public void updateQuiz(Quiz quiz){
+
+
+        String sql = "UPDATE quiz SET  quizNaam = ? WHERE quiznummer = ?; ";
+
+        try{
+
+            PreparedStatement preparedStatement = getStatementWithKey(sql);
+            preparedStatement.setString(1, quiz.getQuizName());
+            preparedStatement.setInt(2, quiz.getQuizId());
+            executeManipulatePreparedStatement(preparedStatement);
+
 
         } catch (SQLException e){
             System.out.println(e.getMessage());

@@ -83,11 +83,11 @@ public class ManageGroupsController {
     public void doDeleteGroup() {}
 
     //Testgegevens met verzonnen groepen
-    /*public void createGroupList() {
+    public void createGroupList() {
         groupList.add(new Group(1, "Basisgroep"));
         groupList.add(new Group(2, "Gevorderdengroep"));
         groupList.add(new Group(3, "Expertgroep"));
 
-    }*/
+    }
 
 }

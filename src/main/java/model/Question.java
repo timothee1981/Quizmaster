@@ -22,6 +22,7 @@ public class Question {
         getQuestionId();
         this.question = question;
         answers = new ArrayList<>();
+        this.quiz = getQuiz();
 
 
     }
@@ -33,6 +34,8 @@ public class Question {
     public int getQuestionId() {
         return questionId;
     }
+
+
 
 
 

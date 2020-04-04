@@ -119,6 +119,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         String sql = "INSERT INTO quizvraag (vraag, antwoordJuist,quiznummer ) VALUES(?,?,?);";
 
         try{
+            QuizDAO quizDAO = new QuizDAO(dBaccess);
 
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1,question.getQuestion());
@@ -157,17 +158,13 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
                 "WHERE vraagId = ?; ";
 
         try{
-            // sla data van user op
+
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1, question.getQuestion());
             preparedStatement.setInt(2, question.getQuestionId());
 
             executeManipulatePreparedStatement(preparedStatement);
 
-            // zoek de Id op van de rol die bij user hoort
-
-
-            // vul de gebruikers-rol tabel met de userId en de Id van de bijbehorende rol
 
         } catch (SQLException e){
             System.out.println(e.getMessage());

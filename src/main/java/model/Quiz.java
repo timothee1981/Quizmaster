@@ -9,7 +9,7 @@ public class Quiz {
     private int quizId;
     private String quizName;
     private double cesuur;
-    private Course course;
+    private int courseId;
     private ArrayList<Question> questions;
 
     public Quiz() {
@@ -20,7 +20,12 @@ public class Quiz {
         this.quizId = getQuizId();
         this.quizName = quizName;
         this.cesuur = cesuur;
+       // this.courseId = courseId;
         this.questions = new ArrayList<>();
+    }
+
+    public ArrayList<Question> getQuestions() {
+        return questions;
     }
 
     public int getQuizId() {
@@ -31,15 +36,15 @@ public class Quiz {
         return quizName;
     }
 
-
+    public int getCourseId() {
+        return courseId;
+    }
 
     public double getCesuur() {
         return cesuur;
     }
 
-    public Course getCourse() {
-        return course;
-    }
+
 
     public ArrayList<Question> voegQuestionAanQuiz(Question question){
         questions.add(question);
