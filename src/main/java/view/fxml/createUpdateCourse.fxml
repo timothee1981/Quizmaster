@@ -7,45 +7,41 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controller.CreateUpdateCourseController">
-    <Label alignment="CENTER" layoutY="40.0" prefHeight="54.0" prefWidth="900.0" text="Cursus aanmaken">
-        <font>
-            <Font size="36.0" />
-        </font>
-    </Label>
-    <Label alignment="CENTER" layoutY="84.0" prefHeight="29.0" prefWidth="900.0" text="Vul hieronder de cursusgegevens in">
+    <Label layoutX="50.0" layoutY="100.0" prefHeight="29.0" prefWidth="900.0" text="Cursus aanmaken of updaten">
         <font>
             <Font size="24.0" />
         </font>
     </Label>
-    <TextField fx:id="CursusnaamTextField" layoutX="410.0" layoutY="185.0" prefHeight="25.0" prefWidth="400.0" />
-    <Label layoutX="275.0" layoutY="185.0" text="Cursusnaam: ">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </Label>
-    <TextField fx:id="CoordinatornummerTextField" layoutX="410.0" layoutY="220.0" prefHeight="25.0" prefWidth="80.0" />
-    <Label layoutX="58.0" layoutY="220.0" text="Personeelsnummer cursuscoördinator:">
+    <TextField fx:id="CursusnaamTextField" layoutX="300.0" layoutY="185.0" prefHeight="25.0" prefWidth="400.0" />
+    <Label layoutX="50.0" layoutY="185.0" text="Naam van de cursus: ">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
 
-    <Button fx:id="CursusAanmakenKnop" defaultButton="true" layoutX="410.0" layoutY="275.0" mnemonicParsing="false"
-            onAction="#doCreateUpdateCourse" prefHeight="25.0" prefWidth="300.0" text="Cursus aanmaken">
+    <Label layoutX="50.0" layoutY="225.0" text="Kies een cursuscoördinator:">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <Button fx:id="CursusAanmakenKnop" layoutX="510.0" layoutY="232.0" mnemonicParsing="false"
+            onAction="#doCreateUpdateCourse" prefHeight="25.0" prefWidth="190.0" text="Aanmaken / Updaten">
         <font>
             <Font size="16.0" />
         </font>
     </Button>
-    <Button fx:id="NaarCursusbeheerKnop" layoutX="410.0" layoutY="430.0" mnemonicParsing="false"
-            onAction="#manageCourses" prefHeight="25.0" prefWidth="200.0" text="Cursusbeheer">
+    <Button fx:id="NaarCursusbeheerKnop" layoutX="510.0" layoutY="284.0" mnemonicParsing="false"
+            onAction="#manageCourses" prefHeight="32.0" prefWidth="190.0" text="Cursusbeheer">
         <font>
             <Font size="16.0" />
         </font>
     </Button>
-    <Button fx:id="NaarMenuKnop" layoutX="410.0" layoutY="480.0" mnemonicParsing="false" onAction="#doMenu"
-            prefHeight="25.0" prefWidth="200.0" text="Menu">
+    <Button fx:id="NaarMenuKnop" layoutX="510.0" layoutY="341.0" mnemonicParsing="false" onAction="#doMenu"
+            prefHeight="25.0" prefWidth="190.0" text="Menu">
         <font>
             <Font size="16.0" />
         </font>
     </Button>
+   <ComboBox layoutX="300.0" layoutY="235.0" prefWidth="200.0" />
 </AnchorPane>
