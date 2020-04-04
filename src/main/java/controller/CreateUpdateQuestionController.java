@@ -1,12 +1,10 @@
 package controller;
 
-import database.mysql.AnswerDAO;
-import database.mysql.DBAccess;
-import database.mysql.QuestionDAO;
-import database.mysql.UserDAO;
+import database.mysql.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.Answer;
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 public class CreateUpdateQuestionController {
 
     private Question question;
+    private Quiz quiz;
     private ArrayList<Question> questions;
     private ArrayList<Answer> answers;
     private String labelvul;
@@ -46,10 +45,14 @@ public class CreateUpdateQuestionController {
     @FXML
     private TextField answer4TextField;
 
+    @FXML
+    private ComboBox<Quiz> quizComboBox;
+
 
 
     public void setup(Question question) {
         ArrayList<Answer> answers = new ArrayList<>();
+        fillQuizDropdown();
 
         if (question.getQuestionId() == Question.DEFAULT_VRAAG) {
             labelvul = "Vull Vraag en antwoord";
@@ -69,9 +72,11 @@ public class CreateUpdateQuestionController {
             answer3TextField.setText(answers.get(2).getAnswer());
             answer4TextField.setText(answers.get(3).getAnswer());
 
-
-
         }
+    }
+
+    private void setQuizDropdownOfUser(Quiz quiz) {
+        quizComboBox.setValue(quiz);
     }
 
 
@@ -93,6 +98,8 @@ public class CreateUpdateQuestionController {
 
     @FXML
     public void doCreateUpdateQuestion(ActionEvent actionEvent) {
+
+
         createQuestion();
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         // maak database-connectie
@@ -101,9 +108,18 @@ public class CreateUpdateQuestionController {
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
         AnswerDAO answerDAO = new AnswerDAO(dbAccess);
 
+        int userQuizId;
+        if(!(quizComboBox.getValue() == null)) {
+            // roleComboBox has value, now get it!
+            userQuizId = quizComboBox.getValue().getQuizId();
+        } else{
+            System.out.println("Er is geen quiz geselecteerd");
+        }
+
 
             // roep save-methode aan
         if(titelLabel.getText().equals(labelvul)) {
+            question.setQuiz(quizComboBox.getValue());//still have to make condition that one HAS to get a quiz
             questionDAO.storeOne(question);
             for (Answer answer1 : answers) {
                 answerDAO.storeOne(answer1);
@@ -144,6 +160,7 @@ public class CreateUpdateQuestionController {
         boolean correcteInvoer = true;
 
         question = new Question(vraagTextField.getText());
+
         Answer answer = new Answer(goodAnswerTextField.getText(),question);
         Answer answer2 = new Answer(answer2TextField.getText(),question);
         Answer answer3 = new Answer(answer3TextField.getText(),question);
@@ -157,6 +174,25 @@ public class CreateUpdateQuestionController {
 
 
         }
+
+    private ArrayList<Quiz> getAllQuizItems() {
+
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        dbAccess.openConnection();
+        QuizDAO quizDAO = new QuizDAO(dbAccess);
+        ArrayList<Quiz> quizItems = quizDAO.getAll();
+        dbAccess.closeConnection();
+
+        return quizItems;
+    }
+
+    private void fillQuizDropdown() {
+
+        ArrayList<Quiz> quizList = getAllQuizItems();
+        for(Quiz quiz: quizList){
+            quizComboBox.getItems().add(quiz);
+        }
+    }
 
 
 

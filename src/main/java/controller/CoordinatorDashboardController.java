@@ -2,6 +2,7 @@ package controller;
 
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
+import database.mysql.QuizDAO;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -15,8 +16,10 @@ import view.Main;
 import java.util.ArrayList;
 
 public class CoordinatorDashboardController {
-    private QuestionDAO questionDAO;
-    private DBAccess dbAccess;
+
+    private DBAccess dbAccess= new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());;
+    private QuizDAO quizDAO = new QuizDAO(dbAccess);
+    private QuestionDAO questionDAO = new QuestionDAO(dbAccess);
 
     @FXML
     private ListView<Course> courseList;
@@ -26,13 +29,20 @@ public class CoordinatorDashboardController {
     private ListView<Question> questionList;
 
     public void setup() {
-        dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
-        this.questionDAO = new QuestionDAO(dbAccess);
+
+        ArrayList<Quiz> getAllQuiz = quizDAO.getAll();
+        for(Quiz quiz: getAllQuiz){
+            quizList.getItems().add(quiz);
+        }
+
+
         ArrayList<Question> getAllQuestion = questionDAO.getAll();
         for(Question question: getAllQuestion){
             questionList.getItems().add(question);
         }
+
+
         dbAccess.closeConnection();
 
         courseList.getSelectionModel().selectedItemProperty().addListener(
@@ -56,7 +66,20 @@ public class CoordinatorDashboardController {
         Main.getSceneManager().showCreateUpdateQuizScene(new Quiz());
     }
 
-    public void doEditQuiz() { }
+    public void doEditQuiz() {
+        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
+
+        if(quiz == null){
+            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+            foutmelding.setContentText("Je moet een vraag aanklikken\n");
+            foutmelding.show();
+            return;
+
+        }
+
+        Main.getSceneManager().showCreateUpdateQuizScene(quiz);
+
+    }
 
     public void doNewQuestion() {
 

@@ -36,8 +36,9 @@ public class Question {
     }
 
 
-
-
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
 
     public String getQuestion() {
         return question;

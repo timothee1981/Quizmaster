@@ -77,25 +77,26 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
      *
      * geeft een vraag terug op basis van vraag
      */
-    public Question getQuestionByQuestion(String questionString){
-
+    public ArrayList<Question> getAllQuestionByQuizId(int quiznummer){
+        ArrayList<Question> questions = new ArrayList<>();
         Question question = null;
-        String sql = "SELECT * FROM quizvraag WHERE vraag = ?;";
+        String sql = "SELECT * FROM quizvraag WHERE quizNummer = ?;";
         try {
             PreparedStatement preparedStatement = getStatement(sql);
-            preparedStatement.setString(1,questionString);
+            preparedStatement.setInt(1,quiznummer);
             ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
             while(resultSet.next()){
                 String question1= resultSet.getString("vraag");
                 question = new Question(question1);
                 question.setQuestionId(resultSet.getInt("vraagId"));
+                questions.add(question);
             }
 
         }catch (SQLException sqlFout){
             System.out.println(sqlFout);
 
         }
-        return question;
+        return questions;
     }
 
 
@@ -124,7 +125,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1,question.getQuestion());
             preparedStatement.setInt(2,question.getAnswers().get(0).getAnswerId());
-            preparedStatement.setInt(3,1);
+            preparedStatement.setInt(3,question.getQuiz().getQuizId());
             int key = executeInsertPreparedStatement(preparedStatement);
             question.setQuestionId(key);
 
