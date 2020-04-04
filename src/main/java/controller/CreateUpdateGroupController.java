@@ -90,8 +90,7 @@ public class CreateUpdateGroupController {
 
         // get Id
         String groupIdString = groupIdTextbox.getText();
-        //todo: get Id en bepaal of nieuwe groep of update moet zijn
-        
+
         // If id = not filled -> create new Group
         if(groupIdString == null || groupIdString.trim().equals("")){
             // maak nieuwe group, zet waarden erin, maar vul id niet in
@@ -121,7 +120,7 @@ public class CreateUpdateGroupController {
 
     }
 
-    private void saveUpdateGroup(Group group) {
+    private void saveNewGroup(Group group) {
         //Creëer dbAccess object
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         // maak database-connectie
@@ -134,7 +133,7 @@ public class CreateUpdateGroupController {
         dbAccess.closeConnection();
     }
 
-    private void saveNewGroup(Group group) {
+    private void saveUpdateGroup(Group group) {
         //Creëer dbAccess object
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         // maak database-connectie

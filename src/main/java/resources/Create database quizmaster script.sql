@@ -206,6 +206,18 @@ CREATE TABLE IF NOT EXISTS `Quizmaster`.`GebruikerRol` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Make cursusId NotNull = false van groep
+-- -----------------------------------------------------
+ALTER TABLE `quizmaster`.`groep`
+DROP FOREIGN KEY `verzinzelf8`;
+ALTER TABLE `quizmaster`.`groep`
+CHANGE COLUMN `cursusId` `cursusId` INT NULL ;
+ALTER TABLE `quizmaster`.`groep`
+ADD CONSTRAINT `verzinzelf8`
+  FOREIGN KEY (`cursusId`)
+  REFERENCES `quizmaster`.`cursus` (`cursusId`);
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

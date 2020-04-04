@@ -71,6 +71,7 @@ public class ManageGroupsController {
     // de methode checkt dit eerst
     // in het scherm 'naam van de groep' moet de naam van de cursus verschijnen
     public void doUpdateGroup() {
+        //todo: get group
         /*Main.getSceneManager().showCreateUpdateGroupScene(Group group);*/
     }
 
