@@ -24,7 +24,6 @@ public class ManageGroupsController {
     @FXML
     private ArrayList<Group> groupList = new ArrayList<>(); //Lijst met dummy-groepen
 
-
     /*@FXML
     private ListView groupList;*/
     @FXML

@@ -54,7 +54,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
 
     @Override
     public ArrayList getAll() {
-        //todo:
         ArrayList<Group> groupArrayList = new ArrayList<>();
         String sql = "SELECT * FROM groep;";
         try {
@@ -63,7 +62,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
             while (resultSet.next()){
                 int groepId = resultSet.getInt(1);
                 String groepnaam = resultSet.getString(2);
-                Teacher teacher = getTeacher(3);
+                Teacher teacher = getTeacher(resultSet.getInt(3));
                 groupArrayList.add(new Group(groepId, groepnaam, teacher));
             }
         } catch (SQLException sqlFout){
@@ -73,7 +72,6 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
 
     private Teacher getTeacher(int id) {
         UserDAO userDAO = new UserDAO(dBaccess);
-        //todo: make this work
         Teacher teacher = (Teacher)userDAO.getOneById(id);
         return teacher;
     }
