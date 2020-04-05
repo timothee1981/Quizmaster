@@ -2,11 +2,13 @@ package controller;
 
 import database.mysql.CourseDAO;
 import database.mysql.DBAccess;
+import database.mysql.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import model.Course;
+import model.*;
 import view.Main;
 
 import java.util.ArrayList;
@@ -19,37 +21,55 @@ public class CreateUpdateCourseController {
 
     //Verwijzingen naar de invulvelden en knoppen in de View
     @FXML
-    private TextField CursusnummerTextField;
-
-    @FXML
     private TextField CursusnaamTextField;
 
     @FXML
-    private TextField CoordinatornummerTextField;
+    private ComboBox CoordinatorKiezen;
 
-    //maakt de cursus aan met doCreateCourse-methode
     @FXML
     private Button CursusAanmakenKnop;
 
-    //gaat terug naar cursusbeheer
     @FXML
     private Button NaarCursusbeheerKnop;
 
-    //gaat naar groepenbeheer
     @FXML
-    private Button NaarGroepenbeheerKnop;
+    private Button NaarMenuKnop;
 
-
-    //Testgegevens met verzonnen cursussen om aan te maken in de db
-    /*public void createCourseList(){
-        courseList.add(new Course(1, "BasisCursus", 5));
-        courseList.add(new Course(2, "GevorderdenCursus", 5));
-        courseList.add(new Course(3, "ExpertCursus", 5));
-    }*/
 
     //Methode voor het prepareren van de pagina en het checken van de user-gegevens en velden
     public void setup(Course course) {
+        // CoordinatorKiezen vullen met coordinatoren, coordinatoren ophalen en in een lijst weergeven
+        ArrayList<Coordinator> coordinatorArrayList = getCoordinators();
+        for (Coordinator coordinator : coordinatorArrayList) {
+            CoordinatorKiezen.getItems().add(coordinator);
+        }
 
+        // Wil admin nieuwe cursus aanmaken of bestaande cursus updaten? Bestaande cursus laat coordinator zien
+        if(! (course.getCursusId() == Course.DEFAULT_COURSE_ID)){
+            CursusnaamTextField.setText(course.getCursusNaam());
+            CoordinatorKiezen.setValue(course.getUserIdCoordinator()); //todo: checken wat de dropdown laat zien
+        }
+    }
+
+    //Alle gebruikers ophalen
+    private ArrayList<User> getUsers(){
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        dbAccess.openConnection();
+        UserDAO userDAO = new UserDAO(dbAccess);
+        ArrayList<User> userList = userDAO.getAll();
+        dbAccess.closeConnection();
+        return userList;
+    }
+
+    //De coordinatoren eruitfilteren
+    private ArrayList<Coordinator> getCoordinators() {
+        ArrayList<User> userList = getUsers();
+        ArrayList<Coordinator> coordinatorArrayList = new ArrayList<>();
+        for (User user: userList) {
+            if (user instanceof Coordinator) {
+                coordinatorArrayList.add((Coordinator) user);
+            }
+        } return coordinatorArrayList;
     }
 
     //Gaat terug naar het keuzemenu van de administrator
@@ -66,8 +86,7 @@ public class CreateUpdateCourseController {
     @FXML
     public void doCreateUpdateCourse(ActionEvent actionEvent) {
         String cursusNaam = CursusnaamTextField.getText();
-        int coordinatorId = Integer.parseInt(CoordinatornummerTextField.getText());
-        Course course = new Course(cursusNaam, coordinatorId);
+        int coordinatorId = Integer.parseInt(CoordinatorKiezen.getId()); //todo De id uit de coordinatorendropdown halen
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword()); //toegang tot db
         dbAccess.openConnection(); //connectie openen
         CourseDAO courseDAO = new CourseDAO(dbAccess); //CursusDAO instantieren
