@@ -67,7 +67,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
                 UserDAO userDAO = new UserDAO(dBaccess);
                 PreparedStatement preparedStatement = getStatementWithKey(sql);
                 preparedStatement.setString(1, course.getCursusNaam());
-                preparedStatement.setInt(2, userDAO.getRoleIdByName("Coordinator"));
+                preparedStatement.setInt(2, course.getUserIdCoordinator());
                 int key = executeInsertPreparedStatement(preparedStatement);
                 course.setCursusId(key);
             } catch (SQLException sqlFout){
