@@ -39,10 +39,8 @@ public class CreateUpdateGroupController {
             teacherDropdown.setValue(group.getTeacher());
             // setId in hidden textfield
             groupIdTextbox.setText(String.format("%d",group.getGroepId()));
-<<<<<<< HEAD
+
             //todo: hide groupIdTextbox
-=======
->>>>>>> d8145f6b76154df91530556655d873d90f8499e3
         }
         // als het een nieuwe groep is: geen actie
     }

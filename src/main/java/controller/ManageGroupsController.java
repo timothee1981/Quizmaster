@@ -93,21 +93,13 @@ public class ManageGroupsController {
     // u zeker dat u groep <naam> wilt verwijderen?"
     // de gebruiker krijgt de keuze 'Ja/Nee'
     // na "ja" maakt de methode een connectie met de database om de gekozen groep uit de tabel te verwijderen.
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public void doDeleteGroup() {}
+
+    //public void doDeleteGroup() {}
 
     //Testgegevens met verzonnen groepen
-=======
-=======
->>>>>>> d8145f6b76154df91530556655d873d90f8499e3
+
     public void doDeleteGroup() {
         //todo: implement
     }
-
-<<<<<<< HEAD
->>>>>>> d8145f6b76154df91530556655d873d90f8499e3
-=======
->>>>>>> d8145f6b76154df91530556655d873d90f8499e3
 
 }
