@@ -95,9 +95,6 @@ public class ManageGroupsController {
     // na "ja" maakt de methode een connectie met de database om de gekozen groep uit de tabel te verwijderen.
 
     //public void doDeleteGroup() {}
-
-    //Testgegevens met verzonnen groepen
-
     public void doDeleteGroup() {
         //todo: implement
     }
