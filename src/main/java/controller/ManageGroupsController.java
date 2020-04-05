@@ -1,12 +1,16 @@
 package controller;
 
+import database.mysql.AnswerDAO;
 import database.mysql.DBAccess;
 import database.mysql.GroupDAO;
+import database.mysql.UserDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import model.Group;
+import model.Question;
 import model.User;
 import view.Main;
 
@@ -16,16 +20,6 @@ import java.util.List;
 public class ManageGroupsController {
     @FXML
     public ListView groupListView;
-
-    //??
-    private GroupDAO gdao;
-    private DBAccess db;
-
-    @FXML
-    private ArrayList<Group> groupList = new ArrayList<>(); //Lijst met dummy-groepen
-
-    /*@FXML
-    private ListView groupList;*/
     @FXML
     private Button nieuweGroepButton;
     @FXML
@@ -41,10 +35,10 @@ public class ManageGroupsController {
         // clear list view
         groupListView.getItems().clear();
 
-        // get all users
+        // get all groups
         ArrayList<Group> groupArrayList = getAllGroups();
 
-        // show users in grid/box-thing
+        // show groups in grid/box-thing
         for (Group group : groupArrayList) {
             groupListView.getItems().add(group);
         }
@@ -93,9 +87,34 @@ public class ManageGroupsController {
     // de gebruiker krijgt de keuze 'Ja/Nee'
     // na "ja" maakt de methode een connectie met de database om de gekozen groep uit de tabel te verwijderen.
 
-    //public void doDeleteGroup() {}
     public void doDeleteGroup() {
-        //todo: implement
+        // haal geselecteerde gebruiker op
+        Group group = (Group)groupListView.getSelectionModel().getSelectedItem();
+
+        // delete groep
+        //Creëer dbAccess object
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        // maak database-connectie
+        dbAccess.openConnection();
+        //creëer groupDAO instantie
+        GroupDAO groupDAO = new GroupDAO(dbAccess);
+        // roep delete-methode aan
+        groupDAO.deleteGroup(group.getGroepId());
+        // sluit database connectie
+        dbAccess.closeConnection();
+
+        // toon melding dat groep verwijderd is
+        String informationMessage = String.format("De groep met de groepnaam: %s is verwijderd.", group.getGroepnaam());
+        showInformationMessage(informationMessage);
+
+        // draai setup van pagina nogmaals (page-refresh)
+        setup();
+    }
+
+    private void showInformationMessage(String informationMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(informationMessage);
+        alert.show();
     }
 
 }
