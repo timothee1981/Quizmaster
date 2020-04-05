@@ -47,7 +47,7 @@ public class CreateUpdateCourseController {
         // Wil admin nieuwe cursus aanmaken of bestaande cursus updaten? Bestaande cursus laat coordinator zien
         if(! (course.getCursusId() == Course.DEFAULT_COURSE_ID)){
             CursusnaamTextField.setText(course.getCursusNaam());
-            CoordinatorKiezen.setValue(course.getUserIdCoordinator()); //todo: checken wat de dropdown laat zien
+            CoordinatorKiezen.setValue(course.getUserIdCoordinator());
         }
     }
 
@@ -86,7 +86,9 @@ public class CreateUpdateCourseController {
     @FXML
     public void doCreateUpdateCourse(ActionEvent actionEvent) {
         String cursusNaam = CursusnaamTextField.getText();
-        int coordinatorId = Integer.parseInt(CoordinatorKiezen.getId()); //todo De id uit de coordinatorendropdown halen
+        Coordinator coordinator = (Coordinator) CoordinatorKiezen.getValue();
+        int coordinatorId = coordinator.getUserId();
+        course = new Course(cursusNaam,coordinatorId);
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword()); //toegang tot db
         dbAccess.openConnection(); //connectie openen
         CourseDAO courseDAO = new CourseDAO(dbAccess); //CursusDAO instantieren
