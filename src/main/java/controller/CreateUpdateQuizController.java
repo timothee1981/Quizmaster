@@ -1,14 +1,12 @@
 package controller;
 
 import com.mysql.cj.xdevapi.DbDoc;
+import database.mysql.AnswerDAO;
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import model.Answer;
 import model.Question;
 import model.Quiz;
@@ -20,6 +18,9 @@ import java.util.List;
 
 
 public class CreateUpdateQuizController {
+    DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+    QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+    AnswerDAO answerDAO = new AnswerDAO(dbAccess);
     Quiz quiz;
     private String labelvul;
     private String labelwijzig;
@@ -43,11 +44,12 @@ public class CreateUpdateQuizController {
     private ListView<Question> questionList;
 
     public void setup(Quiz quiz) {
-        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
-        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+
         ArrayList<Question> getAllQuestionFromQuiz = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
+        questionList.getItems().clear();
         for(Question question: getAllQuestionFromQuiz){
+
            questionList.getItems().add(question);
         }
 
@@ -83,18 +85,20 @@ public class CreateUpdateQuizController {
         dbAccess.openConnection();
         QuizDAO quizDAO = new QuizDAO(dbAccess);
 
-        if(titelLable.getText().equals(labelvul)){
-            quizDAO.storeOne(quiz);
-            System.out.println("Toegevoegd");
+        if(quiz != null) {
+            if (titelLable.getText().equals(labelvul)) {
+                quizDAO.storeOne(quiz);
+                System.out.println("Toegevoegd");
             /*for (Answer answer1 : answers) {
                 answerDAO.storeOne(answer1);
                 System.out.println("opgeslagen");*/
-           // }
-        }else if(titelLable.getText().equals(labelwijzig)){
-            int id = Integer.valueOf(idLabel.getText());
-            quiz.setQuizId(id);
-            quizDAO.updateQuiz(quiz);
-            System.out.println(("gewijzigd"));
+                // }
+            } else if (titelLable.getText().equals(labelwijzig)) {
+                int id = Integer.valueOf(idLabel.getText());
+                quiz.setQuizId(id);
+                quizDAO.updateQuiz(quiz);
+                System.out.println(("gewijzigd"));
+            }
         }
 
 
@@ -104,19 +108,65 @@ public class CreateUpdateQuizController {
 
     private void createQuiz() {
 
-
         StringBuilder warningText = new StringBuilder();
         boolean correcteInvoer = true;
         String quizName = quizNameTextField.getText();
-        double cesuur = Double.parseDouble(cesuurTextField.getText());
 
-        quiz = new Quiz(quizName,cesuur);
+
+        if (quizName.isEmpty() || cesuurTextField.getText().isEmpty()) {
+            warningText.append("Je moet een quiznaam invullen en een cesuur\n");
+            correcteInvoer = false;
+
+        }
+        if (!correcteInvoer) {
+            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+            foutmelding.setContentText(warningText.toString());
+            foutmelding.show();
+            quiz = null;
+        } else {
+            double cesuur = Double.parseDouble(cesuurTextField.getText());
+            quiz = new Quiz(quizName,cesuur);
+        }
+
+
 
     }
 
     public void doCreateQuestion(){
         Question question = new Question();
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
+
+    }
+
+    public void doUpdateQuestion(){
+        Question question = questionList.getSelectionModel().getSelectedItem();
+
+        if(question == null){
+            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+            foutmelding.setContentText("Je moet een vraag aanklikken\n");
+            foutmelding.show();
+            return;
+
+        }
+
+        Main.getSceneManager().showCreateUpdateQuestionScene(question);
+    }
+
+    public void doDeleteQuestion(){
+        dbAccess.openConnection();
+        Question question = questionList.getSelectionModel().getSelectedItem();
+        int questionId = question.getQuestionId();
+        answerDAO.deleteAnswerfromQuestion(questionId);
+        if(question == null) {
+
+            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+            foutmelding.setContentText("Je moet een vraag aanklikken\n");
+            foutmelding.show();
+            return;
+
+        }
+        questionDAO.deleteQuestion(question);
+
 
     }
 

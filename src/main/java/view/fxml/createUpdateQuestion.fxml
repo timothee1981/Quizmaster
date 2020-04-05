@@ -54,7 +54,7 @@
                <Font name="Arial Black" size="18.0" />
             </font>
          </Label>
-         <ComboBox fx:id="quizComboBox" prefWidth="150.0" GridPane.columnIndex="1"  />
+         <ComboBox fx:id="quizComboBox" prefWidth="150.0" GridPane.columnIndex="1" />
 
       </children>
    </GridPane>
@@ -64,5 +64,5 @@
    <Label fx:id="idAnswer2" layoutX="23.0" layoutY="191.0" text="Label" visible="false" />
    <Label fx:id="idAnswer3" layoutX="23.0" layoutY="228.0" text="Label" visible="false" />
    <Label fx:id="idAnswer4" layoutX="23.0" layoutY="260.0" text="Label" visible="false" />
-   <Label fx:id="idQuiz" layoutX="23.0" layoutY="93.0" text="Label" />
+   <Label fx:id="idQuiz" layoutX="23.0" layoutY="93.0" text="QLabel"  visible="false"/>
 </AnchorPane>

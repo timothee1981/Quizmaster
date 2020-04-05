@@ -25,7 +25,7 @@ public class CreateUpdateQuestionController {
     private String labelwijzig;
 
     @FXML
-    private  Label idQuestion, idGoodAnswer,idAnswer1,idAnswer2,idAnswer3,idAnswer4;
+    private  Label idQuestion, idGoodAnswer,idAnswer1,idAnswer2,idAnswer3,idAnswer4, idQuiz;
 
     @FXML
     private Label titelLabel;
@@ -65,6 +65,9 @@ public class CreateUpdateQuestionController {
             int questionId = question.getQuestionId();
             String questionIdString = String.format("%d",questionId);
             idQuestion.setText(questionIdString);
+            setQuizDropdownOfUser(question.getQuiz());
+            setQuizDropdownOfUser(question.getQuiz());
+
             answers = returnArrayAnswers(question.getQuestionId());
 
             goodAnswerTextField.setText(answers.get(0).getAnswer());
@@ -98,6 +101,7 @@ public class CreateUpdateQuestionController {
 
     @FXML
     public void doCreateUpdateQuestion(ActionEvent actionEvent) {
+        StringBuilder warningText = new StringBuilder();
 
 
         createQuestion();
@@ -119,11 +123,21 @@ public class CreateUpdateQuestionController {
 
             // roep save-methode aan
         if(titelLabel.getText().equals(labelvul)) {
-            question.setQuiz(quizComboBox.getValue());//still have to make condition that one HAS to get a quiz
+            if(!(quizComboBox.getValue() == null)) {
+            question.setQuiz(quizComboBox.getValue());
             questionDAO.storeOne(question);
             for (Answer answer1 : answers) {
                 answerDAO.storeOne(answer1);
                 System.out.println("opgeslagen");
+            }
+            questionDAO.updateGoedAntwoodId(answers.get(0).getAnswerId(),question.getQuestionId());
+
+            }else{
+                warningText.append("Je moet een antwoord invullen\n");
+                Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+                foutmelding.setContentText(warningText.toString());
+                foutmelding.show();
+                question = null;
             }
         }else if(titelLabel.getText().equals(labelwijzig)) {
             int id = Integer.valueOf(idQuestion.getText());

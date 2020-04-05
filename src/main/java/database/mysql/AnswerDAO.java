@@ -117,26 +117,7 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
             }
         }
 
-    public int getAnswerIdByName(String answerName){
 
-        int answerId = 0 ;
-        String sql = "SELECT * FROM antwoord WHERE antwoord = ?;";
-        QuestionDAO questionDAO = new QuestionDAO(dBaccess);
-        try {
-            PreparedStatement preparedStatement = getStatement(sql);
-            preparedStatement.setString(1,answerName);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                answerId = resultSet.getInt(1);
-
-            }
-
-        }catch (SQLException sqlFout){
-            System.out.println(sqlFout);
-
-        }
-        return answerId;
-    }
 
     public void deleteAnswerfromQuestion(int questionId) {
         String sql = "DELETE FROM antwoord WHERE vraagId = ?";
