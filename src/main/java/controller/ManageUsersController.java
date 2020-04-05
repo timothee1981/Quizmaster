@@ -51,10 +51,8 @@ public class ManageUsersController {
 
     public void doCreateUser() {
         // navigeer naar create-user pagina en toon leeg scherm
-        User user = new Teacher();
-
         // navigeer naar create-update-user pagina en toon data van user
-        Main.getSceneManager().showCreateUpdateUserScene(user);
+        Main.getSceneManager().showCreateUpdateUserScene(new Teacher());
     }
 
     public void doUpdateUser() {

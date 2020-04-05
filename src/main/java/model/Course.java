@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public class Course {
 
+    //Constanten
+    final public static int DEFAULT_COURSE_ID = 0;
+
     //Cursus attributen
     private int cursusId;
     private String cursusNaam;

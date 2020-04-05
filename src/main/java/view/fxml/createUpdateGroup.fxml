@@ -11,7 +11,7 @@
       <Label layoutX="120.0" layoutY="60.0" text="Naam van de groep" BorderPane.alignment="CENTER" />
       <TextField fx:id="groupNameTextBox" layoutX="250.0" layoutY="60.0" />
 
-      <TextField fx:id="groupIdTextbox" layoutX="250.0" layoutY="10.0" />
+      <TextField fx:id="groupIdTextbox" layoutX="250.0" layoutY="10.0" visible="false" />
 
       <Label layoutX="120.0" layoutY="110.0" text="Docent" BorderPane.alignment="CENTER" />
       <ComboBox fx:id="teacherDropdown" layoutX="249.0" layoutY="106.0" prefWidth="150.0" />

@@ -6,6 +6,7 @@ public class Group {
 
     // Group attributen: id, naam, id van de docent, id van de cursus
     final public static int DEFAULT_GROUP_ID = 0;
+    final public static String DEFAULT_GROUP_NAME = "groepnaam";
 
     private int groepId;
     private String groepnaam;
@@ -22,9 +23,8 @@ public class Group {
 
     //Default constructor, waarbij de default-waarden aangegeven zijn (want in DB als not null)
     public Group(){
-        this(DEFAULT_GROUP_ID,"groepnaam", new Teacher());
+        this(DEFAULT_GROUP_ID,DEFAULT_GROUP_NAME, new Teacher());
     }
-    //todo: remove magic numbers
 
     // getters en setters
     public int getGroepId() {
@@ -54,4 +54,14 @@ public class Group {
     public void setGroepenLijst(ArrayList<Group> groepenLijst) {
         this.groepenLijst = groepenLijst;
     }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s", groepnaam);
+    }
 }
+
