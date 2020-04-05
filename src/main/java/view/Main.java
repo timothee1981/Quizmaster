@@ -1,6 +1,8 @@
 package view;
 
+import controller.UserCouchDBController;
 import database.mysql.DBAccess;
+import database.nosql.CouchDBaccess;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.*;
@@ -19,10 +21,20 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
         Main.primaryStage = primaryStage;
         primaryStage.setTitle("Make IT Work - Project 1");
         getSceneManager().setWindowTool();
         primaryStage.show();
+    }
+
+    private void CouchDBaccessTest() {
+        System.out.println("begin CouchDB test");
+        Teacher user = new Teacher(1337, "Stefan", "Stefan", "Docent");
+
+        UserCouchDBController userCouchDBController = new UserCouchDBController();
+
+        userCouchDBController.saveUser(user);
     }
 
     //Testgegevens van testgebruikers
