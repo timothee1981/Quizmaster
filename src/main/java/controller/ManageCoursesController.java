@@ -30,6 +30,7 @@ public class ManageCoursesController {
     @FXML
     private ArrayList<Course> courseArrayList = new ArrayList<>();
 
+
     //Opvragen van alle cursussen, om ze te tonen in een Listview
     public void setup() {
         courseListView.getItems().clear(); //een lege lijst
