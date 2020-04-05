@@ -1,17 +1,22 @@
 package controller;
 
+import com.mysql.cj.xdevapi.DbDoc;
 import database.mysql.DBAccess;
+import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import model.Answer;
 import model.Question;
 import model.Quiz;
+import model.User;
 import view.Main;
 
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CreateUpdateQuizController {
@@ -23,6 +28,9 @@ public class CreateUpdateQuizController {
     private TextField quizNameTextField;
 
     @FXML
+    private  TextField questionTextField;
+
+    @FXML
     private  TextField cesuurTextField;
 
     @FXML
@@ -31,7 +39,18 @@ public class CreateUpdateQuizController {
     @FXML
     private Button  menuButton1, returnCourseButton;
 
+    @FXML
+    private ListView<Question> questionList;
+
     public void setup(Quiz quiz) {
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        dbAccess.openConnection();
+        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+        ArrayList<Question> getAllQuestionFromQuiz = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
+        for(Question question: getAllQuestionFromQuiz){
+           questionList.getItems().add(question);
+        }
+
         if (quiz.getQuizId() == Question.DEFAULT_VRAAG) {
             labelvul = "Vull quiz en bijhorende vragen";
             titelLable.setText(labelvul);
@@ -46,6 +65,8 @@ public class CreateUpdateQuizController {
             idLabel.setText(quizIDString);
         }
     }
+
+
 
     public void doDashBoard(){
 
@@ -90,17 +111,12 @@ public class CreateUpdateQuizController {
         double cesuur = Double.parseDouble(cesuurTextField.getText());
 
         quiz = new Quiz(quizName,cesuur);
-       /* Answer answer = new Answer(goodAnswerTextField.getText(),question);
-        Answer answer2 = new Answer(answer2TextField.getText(),question);
-        Answer answer3 = new Answer(answer3TextField.getText(),question);
-        Answer answer4 = new Answer(answer4TextField.getText(),question);
-        question.voegAntwoordAanVraag(answer);
-        question.voegAntwoordAanVraag(answer2);
-        question.voegAntwoordAanVraag(answer3);
-        question.voegAntwoordAanVraag(answer4);
-        answers = question.getAnswers();*/
 
+    }
 
+    public void doCreateQuestion(){
+        Question question = new Question();
+        Main.getSceneManager().showCreateUpdateQuestionScene(question);
 
     }
 
