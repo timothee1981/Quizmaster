@@ -11,6 +11,8 @@ import view.Main;
 import java.util.ArrayList;
 
 public class ManageCoursesController {
+    @FXML
+    public ListView courseList;
 
     @FXML
     private Button newCourseButton;
@@ -25,18 +27,15 @@ public class ManageCoursesController {
     private Button terugNaarMenuButton;
 
     @FXML
-    public ListView courseListView;
-
-    @FXML
     private ArrayList<Course> courseArrayList = new ArrayList<>();
 
 
     //Opvragen van alle cursussen, om ze te tonen in een Listview
     public void setup() {
-        courseListView.getItems().clear(); //een lege lijst
+        courseList.getItems().clear(); //een lege lijst
         courseArrayList = getAllCourses();
         for (Course course : courseArrayList) {
-            courseListView.getItems().add(course); //cursus toevoegen aan de lijst
+            courseList.getItems().add(course); //cursus toevoegen aan de lijst
         }
     }
 
@@ -62,7 +61,7 @@ public class ManageCoursesController {
 
     //Wijzigen van een cursus(naam en coordinator)
     public void doUpdateCourse(){
-        Course course = (Course) courseListView.getSelectionModel().getSelectedItem();
+        Course course = (Course) courseList.getSelectionModel().getSelectedItem();
         Main.getSceneManager().showCreateUpdateCourseScene(course);
     }
 

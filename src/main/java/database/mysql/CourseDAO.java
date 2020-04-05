@@ -22,7 +22,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
     public ArrayList getAll() {
         ArrayList<Course> cursusLijst = new ArrayList<>();
         {
-            String sql = "SELECT * FROM course;";
+            String sql = "SELECT * FROM cursus;";
             try {
                 PreparedStatement preparedStatement = getStatement(sql);
                 ResultSet resultSet = super.executeSelectPreparedStatement(preparedStatement);
@@ -32,6 +32,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
                     int userIdcoordinator = resultSet.getInt("userIdcoordinator");
                     course = new Course(cursusNaam, userIdcoordinator);
                     course.setCursusId(resultSet.getInt(1));
+                    cursusLijst.add(course);
                 }
             } catch (SQLException sqlFout){
                 System.out.println(sqlFout.getMessage());
@@ -43,7 +44,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
     @Override
     public Object getOneById(int cursusId) {
         Course course = null;
-            String sql = "SELECT * FROM course WHERE cursusID = ?";
+            String sql = "SELECT * FROM cursus WHERE cursusID = ?";
             try {
                 PreparedStatement preparedStatement = getStatement(sql);
                 preparedStatement.setInt(1, cursusId);
