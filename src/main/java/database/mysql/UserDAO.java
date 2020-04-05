@@ -168,7 +168,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO {
                 " FROM gebruiker" +
                 " JOIN gebruikerrol ON gebruiker.userId = gebruikerrol.userId" +
                 " JOIN rol ON gebruikerrol.roleId = rol.rolId" +
-                " WHERE userId = ?";
+                " WHERE gebruiker.userId = ?";
         User user = null;
 
         try{

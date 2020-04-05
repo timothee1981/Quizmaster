@@ -65,6 +65,6 @@ public abstract class User {
 
     @Override
     public String toString() {
-        return String.format("userId: %d\tuserName: %s\t role: %s",userId, userName, role);
+        return String.format("%s - %s",userName, role);
     }
 }
