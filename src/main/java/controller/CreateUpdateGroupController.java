@@ -76,6 +76,10 @@ public class CreateUpdateGroupController {
     }
 
     // ga naar het scherm Groepenbeheer door op de knop 'Terug naar Groepenbeheer' te klikken
+    public void doToManageGroups() {
+        Main.getSceneManager().showManageGroupsScene();
+    }
+
     public void doCreateUpdateGroup() {
         // get values of group to add/update
         // get name
