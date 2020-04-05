@@ -19,7 +19,7 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
     //Specifieke groep ophalen uit de Quizmaster database
     Group group = null;
     public Group getGroupById(int groepId){
-        String sql = "SELECT * FROM groep WHERE groepId = ?";
+        String sql = "SELECT * FROM groep WHERE groepId = ?;";
         try {
             PreparedStatement preparedStatement = getStatement(sql);
             preparedStatement.setInt(1, groepId);
@@ -34,18 +34,13 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
     }
 
     // Groep verwijderen uit Quizmaster database
-    public void deleteGroup(int groepId, String groepnaam) {
+    public void deleteGroup(int groepId) {
 
-        //todo delete * where groupId = ?
-        String sql = "DELETE FROM group (groepId, groepnaam) VALUES (?,?);";
+        String sql = "DELETE FROM groep WHERE groepId = ?;";
         try {
-
-
             PreparedStatement preparedStatement = dBaccess.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, groepId);
-            preparedStatement.setString(2, groepnaam);
             preparedStatement.executeUpdate();
-
 
         } catch (SQLException sqlFout) {
             System.out.println(sqlFout.getMessage());
