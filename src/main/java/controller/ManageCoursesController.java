@@ -1,10 +1,14 @@
 package controller;
 
+import database.mysql.CourseDAO;
+import database.mysql.DBAccess;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import model.Course;
 import view.Main;
+
+import java.util.ArrayList;
 
 public class ManageCoursesController {
 
@@ -21,13 +25,30 @@ public class ManageCoursesController {
     private Button terugNaarMenuButton;
 
     @FXML
-    private ListView courseList;
+    public ListView courseListView;
 
+    @FXML
+    private ArrayList<Course> courseArrayList = new ArrayList<>();
 
+    //Opvragen van alle cursussen, om ze te tonen in een Listview
+    public void setup() {
+        courseListView.getItems().clear(); //een lege lijst
+        courseArrayList = getAllCourses();
+        for (Course course : courseArrayList) {
+            courseListView.getItems().add(course); //cursus toevoegen aan de lijst
+        }
+    }
 
-    public void setup() {}
-    //Opvragen van alle cursussen
-    //ArrayList<Course> cursusLijst = CreateUpdateCourseController.getCourses();
+    //Opvragen van een lijst van alle cursussen
+    public ArrayList<Course> getAllCourses(){
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(),
+                DBAccess.getMainUserPassword()); //toegang tot db
+        dbAccess.openConnection(); //connectie open
+        CourseDAO courseDAO = new CourseDAO(dbAccess); //cursusDAO instantie
+        ArrayList<Course> courseArrayList = courseDAO.getAll(); //alle aanwezige items in de lijst laden
+        dbAccess.closeConnection(); //connectie sluiten
+        return courseArrayList;
+    }
 
     //Ga naar het menu met taken van de Administrator
     public void doMenu(){
@@ -38,10 +59,16 @@ public class ManageCoursesController {
         Main.getSceneManager().showCreateUpdateCourseScene(new Course());
     }
 
-    //Wijzigen van een cursus(id, naam en coordinator)
-    public void doUpdateCourse(){}
+    //Wijzigen van een cursus(naam en coordinator)
+    public void doUpdateCourse(){
+        Course course = (Course) courseListView.getSelectionModel().getSelectedItem();
+        Main.getSceneManager().showCreateUpdateCourseScene(course);
+    }
 
     //Verwijderen van een cursus
-    public void doDeleteCourse(){}
+    public void doDeleteCourse(){
+        //methode voor het verwijderen van een cursus
+        //todo Afstemmen over upon delete restricties? Cursussen niet verwijderen als er groepen/quizzes zijn?
+    }
 
 }
