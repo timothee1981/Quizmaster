@@ -207,4 +207,27 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
             System.out.println(e.getMessage());
         }
     }
+
+
+    public int getGoodAnswer(int questionId){
+        int goodanswer = 0;
+        String sql = "SELECT antwoordJuist FROM quizvraag WHERE vraagId = ?;";
+        try {
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(1,questionId);
+            ResultSet resultSet = executeSelectPreparedStatement(preparedStatement);
+            while(resultSet.next()){
+                goodanswer = resultSet.getInt("antwoordJuist");
+
+            }
+
+        }catch (SQLException sqlFout){
+            System.out.println(sqlFout);
+
+        }
+
+        return goodanswer;
+    }
+
+
 }

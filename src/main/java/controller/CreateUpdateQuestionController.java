@@ -114,7 +114,6 @@ public class CreateUpdateQuestionController {
             if (!(quizComboBox.getValue() == null)) {
                 // vul quiz in die bij vraag hoort
                 question.setQuiz(quizComboBox.getValue());
-
                 // check of je vraag een waarde heeft:
                 if(!(question.getQuestion().isEmpty())) {
                     // vraag heeft een waarde:

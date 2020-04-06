@@ -10,9 +10,11 @@ import javafx.scene.control.TextArea;
 import model.Answer;
 import model.Question;
 import model.Quiz;
+import model.QuizResult;
 import view.Main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class FillOutQuizController {
     private DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
@@ -21,6 +23,12 @@ public class FillOutQuizController {
     private Quiz quiz;
     private QuizDAO quizDAO;
     private int questionCount = 0;
+    private String answer1,answer2,answer3,answer4;
+    private String goodAnswer;
+    private QuizResult quizResult;
+    private int antwoordenJuist;
+
+
 
 
 
@@ -42,16 +50,16 @@ public class FillOutQuizController {
         //haal antwoord bij quiz
         ArrayList<Question> getAllQuestionFromQuiz = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
 
-
         // haal vraag uit quiz afhankelijk van de vraag teller
-        showQuestionOnCount(getAllQuestionFromQuiz,questionCount);
+        showQuestion(getAllQuestionFromQuiz,questionCount);
+
         dbAccess.closeConnection();
 
 
 
     }
 
-    private void showQuestionOnCount(ArrayList<Question> getAllQuestion,  int questionCount) {
+    private void showQuestion(ArrayList<Question> getAllQuestion,  int questionCount) {
         dbAccess.openConnection();
         this.questionDAO = new QuestionDAO(dbAccess);
         this.answerDAO = new AnswerDAO(dbAccess);
@@ -59,6 +67,9 @@ public class FillOutQuizController {
 
         //welke vraag willen we
         Question question = getAllQuestion.get(questionCount);
+
+        int goedeAnswerId = questionDAO.getGoodAnswer(question.getQuestionId());
+        goodAnswer = answerDAO.getOneById(goedeAnswerId).getAnswer();
 
         //check welke vraag id we hebben
 
@@ -69,14 +80,25 @@ public class FillOutQuizController {
         ArrayList<Answer> answers = answerDAO.getAnswersByQuestionId(question.getQuestionId());
         //en full question area met antwoorden eerste vraag
         fillanswerArea(answers);
+
         dbAccess.closeConnection();
     }
 
     private void fillanswerArea(ArrayList<Answer> answers) {
         dbAccess.openConnection();
         answerDAO = new AnswerDAO(dbAccess);
+        //answers op andere index mixen
+        Collections.shuffle(answers);
+        //waarde verschillende antworden opslaan
+        answer1  = answers.get(0).getAnswer();
+        answer2 = answers.get(1).getAnswer();
+        answer3 = answers.get(2).getAnswer();
+        answer4 = answers.get(3).getAnswer();
+
+        //geef een integer waarde aan de anwtoorden string
         int count = 1;
-        for(int arrayteller = 0; arrayteller< answers.size();arrayteller++) {
+        //print deze antwoorden uit
+        for(int arrayteller =0; arrayteller<answers.size();arrayteller++) {
             questionArea.appendText("vraag " + count++ + ": " + answers.get(arrayteller).getAnswer() + "\n");
         }
 
@@ -84,27 +106,46 @@ public class FillOutQuizController {
     }
 
     public void doRegisterA() {
-        //kies aantwoord A ....sla op in String aantwoord gebruiker
-        //methode van quizrestult:
-        // vergelijke antwoord met aantwoord array, aantwoorden juist ++ als goed is
+
+        if(answer1.equals(goodAnswer)) {
+            System.out.println("well done");
+            antwoordenJuist++;
+
+        }else{
+            System.out.println("pity");
+        }
+
+
     }
 
     public void doRegisterB() {
-        //kies aantwoord B ....sla op in String aantwoord gebruiker
-        //methode van quizrestult:
-        // vergelijke antwoord met aantwoord array, aantwoorden juist ++ als goed is
+        if(answer2.equals(goodAnswer)) {
+            System.out.println("well done");
+            antwoordenJuist++;
+
+        }else{
+            System.out.println("pity");
+        }
     }
 
     public void doRegisterC() {
-        //kies aantwoord C ....sla op in String aantwoord gebruiker
-        //methode van quizrestult:
-        // vergelijke antwoord met aantwoord array, aantwoorden juist ++ als goed is
+        if(answer3.equals(goodAnswer)) {
+            System.out.println("well done");
+            antwoordenJuist++;
+
+        }else{
+            System.out.println("pity");
+        }
     }
 
     public void doRegisterD() {
-        //kies aantwoord D ....sla op in String aantwoord gebruiker
-        //methode van quizrestult:
-        // vergelijke antwoord met aantwoord array, aantwoorden juist ++ als goed is
+        if(answer4.equals(goodAnswer)){
+            System.out.println("well done");
+            antwoordenJuist++;
+
+        }else{
+            System.out.println("pity");
+        }
     }
 
     public void doNextQuestion() {

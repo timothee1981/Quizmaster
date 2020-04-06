@@ -15,12 +15,20 @@ public class QuizResult {
         this.quiz = quiz;
         this.student = student;
         this.datumgemaakt = new Date();
+        antwoordenJuist = getAntwoordenJuist();
 
 
 
 
     }
 
+    public int getAntwoordenJuist() {
+        return antwoordenJuist;
+    }
+
+    public void setAntwoordenJuist(int antwoordenJuist) {
+        this.antwoordenJuist = antwoordenJuist;
+    }
 
     public Quiz getQuiz() {
         return quiz;
