@@ -23,6 +23,7 @@
             <Font size="18.0" />
         </font>
     </Label>
+    <TextField fx:id="courseIdTextbox" layoutX="250.0" layoutY="10.0" visible="false" />
     <Button fx:id="CursusAanmakenKnop" layoutX="510.0" layoutY="232.0" mnemonicParsing="false"
             onAction="#doCreateUpdateCourse" prefHeight="25.0" prefWidth="190.0" text="Aanmaken / Updaten">
         <font>

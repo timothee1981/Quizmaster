@@ -35,6 +35,9 @@ public class CreateUpdateCourseController {
     @FXML
     private Button NaarMenuKnop;
 
+    @FXML
+    public TextField courseIdTextbox;
+
 
     //Methode voor het prepareren van de pagina en het checken van de user-gegevens en velden
     public void setup(Course course) {
@@ -48,6 +51,7 @@ public class CreateUpdateCourseController {
         if(! (course.getCursusId() == Course.DEFAULT_COURSE_ID)){
             CursusnaamTextField.setText(course.getCursusNaam());
             CoordinatorKiezen.setValue(course.getUserIdCoordinator());
+            courseIdTextbox.setText(String.format("%d",course.getCursusId())); //is dit veld gevuld, dan wijzigen
         }
     }
 
