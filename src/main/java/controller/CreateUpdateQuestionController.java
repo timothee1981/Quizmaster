@@ -53,36 +53,33 @@ public class CreateUpdateQuestionController {
         dbAccess.openConnection();
         answerDAO = new AnswerDAO(dbAccess);
 
+        // vul dropdown met alle quizes
         fillQuizDropdown();
 
+        // vul bijbehorende quiz in
+        setQuizDropdownOfUser(question.getQuiz());
+
         if (question.getQuestionId() == Question.DEFAULT_VRAAG) {
+            // nieuwe vraag
             labelvul = "Vul Vraag en antwoord";
             titelLabel.setText(labelvul);
         } else {
-
+            // bestaande vraaag
             labelwijzig = "Wijzig Vraag";
             titelLabel.setText(labelwijzig);
+
+            // vul vraag-textveld in:
             vraagTextField.setText(question.getQuestion());
             int questionId = question.getQuestionId();
             String questionIdString = String.format("%d",questionId);
             idQuestion.setText(questionIdString);
-            setQuizDropdownOfUser(question.getQuiz());
-            setQuizDropdownOfUser(question.getQuiz());
 
-
-            answers = returnArrayAnswers(questionId);
-
-            goodAnswerTextField.setText(answers.get(0).getAnswer());
-            answer2TextField.setText(answers.get(1).getAnswer());
-            answer3TextField.setText(answers.get(2).getAnswer());
-            answer4TextField.setText(answers.get(3).getAnswer());
+            // vul antwoorden in:
+            goodAnswerTextField.setText(question.getAnswers().get(0).toString());
+            answer2TextField.setText(question.getAnswers().get(1).toString());
+            answer3TextField.setText(question.getAnswers().get(2).toString());
+            answer4TextField.setText(question.getAnswers().get(3).toString());
         }
-    }
-
-    private void setAnswersIdLabel() {
-//        int goodanswerId = question.getQuestionId();
-     //   String questionIdString = String.format("%d",questionId);
-      //  idQuestion.setText(questionIdString);
     }
 
     private void setQuizDropdownOfUser(Quiz quiz) {
@@ -103,6 +100,9 @@ public class CreateUpdateQuestionController {
 
     @FXML
     public void doCreateUpdateQuestion(ActionEvent actionEvent) {
+
+        // due to global datastorage - first clear question/answer etc.
+
         createQuestion();
         // maak database-connectie
         dbAccess.openConnection();
@@ -110,28 +110,62 @@ public class CreateUpdateQuestionController {
         answerDAO = new AnswerDAO(dbAccess);
 
             // roep save-methode aan
-        if (titelLabel.getText().equals(labelvul)) {
+        if (titelLabel.getText().equals(labelvul)) { // bij nieuwe vraag
             if (!(quizComboBox.getValue() == null)) {
+                // vul quiz in die bij vraag hoort
                 question.setQuiz(quizComboBox.getValue());
+
+                // check of je vraag een waarde heeft:
                 if(!(question.getQuestion().isEmpty())) {
+                    // vraag heeft een waarde:
+
+                    // bepaal goede antwoord
+                    Answer correctAnswer = new Answer(goodAnswerTextField.getText(), question);
+                    question.setCorrectAnswer(correctAnswer);
+
+                    // save question
                     questionDAO.storeOne(question);
-                    for(Answer answer: answers){
-                        answerDAO.storeOne(answer);
+
+                    // get all answers of question from database:
+                    AnswerDAO answerDAO = new AnswerDAO(dbAccess);
+                    ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(question.getQuestionId());
+                    int correctAnswerId = 0;
+                    for(Answer answer: answerArrayList){
+                        if(correctAnswer.getAnswer().equals(answer.getAnswer())){
+                            correctAnswerId = answer.getAnswerId();
+                        }
                     }
-                    questionDAO.updateGoedAntwoodId(answers.get(0).getAnswerId(), question.getQuestionId());
+                    //check if correct question == that question -> get externalId -> pass this id to updateGoedeAntwoordId method
+                    questionDAO.updateGoedAntwoodId(correctAnswerId, question.getQuestionId());
+
+                    System.out.println(("nieuwe vraag opgeslagen"));
                 }else{
+                    // toon waarschuwing, je moet nog een vraag invullen
                     warningTextNoQuestion();
+                    return;
                 }
             } else {
+                // toon melding: je moet nog een quiz selecteren
                 noQuizWarning();
+                return;
             }
         } else if (titelLabel.getText().equals(labelwijzig)) { //dit is bij wijziging van een vraag
             int id = Integer.valueOf(idQuestion.getText());
             question.setQuestionId(id);
             updateQuestionById(question);
-            System.out.println(("gewijzigd"));
+            System.out.println(("vraag gewijzigd"));
         }
         dbAccess.closeConnection();
+        // ga terug naar dashboard
+        Main.getSceneManager().showCoordinatorDashboard();
+    }
+
+    private boolean validateAnswerString(String rawAnswerString) {
+        if(rawAnswerString.equals("") || rawAnswerString == null){
+            return false;
+        } else{
+            return true;
+        }
     }
 
     private void noQuizWarning() {
@@ -139,7 +173,6 @@ public class CreateUpdateQuestionController {
         Alert foutmelding = new Alert(Alert.AlertType.ERROR);
         foutmelding.setContentText(warningText.toString());
         foutmelding.show();
-        question = null;
     }
 
     private void allAnswerFilledWarning() {
@@ -157,7 +190,6 @@ public class CreateUpdateQuestionController {
         Alert foutmelding = new Alert(Alert.AlertType.ERROR);
         foutmelding.setContentText(warningText.toString());
         foutmelding.show();
-        return;
     }
 
     private void updateQuestionById(Question question) {
@@ -210,7 +242,6 @@ public class CreateUpdateQuestionController {
     }
 
     private void fillQuizDropdown() {
-
         ArrayList<Quiz> quizList = getAllQuizItems();
         for(Quiz quiz: quizList){
             quizComboBox.getItems().add(quiz);

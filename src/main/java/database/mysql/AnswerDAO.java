@@ -135,13 +135,4 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
     }
 
 
-
-
-
-
-
-
-
-
-
 }

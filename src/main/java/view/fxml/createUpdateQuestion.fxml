@@ -27,20 +27,20 @@
          <TextField fx:id="answer2TextField" prefHeight="26.0" prefWidth="186.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          <TextField fx:id="answer3TextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          <TextField fx:id="answer4TextField" prefHeight="26.0" prefWidth="186.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-         <Label text="Antwoord1" GridPane.rowIndex="2">
+         <Label text="Juiste antwoord" GridPane.rowIndex="2">
             <font>
                <Font name="Calisto MT" size="14.0" />
             </font></Label>
-         <Label text="Antwoord2" GridPane.rowIndex="3">
+         <Label text="Antwoord 2" GridPane.rowIndex="3">
             <font>
                <Font name="Calisto MT" size="14.0" />
             </font></Label>
-         <Label text="Antwoord3" GridPane.rowIndex="4">
+         <Label text="Antwoord 3" GridPane.rowIndex="4">
             <font>
                <Font name="Calisto MT" size="14.0" />
             </font></Label>
 
-         <Label text="Antwoord4" GridPane.rowIndex="5">
+         <Label text="Antwoord 4" GridPane.rowIndex="5">
             <font>
                <Font name="Calisto MT" size="14.0" />
             </font></Label>
@@ -58,11 +58,10 @@
 
       </children>
    </GridPane>
-   <Label fx:id="titelLabel" layoutX="188.0" layoutY="45.0" text="Label" />
+   <Label fx:id="titelLabel" layoutX="188.0" layoutY="45.0" text="Label" visible="false" />
    <Label fx:id="idQuestion" layoutX="23.0" layoutY="102.0" text="Label" visible="true" />
    <Label fx:id="idGoodAnswer" layoutX="23.0" layoutY="154.0" text="Label" visible="true" />
-   <Label fx:id="idAnswer2" layoutX="23.0" layoutY="191.0" text="Label" visible="true" />
    <Label fx:id="idAnswer3" layoutX="23.0" layoutY="228.0" text="Label" visible="false" />
    <Label fx:id="idAnswer4" layoutX="23.0" layoutY="260.0" text="Label" visible="false" />
-   <Label fx:id="idQuiz" layoutX="23.0" layoutY="93.0" text="QLabel"  visible="false"/>
+   <Label fx:id="idQuiz" layoutX="23.0" layoutY="93.0" text="QLabel" visible="false" />
 </AnchorPane>

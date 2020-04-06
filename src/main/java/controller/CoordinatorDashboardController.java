@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import model.Answer;
 import model.Course;
 import model.Question;
 import model.Quiz;
@@ -37,11 +38,13 @@ public class CoordinatorDashboardController {
 
         dbAccess.openConnection();
 
+        // laad de courses-lijst in
         ArrayList<Course> courses = courseDAO.getAll();
         for(Course course: courses){
             courseList.getItems().add(course);
         }
 
+        // bij selectie van item in course-lijst draai dit script dat de quiz-lijst inlaad
        courseList.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Course>() {
                     @Override
@@ -77,9 +80,12 @@ public class CoordinatorDashboardController {
     }
 
     private void fillAnswerListview() {
+
+        //todo: answer need to be added to the question
+
         dbAccess.openConnection();
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-        Quiz quiz =  quizList.getSelectionModel().getSelectedItem();
+        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if(quiz == null){
             return;
         }
@@ -114,7 +120,7 @@ public class CoordinatorDashboardController {
 
         if(quiz == null){
             Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText("Je moet een vraag aanklikken\n");
+            foutmelding.setContentText("Je moet een quiz aanklikken\n");
             foutmelding.show();
             return;
 
@@ -139,15 +145,24 @@ public class CoordinatorDashboardController {
     }
 
     public void doEditQuestion() {
+        // vraag selecteren die gewijzigd moet worden
         Question question = questionList.getSelectionModel().getSelectedItem();
-
         if(question == null){
             Alert foutmelding = new Alert(Alert.AlertType.ERROR);
             foutmelding.setContentText("Je moet een vraag aanklikken\n");
             foutmelding.show();
             return;
-
         }
+
+        // quiz selecteren die aan vraag moet worden toegevoegd -> wordt niet in constructor gedaan
+        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
+        if(question == null){
+            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+            foutmelding.setContentText("Je moet een vraag aanklikken\n");
+            foutmelding.show();
+            return;
+        }
+        question.setQuiz(quiz);
 
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
     }

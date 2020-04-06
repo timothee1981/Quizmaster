@@ -96,6 +96,13 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
                 String question1= resultSet.getString("vraag");
                 question = new Question(question1);
                 question.setQuestionId(resultSet.getInt("vraagId"));
+
+                //todo: antwoorden toevoegen
+                AnswerDAO answerDAO = new AnswerDAO(dBaccess);
+                ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(resultSet.getInt("vraagId"));
+                for(Answer answer: answerArrayList){
+                    question.voegAntwoordAanVraag(answer);
+                }
                 questions.add(question);
             }
 
@@ -129,7 +136,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         try{
             AnswerDAO answerDAO = new AnswerDAO(dBaccess);
 
-
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1,question.getQuestion());
             preparedStatement.setInt(2, question.getAnswers().get(0).getAnswerId());
@@ -137,7 +143,9 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
             int key = executeInsertPreparedStatement(preparedStatement);
             question.setQuestionId(key);
 
-
+            for(Answer answer: question.getAnswers()) {
+                answerDAO.storeOne(answer);
+            }
         }catch (SQLException sqlFout){
             System.out.println(sqlFout);
         }
@@ -167,8 +175,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
                 "WHERE vraagId = ?; ";
 
         try{
-
-
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1, question.getQuestion());
             preparedStatement.setInt(2, question.getQuestionId());
@@ -177,9 +183,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
             AnswerDAO answerDAO = new AnswerDAO(dBaccess);
             for(Answer answer: question.getAnswers()){
                 answerDAO.updateAnswer(answer);
-
             }
-
 
         } catch (SQLException e){
             System.out.println(e.getMessage());
@@ -188,24 +192,19 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
 
     public void updateGoedAntwoodId(int answerId, int questionId){
 
-
         String sql = "UPDATE quizvraag SET " +
                 " antwoordJuist = ? " +
                 "WHERE vraagId = ?; ";
 
         try{
-
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setInt(1, answerId);
             preparedStatement.setInt(2, questionId);
 
             executeManipulatePreparedStatement(preparedStatement);
 
-
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
     }
-
-
 }

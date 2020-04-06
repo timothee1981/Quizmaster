@@ -135,6 +135,14 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
                 quiz = new Quiz(quizName,cesuur);
                 quiz.setQuizId(resultSet.getInt("quiznummer"));
                 quizzes.add(quiz);
+
+                // haal vragen op die bij quiz horen en voeg deze toe aan quiz
+                QuestionDAO questionDAO = new QuestionDAO(dBaccess);
+                ArrayList<Question> questionArrayList = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
+                for(Question question:questionArrayList){
+                    quiz.voegQuestionAanQuiz(question);
+                }
+
             }
 
         }catch (SQLException sqlFout){
