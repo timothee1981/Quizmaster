@@ -24,6 +24,7 @@ public class CreateUpdateQuestionController {
     private String labelvul;
     private String labelwijzig;
     private StringBuilder warningText = new StringBuilder();
+    private QuestionCouchDBController questionCouchDBController;
 
     @FXML
     private  Label idQuestion, idGoodAnswer,idAnswer2,idAnswer3,idAnswer4, idQuiz;
@@ -106,6 +107,7 @@ public class CreateUpdateQuestionController {
         createQuestion();
         // maak database-connectie
         dbAccess.openConnection();
+
         questionDAO = new QuestionDAO(dbAccess);
         answerDAO = new AnswerDAO(dbAccess);
 
@@ -115,6 +117,7 @@ public class CreateUpdateQuestionController {
                 question.setQuiz(quizComboBox.getValue());
                 if(!(question.getQuestion().isEmpty())) {
                     questionDAO.storeOne(question);
+
                     for(Answer answer: answers){
                         answerDAO.storeOne(answer);
                     }
