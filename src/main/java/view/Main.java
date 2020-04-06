@@ -1,5 +1,7 @@
 package view;
 
+import controller.AnswerCouchDBcontroller;
+import controller.QuestionCouchDBController;
 import controller.UserCouchDBController;
 import database.mysql.DBAccess;
 import database.nosql.CouchDBaccess;
@@ -26,15 +28,23 @@ public class Main extends Application {
         primaryStage.setTitle("Make IT Work - Project 1");
         getSceneManager().setWindowTool();
         primaryStage.show();
+        //CouchDBaccessTest();
     }
 
     private void CouchDBaccessTest() {
         System.out.println("begin CouchDB test");
         Teacher user = new Teacher(1337, "Stefan", "Stefan", "Docent");
+        Answer answer = new Answer(1,"this");
+        Question question = new Question(1,"Hoofdstad VS");
 
         UserCouchDBController userCouchDBController = new UserCouchDBController();
+        AnswerCouchDBcontroller answerCouchDBcontroller = new AnswerCouchDBcontroller();
+        QuestionCouchDBController questionCouchDBController = new QuestionCouchDBController();
 
+        answerCouchDBcontroller.saveAnswer(answer);
         userCouchDBController.saveUser(user);
+        questionCouchDBController.saveQuestion(question);
+
     }
 
     //Testgegevens van testgebruikers

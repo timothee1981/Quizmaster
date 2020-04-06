@@ -7,7 +7,8 @@ public class QuizResult {
     private Student student;
     private int antwoordenJuist;
     private Date datumgemaakt;
-    private String aantwoordGebruiker;
+    private String antwoordGebruiker;
+    private boolean gehaald = true;
 
 
     public QuizResult(Quiz quiz, Student student) {
@@ -17,8 +18,8 @@ public class QuizResult {
 
 
 
-    }
 
+    }
 
 
     public Quiz getQuiz() {
@@ -30,31 +31,27 @@ public class QuizResult {
     }
 
 
-    public int getAantalvragen() {
-        return quiz.getQuestions().size();
-    }
-
-
-    //methode om uithalen hoeveel aantwoorden student goed beantwoord heeft, string aantwoordgebruiker als parameter
+    //methode om antwoord te vergelijken, string aantwoordgebruiker als parameter
         //geef int terug
         //check de vraag string met goede vraag
         //als equal: aantwoorden juist ++
 
+    public double scoreQuiz(int antwoordenJuist){
+        double score;
+        int antalantwoorden = quiz.getQuestions().size();
+        score = antwoordenJuist / antalantwoorden *100;
+        return score;
+    }
+
+    public boolean isgeslaagd(double score) {
+        if(score < quiz.getCesuur()) {
+            return gehaald = true;
+        }else
+            return gehaald =  false;
+    }
 
 
-    //maak methode geef score terug //parameter juisteantwoord
-      //geef terug score terug
-        //check totaal aantal vragen in quiz
-        //op basis van vragen en goed antwoorden geef de score in pct terug
 
 
-    //vergelijk met cesuur--> als boven cesuur: quiz geslaagd...parameter score
-            //geef boolean terug: quiz geslaagd
-            //score > cesuur ->>>> geslaagd
 
-
-    //check de quiz cesuur
-    /*public void setAantalvragen(int aantalvragen) {
-        this.aantalvragen = aantalvragen;
-    }*/
 }
