@@ -1,5 +1,8 @@
 package controller;
 
+import database.mysql.DBAccess;
+import database.mysql.QuestionDAO;
+import database.mysql.QuizDAO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -7,6 +10,9 @@ import model.Quiz;
 import view.Main;
 
 public class FillOutQuizController {
+    DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+    QuestionDAO questionDAO;
+    QuizDAO quizDAO;
 
     @FXML
     private Label titleLabel;
@@ -14,6 +20,11 @@ public class FillOutQuizController {
     private TextArea questionArea;
 
     public void setup(Quiz quiz) {
+        dbAccess.openConnection();
+        this.questionDAO = new QuestionDAO(dbAccess);
+        questionArea.appendText(quiz.getQuestions().get(0).getQuestion());
+
+
         //geef quiz door die gemaakt wordt
         //geef al bijhorende aantwoorden, in een wilkeurige volgorde
 
