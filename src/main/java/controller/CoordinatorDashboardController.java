@@ -42,12 +42,12 @@ public class CoordinatorDashboardController {
             courseList.getItems().add(course);
         }
 
-
        courseList.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Course>() {
                     @Override
                     public void changed(ObservableValue<? extends Course> observableValue, Course oldCourse, Course newCourse) {
-                        System.out.println("Geselecteerde cursus: " + observableValue + ", " + oldCourse + ", " + newCourse);
+                        quizList.getItems().clear();
+                        quizList.getItems().clear();
                         fillQuizListview();
                     }
                 });
@@ -56,27 +56,22 @@ public class CoordinatorDashboardController {
                 new ChangeListener<Quiz>() {
                     @Override
                     public void changed(ObservableValue<? extends Quiz> observableValue, Quiz oldQuiz, Quiz newQuiz) {
-                        System.out.println("Geselecteerde quiz: " + observableValue + ", " + oldQuiz + ", " + newQuiz);
+                        questionList.getItems().clear();
                         fillAnswerListview();
                     }
-
                 });
-
-
-
-
         dbAccess.closeConnection();
-
     }
 
     private void fillQuizListview() {
         dbAccess.openConnection();
         Course course = courseList.getSelectionModel().getSelectedItem();
+        if(course == null){
+            return;
+        }
         ArrayList<Quiz> getAllQuiz = quizDAO.getAllQuizbyCursusId(course.getCursusId());
         for (Quiz quiz : getAllQuiz) {
             quizList.getItems().add(quiz);
-
-
         }
     }
 
@@ -84,6 +79,9 @@ public class CoordinatorDashboardController {
         dbAccess.openConnection();
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
         Quiz quiz =  quizList.getSelectionModel().getSelectedItem();
+        if(quiz == null){
+            return;
+        }
         ArrayList<Question> getAllQuestion = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
         questionList.getItems().clear();
         for(Question question: getAllQuestion){
@@ -94,7 +92,19 @@ public class CoordinatorDashboardController {
     }
 
     public void doNewQuiz() {
-        Main.getSceneManager().showCreateUpdateQuizScene(new Quiz());
+        // get selected course -> hier wordt de quiz aan gekoppeld
+        Course course = courseList.getSelectionModel().getSelectedItem();
+        if(course == null){
+            // geen cursus geselecteerd
+            showErrorMessage("Selecteer een cursus waar je de quiz aan wilt toevoegen");
+            return;
+        }
+        // maak quiz aan en koppel de quiz aan cursus
+        Quiz quiz = new Quiz();
+        quiz.setCourseId(course.getCursusId());
+
+        //navigeer naar scene:
+        Main.getSceneManager().showCreateUpdateQuizScene(quiz);
     }
 
     public void doEditQuiz() {
@@ -135,6 +145,10 @@ public class CoordinatorDashboardController {
         Main.getSceneManager().showWelcomeScene();
     }
 
-
+    private void showErrorMessage(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(errorMessage);
+        alert.show();
+    }
 
 }

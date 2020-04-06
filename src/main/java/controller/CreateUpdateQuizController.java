@@ -47,17 +47,17 @@ public class CreateUpdateQuizController {
         dbAccess.openConnection();
 
         ArrayList<Question> getAllQuestionFromQuiz = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
+
+
         questionList.getItems().clear();
         for(Question question: getAllQuestionFromQuiz){
-
            questionList.getItems().add(question);
         }
 
         if (quiz.getQuizId() == Question.DEFAULT_VRAAG) {
-            labelvul = "Vull quiz en bijhorende vragen";
+            labelvul = "Vul quiz en bijbehorende vragen";
             titelLable.setText(labelvul);
         } else {
-
             labelwijzig = "Wijzig Quiz";
             titelLable.setText(labelwijzig);
             quizNameTextField.setText(quiz.getQuizName());
@@ -71,7 +71,6 @@ public class CreateUpdateQuizController {
 
 
     public void doDashBoard(){
-
         Main.getSceneManager().showCoordinatorDashboard();
     }
 

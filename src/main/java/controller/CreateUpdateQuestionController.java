@@ -49,8 +49,6 @@ public class CreateUpdateQuestionController {
     @FXML
     private ComboBox<Quiz> quizComboBox;
 
-
-
     public void setup(Question question) {
         dbAccess.openConnection();
         answerDAO = new AnswerDAO(dbAccess);
@@ -78,8 +76,6 @@ public class CreateUpdateQuestionController {
             answer2TextField.setText(answers.get(1).getAnswer());
             answer3TextField.setText(answers.get(2).getAnswer());
             answer4TextField.setText(answers.get(3).getAnswer());
-
-
         }
     }
 
@@ -93,20 +89,16 @@ public class CreateUpdateQuestionController {
         quizComboBox.setValue(quiz);
     }
 
-
-
     public ArrayList<Answer> returnArrayAnswers(int questionId){
         dbAccess.openConnection();
         AnswerDAO answerDAO = new AnswerDAO(dbAccess);
         ArrayList<Answer> answers;
         answers = answerDAO.getAnswersByQuestionId(questionId);
         return answers;
-
     }
 
     public void doMenu() {
         Main.getSceneManager().showCoordinatorDashboard();
-
     }
 
     @FXML
@@ -139,9 +131,7 @@ public class CreateUpdateQuestionController {
             updateQuestionById(question);
             System.out.println(("gewijzigd"));
         }
-
-
-            dbAccess.closeConnection();
+        dbAccess.closeConnection();
     }
 
     private void noQuizWarning() {
@@ -183,12 +173,6 @@ public class CreateUpdateQuestionController {
         dbAccess.closeConnection();
     }
 
-
-
-
-
-
-
     private void createQuestion() {
 
         dbAccess.openConnection();
@@ -210,28 +194,8 @@ public class CreateUpdateQuestionController {
 
         dbAccess.closeConnection();
 
-
-
-
         String actualAnswer = "";
         int actualIndex = 0;
-
-        /*for (Answer answer1 : answers) {
-            actualAnswer = answer1.getAnswer();
-            actualIndex = answer1.getAnswerId();
-
-            if (actualAnswer.equals(answer1.getAnswer()) && actualIndex != answer1.getAnswerId()) {
-                warningText.append("Antwoorden moeten unique zijn\n");
-                Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-                foutmelding.setContentText(warningText.toString());
-                foutmelding.show();
-                return;
-
-*/
-
-
-
-
     }
 
     private ArrayList<Quiz> getAllQuizItems() {
@@ -252,9 +216,6 @@ public class CreateUpdateQuestionController {
             quizComboBox.getItems().add(quiz);
         }
     }
-
-
-
-    }
+}
 
 

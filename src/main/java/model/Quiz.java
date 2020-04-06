@@ -13,7 +13,7 @@ public class Quiz {
     private ArrayList<Question> questions;
 
     public Quiz() {
-        quizId =DEFAULT_QUIZ;
+        quizId = DEFAULT_QUIZ;
     }
 
     public Quiz(String quizName, double cesuur) {
@@ -44,7 +44,9 @@ public class Quiz {
         return cesuur;
     }
 
-
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
 
     public ArrayList<Question> voegQuestionAanQuiz(Question question){
         questions.add(question);
