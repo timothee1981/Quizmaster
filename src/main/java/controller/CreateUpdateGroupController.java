@@ -34,7 +34,7 @@ public class CreateUpdateGroupController {
             teacherDropdown.getItems().add(teacher);
         }
         // bepalen of het een bestaande groep is
-        if(! (group.getGroepId() == Group.DEFAULT_GROUP_ID)){
+        if(group.getGroepId() != Group.DEFAULT_GROUP_ID){
             // dit is een bestaande group
             // als het een bestaande groep is: velden vullen
             groupNameTextBox.setText(group.getGroepnaam());

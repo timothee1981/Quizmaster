@@ -63,6 +63,10 @@ public class ManageCoursesController {
     //Wijzigen van een cursus(naam en coordinator)
     public void doUpdateCourse(){
         Course course = (Course) courseList.getSelectionModel().getSelectedItem();
+        if(course == null){
+            showInformationMessage("Selecteer een cursus.");
+            return;
+        }
         Main.getSceneManager().showCreateUpdateCourseScene(course);
     }
 
@@ -70,6 +74,11 @@ public class ManageCoursesController {
     public void doDeleteCourse(){
         // haal geselecteerde gebruiker op
         Course course = (Course)courseList.getSelectionModel().getSelectedItem();
+        if(course == null){
+            showInformationMessage("Selecteer een cursus.");
+            return;
+        }
+
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
         CourseDAO courseDAO = new CourseDAO(dbAccess);

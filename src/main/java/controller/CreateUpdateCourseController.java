@@ -5,6 +5,7 @@ import database.mysql.DBAccess;
 import database.mysql.UserDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -49,10 +50,31 @@ public class CreateUpdateCourseController {
 
         // Wil admin nieuwe cursus aanmaken of bestaande cursus updaten? Bestaande cursus laat coordinator zien
         if(! (course.getCursusId() == Course.DEFAULT_COURSE_ID)){
+            // bestaande cursus
+            CursusAanmakenKnop.setText("Pas de cursus aan");
             CursusnaamTextField.setText(course.getCursusNaam());
-            CoordinatorKiezen.setValue(course.getUserIdCoordinator());
+            // get coordinator of course:
+            Coordinator coordinator = getCoordinatorOfCourse(course.getUserIdCoordinator());
+            CoordinatorKiezen.setValue(coordinator);
             courseIdTextbox.setText(String.format("%d",course.getCursusId())); //is dit veld gevuld, dan wijzigen
+        } else {
+            // nieuwe cursus
+            CursusAanmakenKnop.setText("Maak nieuwe cursus");
         }
+    }
+
+    private Coordinator getCoordinatorOfCourse(int userIdCoordinator) {
+        Coordinator coordinatorToReturn = null;
+        // haal alle coordinatoren op
+        ArrayList<Coordinator> coordinatorArrayList = getCoordinators();
+        // selecteer de juiste
+        for(Coordinator coordinator: coordinatorArrayList){
+            if(coordinator.getUserId() == userIdCoordinator){
+                coordinatorToReturn = coordinator;
+            }
+        }
+        // geef coordinator terug
+        return coordinatorToReturn;
     }
 
     //Alle gebruikers ophalen
@@ -90,17 +112,42 @@ public class CreateUpdateCourseController {
     @FXML
     public void doCreateUpdateCourse(ActionEvent actionEvent) {
         String cursusNaam = CursusnaamTextField.getText();
+        if(cursusNaam.equals("")){
+            showInformationMessage("Vul een cursusnaam in.");
+            return;
+        }
+
         Coordinator coordinator = (Coordinator) CoordinatorKiezen.getValue();
+        if(coordinator == null){
+            showInformationMessage("Selecteer een coördinator.");
+            return;
+        }
+
         int coordinatorId = coordinator.getUserId();
         course = new Course(cursusNaam,coordinatorId);
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword()); //toegang tot db
         dbAccess.openConnection(); //connectie openen
         CourseDAO courseDAO = new CourseDAO(dbAccess); //CursusDAO instantieren
-        if (course != null){
+        if (courseIdTextbox.getText().equals("")){
+            // maak nieuwe aan -> id is niet gevuld in textbox
             courseDAO.storeOne(course);
-        } else
-            System.out.println("Geen cursus aangemaakt");
+            showInformationMessage("De cursus is aangemaakt");
+            Main.getSceneManager().showManageCoursesScene();
+        } else {
+            Course courseToUpdate = new Course(cursusNaam, coordinatorId);
+            int intCourseId = Integer.parseInt(courseIdTextbox.getText());
+            courseToUpdate.setCursusId(intCourseId);
+            courseDAO.updateCourseName(courseToUpdate);
+            showInformationMessage("De cursus is geüpdated");
+            Main.getSceneManager().showManageCoursesScene();
+        }
         dbAccess.closeConnection(); //connectie sluiten
+    }
+
+    private void showInformationMessage(String informationMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(informationMessage);
+        alert.show();
     }
 
 }
