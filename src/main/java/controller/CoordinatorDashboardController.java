@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import model.Answer;
 import model.Course;
 import model.Question;
 import model.Quiz;
@@ -37,11 +38,13 @@ public class CoordinatorDashboardController {
 
         dbAccess.openConnection();
 
+        // laad de courses-lijst in
         ArrayList<Course> courses = courseDAO.getAll();
         for(Course course: courses){
             courseList.getItems().add(course);
         }
 
+        // bij selectie van item in course-lijst draai dit script dat de quiz-lijst inlaad
        courseList.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Course>() {
                     @Override

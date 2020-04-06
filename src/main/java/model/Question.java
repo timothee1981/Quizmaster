@@ -9,6 +9,7 @@ public class Question {
     private String question;
     private ArrayList<Answer> answers;
     private Quiz quiz;
+    private Answer correctAnswer;
 
     public Question() {
         questionId = DEFAULT_VRAAG;
@@ -17,6 +18,14 @@ public class Question {
     public Question(String question) {
         this.question = question;
         answers = new ArrayList<>();
+    }
+
+    public Answer getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(Answer correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 
     public void setQuestionId(int questionId) {
@@ -36,15 +45,11 @@ public class Question {
         return question;
     }
 
-
     public Quiz getQuiz() {
         return quiz;
     }
 
-
-
     public void voegAntwoordAanVraag(Answer answer){
-
         answers.add(answer);
     }
 
