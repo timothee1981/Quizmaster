@@ -27,6 +27,11 @@ public class Question {
 
     }
 
+    public Question(int questionId, String question) {
+        this.questionId = questionId;
+        this.question = question;
+    }
+
     public void setQuestionId(int questionId) {
         this.questionId = questionId;
     }
