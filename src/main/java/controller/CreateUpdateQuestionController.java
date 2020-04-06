@@ -16,16 +16,17 @@ import view.Main;
 import java.util.ArrayList;
 
 public class CreateUpdateQuestionController {
-
+    private DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());;
+    private QuestionDAO questionDAO;
+    private AnswerDAO answerDAO;
     private Question question;
-    private Quiz quiz;
-    private ArrayList<Question> questions;
     private ArrayList<Answer> answers;
     private String labelvul;
     private String labelwijzig;
+    private StringBuilder warningText = new StringBuilder();
 
     @FXML
-    private  Label idQuestion, idGoodAnswer,idAnswer1,idAnswer2,idAnswer3,idAnswer4, idQuiz;
+    private  Label idQuestion, idGoodAnswer,idAnswer2,idAnswer3,idAnswer4, idQuiz;
 
     @FXML
     private Label titelLabel;
@@ -51,11 +52,13 @@ public class CreateUpdateQuestionController {
 
 
     public void setup(Question question) {
-        ArrayList<Answer> answers = new ArrayList<>();
+        dbAccess.openConnection();
+        answerDAO = new AnswerDAO(dbAccess);
+
         fillQuizDropdown();
 
         if (question.getQuestionId() == Question.DEFAULT_VRAAG) {
-            labelvul = "Vull Vraag en antwoord";
+            labelvul = "Vul Vraag en antwoord";
             titelLabel.setText(labelvul);
         } else {
 
@@ -68,14 +71,22 @@ public class CreateUpdateQuestionController {
             setQuizDropdownOfUser(question.getQuiz());
             setQuizDropdownOfUser(question.getQuiz());
 
-            answers = returnArrayAnswers(question.getQuestionId());
+
+            answers = returnArrayAnswers(questionId);
 
             goodAnswerTextField.setText(answers.get(0).getAnswer());
             answer2TextField.setText(answers.get(1).getAnswer());
             answer3TextField.setText(answers.get(2).getAnswer());
             answer4TextField.setText(answers.get(3).getAnswer());
 
+
         }
+    }
+
+    private void setAnswersIdLabel() {
+//        int goodanswerId = question.getQuestionId();
+     //   String questionIdString = String.format("%d",questionId);
+      //  idQuestion.setText(questionIdString);
     }
 
     private void setQuizDropdownOfUser(Quiz quiz) {
@@ -85,10 +96,9 @@ public class CreateUpdateQuestionController {
 
 
     public ArrayList<Answer> returnArrayAnswers(int questionId){
-        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
         AnswerDAO answerDAO = new AnswerDAO(dbAccess);
-        ArrayList<Answer> answers = new ArrayList<>();
+        ArrayList<Answer> answers;
         answers = answerDAO.getAnswersByQuestionId(questionId);
         return answers;
 
@@ -101,45 +111,29 @@ public class CreateUpdateQuestionController {
 
     @FXML
     public void doCreateUpdateQuestion(ActionEvent actionEvent) {
-        StringBuilder warningText = new StringBuilder();
-
-
         createQuestion();
-        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         // maak database-connectie
         dbAccess.openConnection();
-        //creëer userDAO instantie
-        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-        AnswerDAO answerDAO = new AnswerDAO(dbAccess);
-
-        int userQuizId;
-        if(!(quizComboBox.getValue() == null)) {
-            // roleComboBox has value, now get it!
-            userQuizId = quizComboBox.getValue().getQuizId();
-        } else{
-            System.out.println("Er is geen quiz geselecteerd");
-        }
-
+        questionDAO = new QuestionDAO(dbAccess);
+        answerDAO = new AnswerDAO(dbAccess);
 
             // roep save-methode aan
-        if(titelLabel.getText().equals(labelvul)) {
-            if(!(quizComboBox.getValue() == null)) {
-            question.setQuiz(quizComboBox.getValue());
-            questionDAO.storeOne(question);
-            for (Answer answer1 : answers) {
-                answerDAO.storeOne(answer1);
-                System.out.println("opgeslagen");
+        if (titelLabel.getText().equals(labelvul)) {
+            if (!(quizComboBox.getValue() == null)) {
+                question.setQuiz(quizComboBox.getValue());
+                if(!(question.getQuestion().isEmpty())) {
+                    questionDAO.storeOne(question);
+                    for(Answer answer: answers){
+                        answerDAO.storeOne(answer);
+                    }
+                    questionDAO.updateGoedAntwoodId(answers.get(0).getAnswerId(), question.getQuestionId());
+                }else{
+                    warningTextNoQuestion();
+                }
+            } else {
+                noQuizWarning();
             }
-            questionDAO.updateGoedAntwoodId(answers.get(0).getAnswerId(),question.getQuestionId());
-
-            }else{
-                warningText.append("Je moet een antwoord invullen\n");
-                Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-                foutmelding.setContentText(warningText.toString());
-                foutmelding.show();
-                question = null;
-            }
-        }else if(titelLabel.getText().equals(labelwijzig)) {
+        } else if (titelLabel.getText().equals(labelwijzig)) { //dit is bij wijziging van een vraag
             int id = Integer.valueOf(idQuestion.getText());
             question.setQuestionId(id);
             updateQuestionById(question);
@@ -147,9 +141,35 @@ public class CreateUpdateQuestionController {
         }
 
 
-
             dbAccess.closeConnection();
     }
+
+    private void noQuizWarning() {
+        warningText.append("Je moet een quiz kiezen\n");
+        Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+        foutmelding.setContentText(warningText.toString());
+        foutmelding.show();
+        question = null;
+    }
+
+    private void allAnswerFilledWarning() {
+        warningText.append("Je moet een antwoord invullen\n");
+        Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+        foutmelding.setContentText(warningText.toString());
+        foutmelding.show();
+        return;
+
+    }
+
+
+    private void warningTextNoQuestion() {
+        warningText.append("Je moet een vraag invullen\n");
+        Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+        foutmelding.setContentText(warningText.toString());
+        foutmelding.show();
+        return;
+    }
+
     private void updateQuestionById(Question question) {
         //Creëer dbAccess object
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
@@ -167,27 +187,52 @@ public class CreateUpdateQuestionController {
 
 
 
+
+
     private void createQuestion() {
 
-
+        dbAccess.openConnection();
+        answerDAO = new AnswerDAO(dbAccess);
         StringBuilder warningText = new StringBuilder();
         boolean correcteInvoer = true;
 
         question = new Question(vraagTextField.getText());
 
-        Answer answer = new Answer(goodAnswerTextField.getText(),question);
-        Answer answer2 = new Answer(answer2TextField.getText(),question);
-        Answer answer3 = new Answer(answer3TextField.getText(),question);
-        Answer answer4 = new Answer(answer4TextField.getText(),question);
+        Answer answer = new Answer(goodAnswerTextField.getText(), question);
+        Answer answer2 = new Answer(answer2TextField.getText(), question);
+        Answer answer3 = new Answer(answer3TextField.getText(), question);
+        Answer answer4 = new Answer(answer4TextField.getText(), question);
         question.voegAntwoordAanVraag(answer);
         question.voegAntwoordAanVraag(answer2);
         question.voegAntwoordAanVraag(answer3);
         question.voegAntwoordAanVraag(answer4);
         answers = question.getAnswers();
 
+        dbAccess.closeConnection();
 
 
-        }
+
+
+        String actualAnswer = "";
+        int actualIndex = 0;
+
+        /*for (Answer answer1 : answers) {
+            actualAnswer = answer1.getAnswer();
+            actualIndex = answer1.getAnswerId();
+
+            if (actualAnswer.equals(answer1.getAnswer()) && actualIndex != answer1.getAnswerId()) {
+                warningText.append("Antwoorden moeten unique zijn\n");
+                Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+                foutmelding.setContentText(warningText.toString());
+                foutmelding.show();
+                return;
+
+*/
+
+
+
+
+    }
 
     private ArrayList<Quiz> getAllQuizItems() {
 

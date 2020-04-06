@@ -52,6 +52,7 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
                 String answerString = resultSet.getString("antwoord");
                 Question question = questionDAO.getOneById(resultSet.getInt("vraagId"));
                 answer = new Answer(answerString,question);
+                answer.setAnswerId(resultSet.getInt("aantwoordId"));
             }
         }catch (SQLException sqlFout){
             System.out.println(sqlFout);
@@ -74,6 +75,7 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
                 String answerString = resultSet.getString("antwoord");
                 Question question = questionDAO.getOneById(resultSet.getInt("vraagId"));
                 Answer answer = new Answer(answerString,question);
+                answer.setAnswerId(resultSet.getInt("aantwoordId"));
                 answers.add(answer);
             }
         }catch (SQLException sqlFout){

@@ -1,12 +1,10 @@
 package controller;
 
-import database.mysql.AnswerDAO;
-import database.mysql.DBAccess;
-import database.mysql.QuestionDAO;
-import database.mysql.QuizDAO;
+import database.mysql.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -21,6 +19,7 @@ import java.util.ArrayList;
 public class CoordinatorDashboardController {
 
     private DBAccess dbAccess= new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());;
+    private CourseDAO courseDAO = new CourseDAO(dbAccess);
     private QuizDAO quizDAO = new QuizDAO(dbAccess);
     private QuestionDAO questionDAO = new QuestionDAO(dbAccess);
     private AnswerDAO answerDAO = new AnswerDAO(dbAccess);
@@ -38,12 +37,18 @@ public class CoordinatorDashboardController {
 
         dbAccess.openConnection();
 
+        ArrayList<Course> courses = courseDAO.getAll();
+        for(Course course: courses){
+            courseList.getItems().add(course);
+        }
+
 
        courseList.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<Course>() {
                     @Override
                     public void changed(ObservableValue<? extends Course> observableValue, Course oldCourse, Course newCourse) {
                         System.out.println("Geselecteerde cursus: " + observableValue + ", " + oldCourse + ", " + newCourse);
+                        fillQuizListview();
                     }
                 });
 
@@ -55,19 +60,24 @@ public class CoordinatorDashboardController {
                         fillAnswerListview();
                     }
 
-
-
                 });
 
 
-        ArrayList<Quiz> getAllQuiz = quizDAO.getAll();
-        for(Quiz quiz: getAllQuiz){
-            quizList.getItems().add(quiz);
 
-        }
 
         dbAccess.closeConnection();
 
+    }
+
+    private void fillQuizListview() {
+        dbAccess.openConnection();
+        Course course = courseList.getSelectionModel().getSelectedItem();
+        ArrayList<Quiz> getAllQuiz = quizDAO.getAllQuizbyCursusId(course.getCursusId());
+        for (Quiz quiz : getAllQuiz) {
+            quizList.getItems().add(quiz);
+
+
+        }
     }
 
     private void fillAnswerListview() {

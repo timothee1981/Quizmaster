@@ -30,12 +30,19 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         try {
             PreparedStatement preparedStatement = getStatement(sql);
             ResultSet resultSet = super.executeSelectPreparedStatement(preparedStatement);
-            Question question;
+            Question question = null;
             while (resultSet.next()) {
                 String questions = resultSet.getString("vraag");
                 question = new Question( questions);
                 question.setQuestionId(resultSet.getInt("vraagId"));
                 result.add(question);
+
+            }
+            AnswerDAO answerDAO = new AnswerDAO(dBaccess);
+            ArrayList<Answer> answers = new ArrayList<>();
+            answers = answerDAO.getAnswersByQuestionId(question.getQuestionId());
+            for(Answer answer: answers){
+                question.voegAntwoordAanVraag(answer);
             }
         } catch (SQLException e){
             System.out.println("SQL error " + e.getMessage());
@@ -161,11 +168,17 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
 
         try{
 
+
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1, question.getQuestion());
             preparedStatement.setInt(2, question.getQuestionId());
 
             executeManipulatePreparedStatement(preparedStatement);
+            AnswerDAO answerDAO = new AnswerDAO(dBaccess);
+            for(Answer answer: question.getAnswers()){
+                answerDAO.updateAnswer(answer);
+
+            }
 
 
         } catch (SQLException e){
