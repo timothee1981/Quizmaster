@@ -69,6 +69,7 @@ public class CoordinatorDashboardController {
         if(course == null){
             return;
         }
+
         ArrayList<Quiz> getAllQuiz = quizDAO.getAllQuizbyCursusId(course.getCursusId());
         for (Quiz quiz : getAllQuiz) {
             quizList.getItems().add(quiz);
@@ -93,7 +94,8 @@ public class CoordinatorDashboardController {
 
     public void doNewQuiz() {
         // get selected course -> hier wordt de quiz aan gekoppeld
-        Course course = courseList.getSelectionModel().getSelectedItem();
+        Course course = null;
+        course = courseList.getSelectionModel().getSelectedItem();
         if(course == null){
             // geen cursus geselecteerd
             showErrorMessage("Selecteer een cursus waar je de quiz aan wilt toevoegen");

@@ -18,6 +18,8 @@ import java.util.List;
 
 
 public class CreateUpdateQuizController {
+
+
     DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
     QuestionDAO questionDAO = new QuestionDAO(dbAccess);
     AnswerDAO answerDAO = new AnswerDAO(dbAccess);
@@ -43,23 +45,32 @@ public class CreateUpdateQuizController {
     @FXML
     private ListView<Question> questionList;
 
+    @FXML
+    public TextField courseIdTextField;
+
     public void setup(Quiz quiz) {
         dbAccess.openConnection();
 
+        // vul id van cursus in
+        courseIdTextField.setText(String.valueOf(quiz.getCourseId()));
+
         ArrayList<Question> getAllQuestionFromQuiz = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
 
-
+        // vul vragenlijst
         questionList.getItems().clear();
         for(Question question: getAllQuestionFromQuiz){
            questionList.getItems().add(question);
         }
 
-        if (quiz.getQuizId() == Question.DEFAULT_VRAAG) {
+        if(quiz.getQuizId() == Question.DEFAULT_VRAAG) {
+            // nieuwe quiz
             labelvul = "Vul quiz en bijbehorende vragen";
             titelLable.setText(labelvul);
         } else {
+            // bestaande quiz
             labelwijzig = "Wijzig Quiz";
             titelLable.setText(labelwijzig);
+
             quizNameTextField.setText(quiz.getQuizName());
             cesuurTextField.setText(String.valueOf(quiz.getCesuur()));
             int quizId = quiz.getQuizId();
@@ -67,8 +78,6 @@ public class CreateUpdateQuizController {
             idLabel.setText(quizIDString);
         }
     }
-
-
 
     public void doDashBoard(){
         Main.getSceneManager().showCoordinatorDashboard();
@@ -86,12 +95,9 @@ public class CreateUpdateQuizController {
 
         if(quiz != null) {
             if (titelLable.getText().equals(labelvul)) {
+                // = nieuwe quiz
                 quizDAO.storeOne(quiz);
                 System.out.println("Toegevoegd");
-            /*for (Answer answer1 : answers) {
-                answerDAO.storeOne(answer1);
-                System.out.println("opgeslagen");*/
-                // }
             } else if (titelLable.getText().equals(labelwijzig)) {
                 int id = Integer.valueOf(idLabel.getText());
                 quiz.setQuizId(id);
@@ -99,23 +105,25 @@ public class CreateUpdateQuizController {
                 System.out.println(("gewijzigd"));
             }
         }
-
-
         dbAccess.closeConnection();
-    }
 
+        System.out.println("Quiz is aangepast of aangemaakt");
+
+    }
 
     private void createQuiz() {
 
         StringBuilder warningText = new StringBuilder();
         boolean correcteInvoer = true;
+
+        // get quizname and Id
         String quizName = quizNameTextField.getText();
+        int courseId = Integer.parseInt(courseIdTextField.getText());
 
-
+        // check if input = correct
         if (quizName.isEmpty() || cesuurTextField.getText().isEmpty()) {
             warningText.append("Je moet een quiznaam invullen en een cesuur\n");
             correcteInvoer = false;
-
         }
         if (!correcteInvoer) {
             Alert foutmelding = new Alert(Alert.AlertType.ERROR);
@@ -125,10 +133,8 @@ public class CreateUpdateQuizController {
         } else {
             double cesuur = Double.parseDouble(cesuurTextField.getText());
             quiz = new Quiz(quizName,cesuur);
+            quiz.setCourseId(courseId);
         }
-
-
-
     }
 
     public void doCreateQuestion(){
