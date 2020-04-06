@@ -13,19 +13,43 @@ public class FillOutQuizController {
     @FXML
     private TextArea questionArea;
 
-    public void setup(Quiz quiz) {}
+    public void setup(Quiz quiz) {
+        //geef quiz door die gemaakt wordt
+        //geef al bijhorende aantwoorden, in een wilkeurige volgorde
 
-    public void doRegisterA() {}
+    }
 
-    public void doRegisterB() {}
+    public void doRegisterA() {
+        //kies aantwoord A ....sla op in String aantwoord gebruiker
+        //methode van quizrestult:
+        // vergelijke antwoord met aantwoord array, aantwoorden juist ++ als goed is
+    }
 
-    public void doRegisterC() {}
+    public void doRegisterB() {
+        //kies aantwoord B ....sla op in String aantwoord gebruiker
+        //methode van quizrestult:
+        // vergelijke antwoord met aantwoord array, aantwoorden juist ++ als goed is
+    }
 
-    public void doRegisterD() {}
+    public void doRegisterC() {
+        //kies aantwoord C ....sla op in String aantwoord gebruiker
+        //methode van quizrestult:
+        // vergelijke antwoord met aantwoord array, aantwoorden juist ++ als goed is
+    }
 
-    public void doNextQuestion() {}
+    public void doRegisterD() {
+        //kies aantwoord D ....sla op in String aantwoord gebruiker
+        //methode van quizrestult:
+        // vergelijke antwoord met aantwoord array, aantwoorden juist ++ als goed is
+    }
 
-    public void doPreviousQuestion() {}
+    public void doNextQuestion() {
+        //ga na volgend vraag in de quiz....setup methode aanroep
+    }
+
+    public void doPreviousQuestion() {
+        //ga na vorige vraag in de quiz.....setup methode aanroep
+    }
 
     public void doMenu() {
         // Ga naar welkomscherm
