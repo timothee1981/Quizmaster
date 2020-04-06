@@ -44,7 +44,7 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
     }
 
     /**
-     * @param questionId
+     * @param// questionId
      * @return
      * geeft vraag terug vanuit DB op basis van vraagId
      */
@@ -72,15 +72,15 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
 
 
     /**
-     * @param questionString
+     * @param //questionString
      * @return
      *
      * geeft een vraag terug op basis van vraag
      */
-    public ArrayList<Question> getAllQuestionByQuizId(int quiznummer){
+     public ArrayList<Question> getAllQuestionByQuizId(int quiznummer){
         ArrayList<Question> questions = new ArrayList<>();
         Question question = null;
-        String sql = "SELECT * FROM quizvraag WHERE quizNummer = ?;";
+        String sql = "SELECT * FROM quizvraag WHERE quiznummer = ?;";
         try {
             PreparedStatement preparedStatement = getStatement(sql);
             preparedStatement.setInt(1,quiznummer);
@@ -120,11 +120,12 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
         String sql = "INSERT INTO quizvraag (vraag, antwoordJuist,quiznummer ) VALUES(?,?,?);";
 
         try{
-            QuizDAO quizDAO = new QuizDAO(dBaccess);
+            AnswerDAO answerDAO = new AnswerDAO(dBaccess);
+
 
             PreparedStatement preparedStatement = getStatementWithKey(sql);
             preparedStatement.setString(1,question.getQuestion());
-            preparedStatement.setInt(2,question.getAnswers().get(0).getAnswerId());
+            preparedStatement.setInt(2, question.getAnswers().get(0).getAnswerId());
             preparedStatement.setInt(3,question.getQuiz().getQuizId());
             int key = executeInsertPreparedStatement(preparedStatement);
             question.setQuestionId(key);
@@ -171,4 +172,27 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
             System.out.println(e.getMessage());
         }
     }
+
+    public void updateGoedAntwoodId(int answerId, int questionId){
+
+
+        String sql = "UPDATE quizvraag SET " +
+                " antwoordJuist = ? " +
+                "WHERE vraagId = ?; ";
+
+        try{
+
+            PreparedStatement preparedStatement = getStatementWithKey(sql);
+            preparedStatement.setInt(1, answerId);
+            preparedStatement.setInt(2, questionId);
+
+            executeManipulatePreparedStatement(preparedStatement);
+
+
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
 }
