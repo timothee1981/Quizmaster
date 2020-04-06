@@ -114,7 +114,7 @@ public class CoordinatorDashboardController {
 
         if(quiz == null){
             Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText("Je moet een vraag aanklikken\n");
+            foutmelding.setContentText("Je moet een quiz aanklikken\n");
             foutmelding.show();
             return;
 
@@ -139,15 +139,24 @@ public class CoordinatorDashboardController {
     }
 
     public void doEditQuestion() {
+        // vraag selecteren die gewijzigd moet worden
         Question question = questionList.getSelectionModel().getSelectedItem();
-
         if(question == null){
             Alert foutmelding = new Alert(Alert.AlertType.ERROR);
             foutmelding.setContentText("Je moet een vraag aanklikken\n");
             foutmelding.show();
             return;
-
         }
+
+        // quiz selecteren die aan vraag moet worden toegevoegd -> wordt niet in constructor gedaan
+        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
+        if(question == null){
+            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+            foutmelding.setContentText("Je moet een vraag aanklikken\n");
+            foutmelding.show();
+            return;
+        }
+        question.setQuiz(quiz);
 
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
     }

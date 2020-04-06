@@ -53,36 +53,36 @@ public class CreateUpdateQuestionController {
         dbAccess.openConnection();
         answerDAO = new AnswerDAO(dbAccess);
 
+        // vul dropdown met alle quizes
         fillQuizDropdown();
 
+        // vul bijbehorende quiz in
+        setQuizDropdownOfUser(question.getQuiz());
+
         if (question.getQuestionId() == Question.DEFAULT_VRAAG) {
+            // nieuwe vraag
             labelvul = "Vul Vraag en antwoord";
             titelLabel.setText(labelvul);
         } else {
-
+            // bestaande vraaag
             labelwijzig = "Wijzig Vraag";
             titelLabel.setText(labelwijzig);
+
+            // vul vraag-textveld in:
             vraagTextField.setText(question.getQuestion());
             int questionId = question.getQuestionId();
             String questionIdString = String.format("%d",questionId);
             idQuestion.setText(questionIdString);
-            setQuizDropdownOfUser(question.getQuiz());
-            setQuizDropdownOfUser(question.getQuiz());
 
-
+            // haal antwoorden op
             answers = returnArrayAnswers(questionId);
 
+            // vul antwoorden in:
             goodAnswerTextField.setText(answers.get(0).getAnswer());
             answer2TextField.setText(answers.get(1).getAnswer());
             answer3TextField.setText(answers.get(2).getAnswer());
             answer4TextField.setText(answers.get(3).getAnswer());
         }
-    }
-
-    private void setAnswersIdLabel() {
-//        int goodanswerId = question.getQuestionId();
-     //   String questionIdString = String.format("%d",questionId);
-      //  idQuestion.setText(questionIdString);
     }
 
     private void setQuizDropdownOfUser(Quiz quiz) {
@@ -210,7 +210,6 @@ public class CreateUpdateQuestionController {
     }
 
     private void fillQuizDropdown() {
-
         ArrayList<Quiz> quizList = getAllQuizItems();
         for(Quiz quiz: quizList){
             quizComboBox.getItems().add(quiz);
