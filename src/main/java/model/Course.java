@@ -11,11 +11,13 @@ public class Course {
     private int cursusId;
     private String cursusNaam;
     public int userIdCoordinator;
+    public ArrayList<Quiz> quizzes;
 
     //Cursus constructor
     public Course(String cursusNaam, int userIdCoordinator){
         this.cursusNaam = cursusNaam;
         this.userIdCoordinator = userIdCoordinator;
+        this.quizzes = new ArrayList<>();
     }
 
     //Default constructor, waarbij de default-waarden aangegeven zijn (want in DB als not null)
@@ -50,5 +52,7 @@ public class Course {
 
     public int getUserIdCoordinator() { return userIdCoordinator; }
 
-
+    public ArrayList<Quiz> getQuizzes() {
+        return quizzes;
+    }
 }

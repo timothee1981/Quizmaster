@@ -100,4 +100,9 @@ public class ManageCoursesController {
         alert.show();
     }
 
+    //Simpele methode, om een test op los te laten om te oefenen met testen
+    public int getallenOptellen(int A, int B) {
+        return A+B;
+    }
+
 }

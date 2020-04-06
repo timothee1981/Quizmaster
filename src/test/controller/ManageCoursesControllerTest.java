@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ManageCoursesControllerTest {
 
-    private Course course;
+    /*private Course course;
     private String CursusNaam = "Beginnerscursus";
     String informationMessage = String.format("Cursus %s is verwijderd.", course.getCursusNaam());
 
@@ -20,11 +20,16 @@ class ManageCoursesControllerTest {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText(informationMessage);
         alert.show();
+    }*/
+
+    @Test
+    void getallenOptellen() {
+        ManageCoursesController testMethode = new ManageCoursesController();
+        int result = testMethode.getallenOptellen(3,3);
+        assertEquals(6, result);
     }
 
-
-    public String getCursusNaam() {
+    /*public String getCursusNaam() {
         return CursusNaam;
-    }
-
+    }*/
 }
