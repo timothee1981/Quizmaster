@@ -66,7 +66,6 @@ public class ManageGroupsController {
 
     // ga naar het CreateUpdateGroups scherm door op de knop 'nieuw' te klikken
     // er hoeft geen groep uit de lijst geselecteerd te zijn om deze actie te kunnen uitvoeren
-    // in het scherm 'naam van de groep' moet (cursief) "voer de naam van de nieuwe groep in" verschijnen
     public void doCreateGroup() {
         Main.getSceneManager().showCreateUpdateGroupScene(new Group());
     }
@@ -85,14 +84,12 @@ public class ManageGroupsController {
     }
 
     // de gebruiker selecteert een groep om te verwijderen.
-    // indien er geen groep geselecteerd is krijgt de gebruiker een melding 'geen groep geselecteerd'
-    // indien er een groep geselecteerd is en de gebruiker klikt op de knop 'verwijder' verschijnt de vraag "weet
-    // u zeker dat u groep <naam> wilt verwijderen?"
-    // de gebruiker krijgt de keuze 'Ja/Nee'
-    // na "ja" maakt de methode een connectie met de database om de gekozen groep uit de tabel te verwijderen.
-
+    // Na klikken op 'verwijder'maakt de methode een connectie met de database om de gekozen groep uit de tabel te
+    // verwijderen.
+    // er verschijnt een melding dat de geselecteerde groep verwijderd is.
+    // de verwijderde groep is niet meer zichtbaar in de lijst met groepen.
     public void doDeleteGroup() {
-        // haal geselecteerde gebruiker op
+        // haal geselecteerde groep op
         Group group = (Group)groupListView.getSelectionModel().getSelectedItem();
 
         if(group == null){
