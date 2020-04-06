@@ -59,14 +59,23 @@ public class ManageUsersController {
         // haal geselecteerde gebruiker op
         User user = (User)userList.getSelectionModel().getSelectedItem();
 
+        if(user == null){
+            showInformationMessage("Er is geen gebruiker geselecteerd om te verwijderen.");
+            return;
+        }
+
         // navigeer naar create-update-user pagina en toon data van user
         Main.getSceneManager().showCreateUpdateUserScene(user);
     }
 
     public void doDeleteUser() {
-
         // haal geselecteerde gebruiker op
         User user = (User)userList.getSelectionModel().getSelectedItem();
+
+        if(user == null){
+            showInformationMessage("Er is geen gebruiker geselecteerd om te verwijderen.");
+            return;
+        }
 
         // delete user
         //Creëer dbAccess object

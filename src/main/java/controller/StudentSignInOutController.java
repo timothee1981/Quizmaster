@@ -16,7 +16,7 @@ public class StudentSignInOutController {
 
     public void doMenu() {
         // Ga naar welkomscherm
-        Main.getSceneManager().showManageUserScene();
+        Main.getSceneManager().showWelcomeScene();
     }
 
     public void doSignIn() {}

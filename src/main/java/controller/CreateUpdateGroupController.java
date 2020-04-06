@@ -20,6 +20,8 @@ public class CreateUpdateGroupController {
     public ComboBox teacherDropdown;
     @FXML
     public TextField groupIdTextbox;
+    @FXML
+    public Button createChangeGroupButton;
 
     private Group group;
 
@@ -31,16 +33,20 @@ public class CreateUpdateGroupController {
         for (Teacher teacher:teacherArrayList) {
             teacherDropdown.getItems().add(teacher);
         }
-        // bepalen of het een bestaande groep is of een nieuwe groep
+        // bepalen of het een bestaande groep is
         if(! (group.getGroepId() == Group.DEFAULT_GROUP_ID)){
             // dit is een bestaande group
             // als het een bestaande groep is: velden vullen
             groupNameTextBox.setText(group.getGroepnaam());
             teacherDropdown.setValue(group.getTeacher());
+            createChangeGroupButton.setText("Pas groep aan");
+
             // setId in hidden textfield
             groupIdTextbox.setText(String.format("%d",group.getGroepId()));
+        } else {
+            // als het een nieuwe groep is: geen actie
+            createChangeGroupButton.setText("Voeg groep toe");
         }
-        // als het een nieuwe groep is: geen actie
     }
 
     private ArrayList<Teacher> getTeachers() {
@@ -84,12 +90,18 @@ public class CreateUpdateGroupController {
         // get values of group to add/update
         // get name
         String groupname = groupNameTextBox.getText();
+        if(groupname.trim().equals("")){
+            showErrorMessage("Vul een groepnaam in.");
+            return;
+        }
         // get Teacher
         Teacher teacher = null;
-        try{
         teacher = (Teacher)teacherDropdown.getValue();
-        } catch (NullPointerException e){
+
+        //check values
+        if(teacher == null){
             showErrorMessage("Er is geen docent geselecteerd.");
+            return;
         }
 
         // get Id
@@ -105,6 +117,10 @@ public class CreateUpdateGroupController {
             // sla groep op al nieuwe groep
             saveNewGroup(group);
 
+            showInformationMessage(String.format("De groep %s is aangemaakt.", group.getGroepnaam()));
+
+            Main.getSceneManager().showManageGroupsScene();
+
         } else{
             // if id = filled -> update Group
             // zet Id-string om in int
@@ -119,6 +135,10 @@ public class CreateUpdateGroupController {
             Group group = new Group(groupId, groupname, teacher);
             // sla de groep op via een update
             saveUpdateGroup(group);
+
+            showInformationMessage(String.format("De groep %s is geüpdated.", group.getGroepnaam()));
+
+            Main.getSceneManager().showManageGroupsScene();
         }
     }
 
