@@ -125,8 +125,17 @@ public class CoordinatorDashboardController {
     }
 
     public void doNewQuestion() {
+        Quiz quiz = null;
+        quiz = quizList.getSelectionModel().getSelectedItem();
+        if(quiz == null){
+            showErrorMessage("Er is geen quiz geselecteerd");
+            return;
+        }
 
-        Main.getSceneManager().showCreateUpdateQuestionScene(new Question());
+        // maak vraag aan en stop quiz-referentie er in
+        Question question = new Question();
+        question.setQuiz(quiz);
+        Main.getSceneManager().showCreateUpdateQuestionScene(question);
     }
 
     public void doEditQuestion() {

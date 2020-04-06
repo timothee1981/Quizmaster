@@ -9,7 +9,7 @@ public class Question {
     private int questionId;
     private String question;
     private ArrayList<Answer> answers;
-    Quiz quiz;
+    private Quiz quiz;
 
 
 
