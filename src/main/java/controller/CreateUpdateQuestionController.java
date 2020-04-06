@@ -24,7 +24,6 @@ public class CreateUpdateQuestionController {
     private String labelvul;
     private String labelwijzig;
     private StringBuilder warningText = new StringBuilder();
-    private QuestionCouchDBController questionCouchDBController;
 
     @FXML
     private  Label idQuestion, idGoodAnswer,idAnswer2,idAnswer3,idAnswer4, idQuiz;
@@ -107,7 +106,6 @@ public class CreateUpdateQuestionController {
         createQuestion();
         // maak database-connectie
         dbAccess.openConnection();
-
         questionDAO = new QuestionDAO(dbAccess);
         answerDAO = new AnswerDAO(dbAccess);
 
@@ -128,7 +126,6 @@ public class CreateUpdateQuestionController {
                     // save question
                     questionDAO.storeOne(question);
 
-<<<<<<< HEAD
                     // get all answers of question from database:
                     AnswerDAO answerDAO = new AnswerDAO(dbAccess);
                     ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(question.getQuestionId());
@@ -137,10 +134,6 @@ public class CreateUpdateQuestionController {
                         if(correctAnswer.getAnswer().equals(answer.getAnswer())){
                             correctAnswerId = answer.getAnswerId();
                         }
-=======
-                    for(Answer answer: answers){
-                        answerDAO.storeOne(answer);
->>>>>>> filloutQuiz
                     }
                     //check if correct question == that question -> get externalId -> pass this id to updateGoedeAntwoordId method
                     questionDAO.updateGoedAntwoodId(correctAnswerId, question.getQuestionId());
