@@ -2,12 +2,11 @@ package controller;
 
 import database.mysql.CourseDAO;
 import database.mysql.DBAccess;
-import database.mysql.GroupDAO;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import model.Course;
-import model.Group;
 import view.Main;
 
 import java.util.ArrayList;
@@ -70,20 +69,26 @@ public class ManageCoursesController {
     //Verwijderen van een cursus
     public void doDeleteCourse(){
         // haal geselecteerde gebruiker op
-        Course course = (Course)courseListView.getSelectionModel().getSelectedItem();
+        Course course = (Course)courseList.getSelectionModel().getSelectedItem();
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
         CourseDAO courseDAO = new CourseDAO(dbAccess);
-        courseDAO.deleteCourse(course.getCursusId());
+        courseDAO.deleteCourse(course);
         dbAccess.closeConnection();
 
         // toon melding dat groep verwijderd is
-        String informationMessage = String.format("Cursus %s is verwijderd.", course.getCursusNaam();
-        (informationMessage);
+        String informationMessage = String.format("Cursus %s is verwijderd.", course.getCursusNaam());
+        showInformationMessage(informationMessage);
 
         // draai setup van pagina nogmaals (page-refresh)
         setup();
         //todo Afstemmen over upon delete restricties? Cursussen niet verwijderen als er groepen/quizzes zijn?
+    }
+
+    private void showInformationMessage(String informationMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(informationMessage);
+        alert.show();
     }
 
 }
