@@ -33,4 +33,9 @@ public class Answer {
     public Question getQuestion() {
         return question;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s",answer);
+    }
 }

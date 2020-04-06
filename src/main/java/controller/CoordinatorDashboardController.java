@@ -80,9 +80,12 @@ public class CoordinatorDashboardController {
     }
 
     private void fillAnswerListview() {
+
+        //todo: answer need to be added to the question
+
         dbAccess.openConnection();
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-        Quiz quiz =  quizList.getSelectionModel().getSelectedItem();
+        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
         if(quiz == null){
             return;
         }
