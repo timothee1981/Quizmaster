@@ -48,13 +48,7 @@ public class Course {
         return cursusNaam;
     }
 
-    public void setCursusNaam(String cursusNaam) {
-        this.cursusNaam = cursusNaam;
-    }
-
     public int getUserIdCoordinator() { return userIdCoordinator; }
-
-    public void setUserIdCoordinator(int userIdCoordinator) { this.userIdCoordinator = userIdCoordinator; }
 
 
 }
