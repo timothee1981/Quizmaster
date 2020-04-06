@@ -20,17 +20,18 @@ public class UserCouchDBDAO {
     }
 
     public String saveSingleUser(User user) {
-
-        //todo: regel hieronder geeft de error:
-        //Caused by: java.lang.reflect.InaccessibleObjectException: Unable to make public model.Teacher() accessible:
-        // module QuizMaster does not "exports model" to module gson
         String jsonstring = gson.toJson(user);
-
         System.out.println(jsonstring);
         JsonParser parser = new JsonParser();
         JsonObject jsonobject = parser.parse(jsonstring).getAsJsonObject();
         String doc_Id = db.saveDocument(jsonobject);
         return doc_Id;
+    }
+
+    public User getUserByDocId(String doc_Id) {
+        JsonObject json = db.getClient().find(JsonObject.class, doc_Id);
+        User resultaat = gson.fromJson(json, User.class);
+        return resultaat;
     }
 
 }

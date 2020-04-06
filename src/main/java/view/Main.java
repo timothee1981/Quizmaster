@@ -21,6 +21,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        CouchDBaccessTest();
 
         Main.primaryStage = primaryStage;
         primaryStage.setTitle("Make IT Work - Project 1");
