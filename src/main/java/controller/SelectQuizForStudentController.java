@@ -14,7 +14,7 @@ public class SelectQuizForStudentController {
 
     public void doMenu() {
         // Ga naar welkomscherm
-        Main.getSceneManager().showManageUserScene();
+        Main.getSceneManager().showWelcomeScene();
     }
 
     public void doQuiz() {}

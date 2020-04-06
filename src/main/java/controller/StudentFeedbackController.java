@@ -18,7 +18,7 @@ public class StudentFeedbackController {
 
     public void doMenu() {
         // Ga naar welkomscherm
-        Main.getSceneManager().showManageUserScene();
+        Main.getSceneManager().showWelcomeScene();
     }
 }
 

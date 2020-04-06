@@ -45,11 +45,8 @@ public class ManageQuestionsController {
         Question question = questionList.getSelectionModel().getSelectedItem();
 
         if(question == null){
-            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText("Je moet een vraag aanklikken\n");
-            foutmelding.show();
+            showErrormessage("Je moet een vraag aanklikken\n");
             return;
-
         }
 
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
@@ -60,21 +57,32 @@ public class ManageQuestionsController {
         dbAccess.openConnection();
         AnswerDAO answerDAO = new AnswerDAO(dbAccess);
         Question question = questionList.getSelectionModel().getSelectedItem();
+        if(question == null){
+            showErrormessage("Er is geen vraag geselecteerd.");
+            return;
+        }
         int questionId = question.getQuestionId();
         answerDAO.deleteAnswerfromQuestion(questionId);
 
         if(question == null) {
-
-            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText("Je moet een customer aanklikken\n");
-            foutmelding.show();
+            showErrormessage("Je moet een customer aanklikken\n");
             return;
-
         }
 
         questionDAO.deleteQuestion(question);
         setup();
+        showErrormessage("De vraag is verwijderd");
+    }
 
+    private void showErrormessage(String message){
+        Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+        foutmelding.setContentText(message);
+        foutmelding.show();
+    }
 
+    private void showInformationMessage(String message){
+        Alert foutmelding = new Alert(Alert.AlertType.INFORMATION);
+        foutmelding.setContentText(message);
+        foutmelding.show();
     }
 }

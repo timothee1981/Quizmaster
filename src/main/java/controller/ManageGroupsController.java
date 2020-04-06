@@ -77,6 +77,10 @@ public class ManageGroupsController {
     // in het scherm 'naam van de groep' moet de naam van de cursus verschijnen
     public void doUpdateGroup() {
         Group group = (Group)groupListView.getSelectionModel().getSelectedItem();
+        if(group == null){
+            showInformationMessage("Er is geen groep geselecteerd om te wijzigen.");
+            return;
+        }
         Main.getSceneManager().showCreateUpdateGroupScene(group);
     }
 
@@ -90,6 +94,11 @@ public class ManageGroupsController {
     public void doDeleteGroup() {
         // haal geselecteerde gebruiker op
         Group group = (Group)groupListView.getSelectionModel().getSelectedItem();
+
+        if(group == null){
+            showInformationMessage("Er is geen groep geselecteerd om te wijzigen.");
+            return;
+        }
 
         // delete groep
         //Creëer dbAccess object
