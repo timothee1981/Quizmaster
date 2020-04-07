@@ -45,11 +45,7 @@ public class Course {
     @Override
     public String toString() {
     StringBuilder courseToString = new StringBuilder("");
-    courseToString.append(cursusId).append(" ");
-    courseToString.append(cursusNaam).append(" ");
-    if (userIdCoordinator != 0){
-        courseToString.append(userIdCoordinator).append(".");
-    }
+    courseToString.append(cursusNaam);
     return courseToString.toString();
     }
 

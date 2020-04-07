@@ -18,6 +18,7 @@ class CourseDAOTest {
         dbAccess.closeConnection();
 
         Course verwachteCursus = new Course("WeekendCursus", 5); //Wat ik verwacht te krijgen
+        verwachteCursus.setCursusId(1); //id is auto-increment
 
         Assert.assertEquals(proefkonijnCursus, verwachteCursus); //De daadwerkelijke vergelijking
     }
