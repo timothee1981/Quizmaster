@@ -17,9 +17,6 @@ import java.util.ArrayList;
 
 public class CreateUpdateCourseController {
 
-    private Course course; //Een cursusobject
-    private ArrayList<Course> courseList = new ArrayList<>(); //Lijst met dummy-cursussen
-
     //Verwijzingen naar de invulvelden en knoppen in de View
     @FXML
     private TextField CursusnaamTextField;
@@ -108,9 +105,9 @@ public class CreateUpdateCourseController {
             Main.getSceneManager().showManageCoursesScene();
         }
 
-    //Maak een cursus aan in de db, en later, pas een cursus aan in de db
+
     @FXML
-    public void doCreateUpdateCourse(ActionEvent actionEvent) {
+    public void doCreateUpdateCourse() {
         String cursusNaam = CursusnaamTextField.getText();
         if(cursusNaam.equals("")){
             showInformationMessage("Vul een cursusnaam in.");
@@ -124,24 +121,24 @@ public class CreateUpdateCourseController {
         }
 
         int coordinatorId = coordinator.getUserId();
-        course = new Course(cursusNaam,coordinatorId);
-        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword()); //toegang tot db
-        dbAccess.openConnection(); //connectie openen
-        CourseDAO courseDAO = new CourseDAO(dbAccess); //CursusDAO instantieren
+        Course course = new Course(cursusNaam, coordinatorId);
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(),
+                DBAccess.getMainUserPassword());
+        dbAccess.openConnection();
+        CourseDAO courseDAO = new CourseDAO(dbAccess);
+
         if (courseIdTextbox.getText().equals("")){
-            // maak nieuwe aan -> id is niet gevuld in textbox
             courseDAO.storeOne(course);
             showInformationMessage("De cursus is aangemaakt");
-            Main.getSceneManager().showManageCoursesScene();
         } else {
             Course courseToUpdate = new Course(cursusNaam, coordinatorId);
             int intCourseId = Integer.parseInt(courseIdTextbox.getText());
             courseToUpdate.setCursusId(intCourseId);
             courseDAO.updateCourseName(courseToUpdate);
             showInformationMessage("De cursus is geüpdated");
-            Main.getSceneManager().showManageCoursesScene();
         }
-        dbAccess.closeConnection(); //connectie sluiten
+        Main.getSceneManager().showManageCoursesScene();
+        dbAccess.closeConnection();
     }
 
     private void showInformationMessage(String informationMessage) {

@@ -64,7 +64,4 @@ public class Main extends Application {
         return sceneManager;
     }
 
-    public static Stage getPrimaryStage() {
-        return primaryStage;
-    }
 }

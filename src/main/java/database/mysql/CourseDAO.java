@@ -1,16 +1,13 @@
 package database.mysql;
 
-import model.*;
+import model.Course;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CourseDAO extends AbstractDAO implements GenericDAO {
-
-    public ArrayList<Course> cursusLijst;
 
     //Toegang tot de Quizmaster database
     public CourseDAO(DBAccess dbAccess){
@@ -61,12 +58,12 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
         }
 
     //Een specifieke cursus in database wegschrijven
-    @Override //override de methode uit de interface
+    @Override
     public void storeOne(Object type) {
         Course course = (Course) type; //type casten als course
             String sql = "INSERT INTO cursus (cursusNaam, userIdCoordinator) VALUES (?,?);";
             try{
-                UserDAO userDAO = new UserDAO(dBaccess);
+                new UserDAO(dBaccess);
                 PreparedStatement preparedStatement = getStatementWithKey(sql);
                 preparedStatement.setString(1, course.getCursusNaam());
                 preparedStatement.setInt(2, course.getUserIdCoordinator());
@@ -77,7 +74,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
             }
     }
 
-    //Cursus verwijderen (let op: constraint aanpassen om te verwijderen ondanks aanwezigheid quiz/vraag/antwoord)
+    //Cursus verwijderen
     public void deleteCourse(Course course) {
         String sql = "DELETE FROM cursus WHERE cursusId = ?";
         try{

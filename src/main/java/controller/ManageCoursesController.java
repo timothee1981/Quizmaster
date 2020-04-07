@@ -41,26 +41,25 @@ public class ManageCoursesController {
     }
 
     //Opvragen van een lijst van alle cursussen
-    public ArrayList<Course> getAllCourses(){
+    public ArrayList getAllCourses(){
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(),
                 DBAccess.getMainUserPassword()); //toegang tot db
         dbAccess.openConnection(); //connectie open
         CourseDAO courseDAO = new CourseDAO(dbAccess); //cursusDAO instantie
-        ArrayList<Course> courseArrayList = courseDAO.getAll(); //alle aanwezige items in de lijst laden
+        ArrayList courseArrayList = courseDAO.getAll(); //alle aanwezige items in de lijst laden
         dbAccess.closeConnection(); //connectie sluiten
         return courseArrayList;
     }
 
-    //Ga naar het menu met taken van de Administrator
+
     public void doMenu(){
         Main.getSceneManager().showWelcomeScene();
     }
-    //Toevoegen van een nieuwe cursus
+
     public void doCreateCourse(){
         Main.getSceneManager().showCreateUpdateCourseScene(new Course());
     }
 
-    //Wijzigen van een cursus(naam en coordinator)
     public void doUpdateCourse(){
         Course course = (Course) courseList.getSelectionModel().getSelectedItem();
         if(course == null){
@@ -70,9 +69,7 @@ public class ManageCoursesController {
         Main.getSceneManager().showCreateUpdateCourseScene(course);
     }
 
-    //Verwijderen van een cursus
     public void doDeleteCourse(){
-        // haal geselecteerde gebruiker op
         Course course = (Course)courseList.getSelectionModel().getSelectedItem();
         if(course == null){
             showInformationMessage("Selecteer een cursus.");
@@ -84,14 +81,10 @@ public class ManageCoursesController {
         CourseDAO courseDAO = new CourseDAO(dbAccess);
         courseDAO.deleteCourse(course);
         dbAccess.closeConnection();
-
-        // toon melding dat groep verwijderd is
         String informationMessage = String.format("Cursus %s is verwijderd.", course.getCursusNaam());
         showInformationMessage(informationMessage);
 
-        // draai setup van pagina nogmaals (page-refresh)
         setup();
-        //todo Afstemmen over upon delete restricties? Cursussen niet verwijderen als er groepen/quizzes zijn?
     }
 
     private void showInformationMessage(String informationMessage) {
