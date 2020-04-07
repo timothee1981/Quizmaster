@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Quiz {
 
@@ -22,6 +23,23 @@ public class Quiz {
         this.cesuur = cesuur;
        // this.courseId = courseId;
         this.questions = new ArrayList<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Quiz quiz = (Quiz) o;
+        return quizId == quiz.quizId &&
+                Double.compare(quiz.cesuur, cesuur) == 0 &&
+                courseId == quiz.courseId &&
+                quizName.equals(quiz.quizName) &&
+                questions.equals(quiz.questions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(quizId, quizName, cesuur, courseId, questions);
     }
 
     public ArrayList<Question> getQuestions() {
