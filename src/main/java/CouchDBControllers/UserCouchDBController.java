@@ -28,4 +28,17 @@ public class UserCouchDBController {
         cdbf.saveSingleUser(user);
     }
 
+    public User getUserByDocId(String doc_Id){
+        try {
+            db.setupConnection();
+            System.out.println("Connection open");
+        }
+        catch (Exception e) {
+            System.out.println("\nEr is iets fout gegaan\n");
+            e.printStackTrace();
+        }
+        User user = cdbf.getUserByDocId(doc_Id);
+        return user;
+    }
+
 }
