@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Course {
 
@@ -21,6 +22,21 @@ public class Course {
     //Default constructor, waarbij de default-waarden aangegeven zijn (want in DB als not null)
     public Course() {
         this("cursusNaam", 0);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return cursusId == course.cursusId &&
+                userIdCoordinator == course.userIdCoordinator &&
+                cursusNaam.equals(course.cursusNaam);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cursusId, cursusNaam, userIdCoordinator);
     }
 
     //String representatie van Cursus
