@@ -2,25 +2,42 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.CreateUpdateGroupController">
-   <children>
-
-      <Label layoutX="120.0" layoutY="60.0" text="Naam van de groep" BorderPane.alignment="CENTER" />
-      <TextField fx:id="groupNameTextBox" layoutX="250.0" layoutY="60.0" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateUpdateGroupController">
+      <Label layoutX="14.0" layoutY="14.0" text="Groep aanmaken of wijzigen">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="60.0" text="Naam van de groep" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <TextField fx:id="groupNameTextBox" layoutX="166.0" layoutY="56.0" />
 
       <TextField fx:id="groupIdTextbox" layoutX="250.0" layoutY="10.0" visible="false" />
 
-      <Label layoutX="120.0" layoutY="110.0" text="Docent" BorderPane.alignment="CENTER" />
-      <ComboBox fx:id="teacherDropdown" layoutX="249.0" layoutY="106.0" prefWidth="150.0" />
+      <Label layoutX="14.0" layoutY="112.0" text="Docent" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <ComboBox fx:id="teacherDropdown" layoutX="165.0" layoutY="99.0" prefWidth="150.0" />
 
-      <Button fx:id="createChangeGroupButton" onAction="#doCreateUpdateGroup" layoutX="120.0" layoutY="352.0" mnemonicParsing="false" text="Maak groep aan / wijzig groep" />
-      <Button layoutX="350.0" layoutY="420.0" mnemonicParsing="false" onAction="#doMenu" text="Menu" />
-      <Button layoutX="120.0" layoutY="420.0" mnemonicParsing="false" onAction="#doToManageGroups" text="Terug naar Groepenbeheer" />
-      <Button layoutX="120.0" layoutY="460.0" mnemonicParsing="false" onAction="#doCreateUpdateCourse" text="Naar Cursusbeheer" />
-
-
-   </children>
+      <Button fx:id="createChangeGroupButton" layoutX="15.0" layoutY="155.0" mnemonicParsing="false" onAction="#doCreateUpdateGroup" text="Opslaan">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button layoutX="259.0" layoutY="244.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button layoutX="14.0" layoutY="198.0" mnemonicParsing="false" onAction="#doToManageGroups" text="Terug naar Groepenbeheer">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button layoutX="15.0" layoutY="244.0" mnemonicParsing="false" onAction="#doCreateUpdateCourse" text="Naar Cursusbeheer">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
 </AnchorPane>
