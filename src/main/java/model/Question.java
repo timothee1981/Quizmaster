@@ -21,6 +21,11 @@ public class Question {
         answers = new ArrayList<>();
     }
 
+    public Question(String question, Quiz quiz) {
+        this.question = question;
+        this.quiz = quiz;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

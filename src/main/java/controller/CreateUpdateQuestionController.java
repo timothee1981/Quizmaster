@@ -1,6 +1,8 @@
 package controller;
 
 import database.mysql.*;
+import database.nosql.CouchDBaccess;
+import database.nosql.QuestionCouchDBAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -24,6 +26,7 @@ public class CreateUpdateQuestionController {
     private String labelvul;
     private String labelwijzig;
     private StringBuilder warningText = new StringBuilder();
+
 
     @FXML
     private  Label idQuestion, idGoodAnswer,idAnswer2 ,idAnswer3,idAnswer4;
@@ -118,24 +121,23 @@ public class CreateUpdateQuestionController {
 
         // maak database-connectie
         dbAccess.openConnection();
+
         questionDAO = new QuestionDAO(dbAccess);
         answerDAO = new AnswerDAO(dbAccess);
+
+        QuestionCouchDBController questionCouchDBController = new QuestionCouchDBController();
         //check als er een nieuwe vraag moet komen of als een bestaande vraag moet gewijzigd worden
         if (titelLabel.getText().equals(labelvul)) {//als titel op nieuwe is-----> nieuwe vraag
             //check als combobox waarde heeft
             if(question != null) {
                 if (!(quizComboBox.getValue() == null)) {
                     //als combobox waarde creer vraag
-
                     // vul quiz in die bij vraag hoort
                     question.setQuiz(quizComboBox.getValue());
                     // check of je vraag een waarde heeft:
-
                     if (!(question.getQuestion().isEmpty())) {
                         // vraag heeft een waarde:
-
                         // answers = question.getAnswers();
-
                         // bepaal goede antwoord
                         Answer correctAnswer = new Answer(goodAnswerTextField.getText(), question);
                         question.setCorrectAnswer(correctAnswer);
