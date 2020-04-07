@@ -125,7 +125,7 @@ public class CreateUpdateQuestionController {
         questionDAO = new QuestionDAO(dbAccess);
         answerDAO = new AnswerDAO(dbAccess);
 
-        QuestionCouchDBController questionCouchDBController = new QuestionCouchDBController();
+
         //check als er een nieuwe vraag moet komen of als een bestaande vraag moet gewijzigd worden
         if (titelLabel.getText().equals(labelvul)) {//als titel op nieuwe is-----> nieuwe vraag
             //check als combobox waarde heeft

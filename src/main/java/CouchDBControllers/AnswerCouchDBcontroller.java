@@ -26,4 +26,15 @@ public class AnswerCouchDBcontroller {
         answerCouchDBDAO.saveSingleQuestion(answer);
 
     }
+
+    public void getAnswer(String answer){
+        try{
+            db.setupConnection();
+            System.out.println("Connection open");
+        }catch(Exception e){
+            System.out.println("\nEr is iets fout gegaan\n");
+            e.printStackTrace();
+        }
+        answerCouchDBDAO.getAnswer(answer);
+    }
 }
