@@ -6,7 +6,7 @@ module Quizmaster {
     requires mysql.connector.java;
     requires lightcouch;
     requires gson;
-    requires org.junit.jupiter.api;
+    // requires org.junit.jupiter.api;
 
     opens database.nosql to gson, lightcouch, java.sql;
     opens model to gson;
