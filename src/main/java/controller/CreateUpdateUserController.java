@@ -4,20 +4,14 @@ package controller;
 import database.mysql.DBAccess;
 import database.mysql.RoleDAO;
 import database.mysql.UserDAO;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import model.Teacher;
 import view.Main;
 import javafx.scene.control.*;
 import model.User;
-
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static model.User.DEFAULT_USER_ID;
 
 public class CreateUpdateUserController {
 
@@ -69,7 +63,19 @@ public class CreateUpdateUserController {
     }
 
     private void setRoleDropdownOfUser(User user) {
-        roleComboBox.setValue(user.getRole());
+        List<String> roleDropdownOptions = roleComboBox.getItems();
+        boolean validate = false;
+        for(String role: roleDropdownOptions){
+            if(role.equals(user.getRole())){
+                validate = true;
+                break;
+            }
+        }
+        if(validate) {
+            roleComboBox.setValue(user.getRole());
+        } else{
+            showErrorMessage("De rol van de gebruiker kan niet gevonden worden.");
+        }
     }
 
     private void fillTextFieldsOfUser(User user) {
