@@ -17,8 +17,9 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
     }
 
     //Specifieke groep ophalen uit de Quizmaster database
-    Group group = null;
+
     public Group getGroupById(int groepId){
+        Group group = null;
         String sql = "SELECT * FROM groep WHERE groepId = ?;";
         try {
             PreparedStatement preparedStatement = getStatement(sql);
@@ -27,6 +28,9 @@ public class GroupDAO extends AbstractDAO implements GenericDAO {
             while (resultSet.next()){
                 groepId = resultSet.getInt(1);
                 String groepnaam = resultSet.getString(2);
+                UserDAO userDAO = new UserDAO(dBaccess);
+                Teacher teacher = (Teacher) userDAO.getOneById(resultSet.getInt(3));
+                group = new Group(groepId, groepnaam, teacher);
             }
         } catch (SQLException sqlFout){
             System.out.println(sqlFout.getMessage());

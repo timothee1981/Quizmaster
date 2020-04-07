@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Group {
 
@@ -24,6 +25,22 @@ public class Group {
     //Default constructor, waarbij de default-waarden aangegeven zijn (want in DB als not null)
     public Group(){
         this(DEFAULT_GROUP_ID,DEFAULT_GROUP_NAME, new Teacher());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Group group = (Group) o;
+        return groepId == group.groepId &&
+                groepnaam.equals(group.groepnaam) &&
+                Objects.equals(teacher, group.teacher) &&
+                Objects.equals(groepenLijst, group.groepenLijst);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(groepId, groepnaam, teacher, groepenLijst);
     }
 
     // getters en setters
