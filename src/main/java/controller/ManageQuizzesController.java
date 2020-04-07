@@ -18,8 +18,6 @@ public class ManageQuizzesController {
     private ListView quizList;
 
     public void setup() {
-        //todo: vragen goed inladen in Quiz
-
         dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
         this.quizDAO = new QuizDAO(dbAccess);
