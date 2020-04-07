@@ -37,16 +37,10 @@ public class CreateUpdateQuizController {
     public ComboBox cursusComboBox;
 
     @FXML
-    private  TextField questionTextField;
-
-    @FXML
     private  TextField cesuurTextField;
 
     @FXML
     private Label titelLable, idLabel;
-
-    @FXML
-    private Button  menuButton1, returnCourseButton;
 
     @FXML
     private ListView<Question> questionList;
@@ -57,45 +51,75 @@ public class CreateUpdateQuizController {
     public void setup(Quiz quiz) {
         dbAccess.openConnection();
 
-        // vul cursus-combobox met alle cursussen
+        // vul dropdown met alle cursussen
+        fillCourseComboBox();
+
+        // selecteer de juiste cursus
+        SelectCourseOfQuiz(quiz);
+
+        // vul tekstvelden cursus (id-veld)
+        fillFields(quiz);
+
+        // vul lijst met vragen behorende bij quiz
+        fillQuestionList(quiz);
+
+        // check of het een nieuwe of een bestaande quiz is
+        if(quiz.getQuizId() == Question.DEFAULT_VRAAG) {
+            // nieuwe quiz
+            setupForNewQuiz();
+        } else {
+            // bestaande quiz
+            setupForExistingQuiz(quiz);
+        }
+        dbAccess.closeConnection();
+    }
+
+    private void setupForExistingQuiz(Quiz quiz) {
+        labelwijzig = "Wijzig Quiz";
+        titelLable.setText(labelwijzig);
+        setTextFields(quiz);
+    }
+
+    private void setTextFields(Quiz quiz) {
+        quizNameTextField.setText(quiz.getQuizName());
+        cesuurTextField.setText(String.valueOf(quiz.getCesuur()));
+        idLabel.setText(String.format("%d",quiz.getQuizId()));
+    }
+
+    private void setupForNewQuiz() {
+        labelvul = "Vul quiz en bijbehorende vragen";
+        titelLable.setText(labelvul);
+        // je mag alleen vragen toevoegen aan een bestaande quiz
+        hideQuestionFields();
+    }
+
+    private void fillQuestionList(Quiz quiz) {
+        ArrayList<Question> getAllQuestionFromQuiz = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
+        // vul vragenlijst
+        questionList.getItems().clear();
+        for(Question question: getAllQuestionFromQuiz){
+            questionList.getItems().add(question);
+        }
+    }
+
+    private void fillFields(Quiz quiz) {
+        // vul Id
+        courseIdTextField.setText(String.valueOf(quiz.getCourseId()));
+    }
+
+    private void SelectCourseOfQuiz(Quiz quiz) {
+        // selecteer de juiste cursus
+        CourseDAO courseDAO = new CourseDAO(dbAccess);
+        Course selectedCourse = (Course)courseDAO.getOneById(quiz.getCourseId());
+        cursusComboBox.setValue(selectedCourse);
+    }
+
+    private void fillCourseComboBox() {
+        // vul dropdown met alle cursussen
         CourseDAO courseDAO = new CourseDAO(dbAccess);
         ArrayList<Course> courseArrayList = courseDAO.getAll();
         for(Course course: courseArrayList) {
             cursusComboBox.getItems().add(course);
-        }
-        // selecteer de juiste cursus
-        Course selectedCourse = (Course)courseDAO.getOneById(quiz.getCourseId());
-        cursusComboBox.setValue(selectedCourse);
-
-        // vul id van cursus in
-        courseIdTextField.setText(String.valueOf(quiz.getCourseId()));
-
-        ArrayList<Question> getAllQuestionFromQuiz = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
-
-        // vul vragenlijst
-        questionList.getItems().clear();
-        for(Question question: getAllQuestionFromQuiz){
-           questionList.getItems().add(question);
-        }
-
-        if(quiz.getQuizId() == Question.DEFAULT_VRAAG) {
-            // nieuwe quiz
-            labelvul = "Vul quiz en bijbehorende vragen";
-            titelLable.setText(labelvul);
-            // todo: verberg het vragen-gedeelte -> na opslaan wordt er terug-genavigeerd naar het dashboard
-            // je mag alleen vragen toevoegen aan een bestaande quiz
-            hideQuestionFields();
-            
-        } else {
-            // bestaande quiz
-            labelwijzig = "Wijzig Quiz";
-            titelLable.setText(labelwijzig);
-
-            quizNameTextField.setText(quiz.getQuizName());
-            cesuurTextField.setText(String.valueOf(quiz.getCesuur()));
-            int quizId = quiz.getQuizId();
-            String quizIDString = String.format("%d",quizId);
-            idLabel.setText(quizIDString);
         }
     }
 
@@ -207,36 +231,47 @@ public class CreateUpdateQuizController {
 
     public void doUpdateQuestion(){
         Question question = null;
-        question = questionList.getSelectionModel().getSelectedItem();
+        question = getQuestionFomPage();
         if(question == null){
-            System.out.println("Selecteer een vraag");
             return;
         }
-        question.setQuiz(getCurrentQuiz());
 
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
     }
 
-    public void doDeleteQuestion(){
-
-        dbAccess.openConnection();
-        quizDAO = new QuizDAO(dbAccess);
-
+    private Question getQuestionFomPage() {
         Question question = null;
         question = questionList.getSelectionModel().getSelectedItem();
         if(question == null){
-            System.out.println("er is geen vraag geselecteerd");
+            UsefullStuff.showInformationMessage("Selecteer een vraag");
+            return question;
+        }
+        question.setQuiz(getCurrentQuiz());
+        return question;
+    }
+
+    public void doDeleteQuestion(){
+        // get question information
+        Question question = null;
+        question = getQuestionFomPage();
+        if(question == null){
             return;
         }
-        questionDAO.deleteQuestion(question);
 
-        quiz = getCurrentQuiz();
-        setup(quiz);
+        // delete question
+        dbAccess.openConnection();
+        questionDAO.deleteQuestion(question);
+        dbAccess.closeConnection();
+
+        // refresh page
+        setup(question.getQuiz());
     }
 
     private Quiz getCurrentQuiz() {
         QuizDAO quizDAO = new QuizDAO(dbAccess);
+        dbAccess.openConnection();
         Quiz currentQuiz = quizDAO.getOneById(Integer.parseInt(idLabel.getText()));
+        dbAccess.closeConnection();
         return currentQuiz;
     }
 }

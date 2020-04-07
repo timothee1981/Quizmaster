@@ -74,7 +74,7 @@ public class CreateUpdateUserController {
         if(validate) {
             roleComboBox.setValue(user.getRole());
         } else{
-            showErrorMessage("De rol van de gebruiker kan niet gevonden worden.");
+            UsefullStuff.showErrorMessage("De rol van de gebruiker kan niet gevonden worden.");
         }
     }
 
@@ -108,7 +108,7 @@ public class CreateUpdateUserController {
         Object userRole = null;
         userRole = roleComboBox.getValue();
         if(userRole == null){
-            showErrorMessage("Er is geen rol geselecteerd");
+            UsefullStuff.showErrorMessage("Er is geen rol geselecteerd");
             return;
         }
         String userRoleInput = userRole.toString();
@@ -127,19 +127,19 @@ public class CreateUpdateUserController {
         if(userInputIdString.trim().isEmpty()){
             // maak nieuwe user aan
             createNewUser(userInputUsername, userInputPassword, userRoleInput);
-            showInformationMessage(String.format("De nieuwe gebruiker met de username: %s is aangemaakt.",userInputUsername));
+            UsefullStuff.showInformationMessage(String.format("De nieuwe gebruiker met de username: %s is aangemaakt.",userInputUsername));
         } else{
             // pas bestaande gebruiker aan:
             // first get user Id
             try {
                 userInputIdInt = Integer.parseInt(userInputIdString);
             } catch(NumberFormatException e){
-                showErrorMessage("Het id moet een geheel getal zijn.");
+                UsefullStuff.showErrorMessage("Het id moet een geheel getal zijn.");
                 return;
             }
             // update user
             updateUserById(userInputIdInt, userInputUsername, userInputPassword, userRoleInput);
-            showInformationMessage(String.format("De gebruiker met de username: %s is aangepast.",userInputUsername));
+            UsefullStuff.showInformationMessage(String.format("De gebruiker met de username: %s is aangepast.",userInputUsername));
         }
         // navigate back to menu
         doMenu();
@@ -148,7 +148,7 @@ public class CreateUpdateUserController {
     private boolean validatePassword(String password) {
         if(password.trim().equals("")){
             // wachtwoord moet gevuld zijn
-            showErrorMessage("Het wachtwoord is niet ingevuld");
+            UsefullStuff.showErrorMessage("Het wachtwoord is niet ingevuld");
             return false;
         } else {
             return true;
@@ -158,7 +158,7 @@ public class CreateUpdateUserController {
     private boolean validateUsername(String username) {
         if(username.trim().equals("")){
             // gebruikersnaam moet gevuld zijn
-            showErrorMessage("De gebruikersnaam is niet ingevuld");
+            UsefullStuff.showErrorMessage("De gebruikersnaam is niet ingevuld");
             return false;
         } else {
             return true;
@@ -188,17 +188,5 @@ public class CreateUpdateUserController {
         for(String roleString: roleStrings){
             roleComboBox.getItems().add(roleString);
         }
-    }
-
-    private void showErrorMessage(String errorMessage) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText(errorMessage);
-        alert.show();
-    }
-
-    private void showInformationMessage(String informationMessage) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(informationMessage);
-        alert.show();
     }
 }
