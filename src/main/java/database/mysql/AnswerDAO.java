@@ -134,5 +134,18 @@ public class AnswerDAO extends AbstractDAO implements GenericDAO{
         }
     }
 
+    public void deleteAnswer(Answer answer) {
+        String sql = "DELETE FROM antwoord WHERE vraagId = ?";
+
+        try{
+            PreparedStatement preparedStatement = getStatement(sql);
+            preparedStatement.setInt(1, answer.getQuestion().getQuestionId());
+            executeManipulatePreparedStatement(preparedStatement);
+
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }
