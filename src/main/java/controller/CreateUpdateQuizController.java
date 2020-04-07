@@ -129,6 +129,13 @@ public class CreateUpdateQuizController {
             System.out.println(e.getMessage());
         }
 
+        Course course = null;
+        course = (Course)cursusComboBox.getValue();
+        if(course == null){
+            System.out.println("Selecteer een cursus");
+            return;
+        }
+
         // get cesuur and validate:
         double cesuur;
         try {
@@ -155,9 +162,10 @@ public class CreateUpdateQuizController {
             quiz = null;
             return;
         } else {
-            // alle invoer is correct ->
+            // alle invoer is correct -> Vul Quiz-object met juiste data (want globaal opgeslagen)
             quiz = new Quiz(quizName,cesuur);
             quiz.setCourseId(courseId);
+            quiz.setCourseId(course.getCursusId());
         }
 
 
@@ -176,7 +184,7 @@ public class CreateUpdateQuizController {
                 Main.getSceneManager().showCoordinatorDashboard();
 
             } else if (titelLable.getText().equals(labelwijzig)) {
-                int id = Integer.valueOf(idLabel.getText());
+                int id = Integer.parseInt(idLabel.getText());
                 quiz.setQuizId(id);
                 quizDAO.updateQuiz(quiz);
                 System.out.println("De quiz wordt aangepast");
@@ -193,41 +201,42 @@ public class CreateUpdateQuizController {
 
     public void doCreateQuestion(){
         Question question = new Question();
+        question.setQuiz(getCurrentQuiz());
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
-
     }
 
     public void doUpdateQuestion(){
-        Question question = questionList.getSelectionModel().getSelectedItem();
-
+        Question question = null;
+        question = questionList.getSelectionModel().getSelectedItem();
         if(question == null){
-            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText("Je moet een vraag aanklikken\n");
-            foutmelding.show();
+            System.out.println("Selecteer een vraag");
             return;
-
         }
+        question.setQuiz(getCurrentQuiz());
 
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
     }
 
     public void doDeleteQuestion(){
+
         dbAccess.openConnection();
         quizDAO = new QuizDAO(dbAccess);
-        int quizId = Integer.parseInt(idLabel.getText());
-        quiz = quizDAO.getOneById(quizId);
-        Question question = questionList.getSelectionModel().getSelectedItem();
-        int questionId = question.getQuestionId();
-        answerDAO.deleteAnswerfromQuestion(questionId);
-        if(question == null) {
 
-            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText("Je moet een vraag aanklikken\n");
-            foutmelding.show();
+        Question question = null;
+        question = questionList.getSelectionModel().getSelectedItem();
+        if(question == null){
+            System.out.println("er is geen vraag geselecteerd");
             return;
         }
         questionDAO.deleteQuestion(question);
+
+        quiz = getCurrentQuiz();
         setup(quiz);
     }
 
+    private Quiz getCurrentQuiz() {
+        QuizDAO quizDAO = new QuizDAO(dbAccess);
+        Quiz currentQuiz = quizDAO.getOneById(Integer.parseInt(idLabel.getText()));
+        return currentQuiz;
+    }
 }
