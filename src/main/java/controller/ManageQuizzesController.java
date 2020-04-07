@@ -4,6 +4,7 @@ import database.mysql.AnswerDAO;
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
@@ -33,7 +34,7 @@ public class ManageQuizzesController {
     }
 
     public void doMenu(){
-        Main.getSceneManager().showCoordinatorDashboard();
+        Main.getSceneManager().showWelcomeScene();
         dbAccess.closeConnection();
     }
 
@@ -72,8 +73,12 @@ public class ManageQuizzesController {
             return;
 
         }
-
         quizDAO.deleteQuizBiId(quizId);
         setup();
+    }
+
+    public void doDashboard(ActionEvent actionEvent) {
+            Main.getSceneManager().showCoordinatorDashboard();
+            dbAccess.closeConnection();
     }
 }

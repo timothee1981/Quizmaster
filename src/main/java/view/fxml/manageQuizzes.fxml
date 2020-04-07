@@ -31,7 +31,12 @@
             <Font size="14.0" />
         </font>
     </Button>
-    <Button layoutX="14.0" layoutY="329.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+    <Button layoutX="108.0" layoutY="367.0" mnemonicParsing="false" onAction="#doDashboard" text="Dashboard">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Button>
+    <Button layoutX="15.0" layoutY="367.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
         <font>
             <Font size="14.0" />
         </font>
