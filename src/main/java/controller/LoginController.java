@@ -51,26 +51,19 @@ public class LoginController {
             return;
         }
 
-        // user mag inloggen ->
-        User loggedInUser = userToLogin;
-
         // voeg user toe aan lijst met ingelogde users
-        loggedInUsers.add(loggedInUser);
+        loggedInUsers.add(userToLogin);
 
         // Ga naar welkomscherm
         Main.getSceneManager().showWelcomeScene();
     }
 
     private User getUserByUsername(String username) {
-        //Creëer dbAccess object
+        //get user from database by username
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-        // maak database-connectie
         dbAccess.openConnection();
-        //creëer userDAO instantie
         UserDAO userDAO = new UserDAO(dbAccess);
-        // roep save-methode aan
         User user = userDAO.getUserByUsername(username);
-        // sluit database connectie
         dbAccess.closeConnection();
         return user;
     }
@@ -83,6 +76,6 @@ public class LoginController {
 
     // sluit applicatie
     public void doQuit() {
-            System.exit(0);
+        System.exit(0);
     }
 }

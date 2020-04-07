@@ -39,22 +39,33 @@ public class CreateUpdateUserController {
 
     public void setup(User user) {
 
+        // vul rol-dropdown met alle rollen
         fillRoleDropdown();
 
         // check of user een echte user is of een dummy (id = DEFAULT_USER_ID)
         if(user.getUserId() == User.DEFAULT_USER_ID){
             // toon velden voor aanmaak NIEUWE USER -> verberg id-veld
-            userIdTextField.setVisible(false);
-            userIdLabel.setVisible(false);
-            headerLabel.setText("Maak een nieuwe gebruiker aan");
-            addNewUserButton.setText("Voeg nieuwe gebruiker toe");
+            setupForNewUser();
         } else{
             // vul waarden van velden met velden van de AAN TE PASSEN user
-            fillTextFieldsOfUser(user);
-            setRoleDropdownOfUser(user);
-            headerLabel.setText("Pas een bestaande gebruiker aan");
-            addNewUserButton.setText("Pas de gebruiker aan");
+            setupForExistingUser(user);
         }
+    }
+
+    private void setupForNewUser() {
+        // toon velden voor aanmaak NIEUWE USER -> verberg id-veld
+        userIdTextField.setVisible(false);
+        userIdLabel.setVisible(false);
+        headerLabel.setText("Maak een nieuwe gebruiker aan");
+        addNewUserButton.setText("Voeg nieuwe gebruiker toe");
+    }
+
+    private void setupForExistingUser(User user) {
+        // vul waarden van velden met velden van de AAN TE PASSEN user
+        fillTextFieldsOfUser(user);
+        setRoleDropdownOfUser(user);
+        headerLabel.setText("Pas een bestaande gebruiker aan");
+        addNewUserButton.setText("Pas de gebruiker aan");
     }
 
     private void setRoleDropdownOfUser(User user) {
@@ -63,23 +74,22 @@ public class CreateUpdateUserController {
 
     private void fillTextFieldsOfUser(User user) {
         //setId
-        int userId = user.getUserId();
-        String userIdString = String.format("%d",userId);
-        userIdTextField.setText(userIdString);
-
+        userIdTextField.setText(String.valueOf(user.getUserId()));
+        //set name
         usernameTextField.setText(user.getUserName());
+        //set password
         passwordTextField.setText(user.getPassword());
     }
 
     private ArrayList<String> getAllRoleItems() {
-
+        // get roles from database
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
         RoleDAO roleDAO = new RoleDAO(dbAccess);
-        ArrayList<String> menuStringItems = roleDAO.getAllRoles();
+        ArrayList<String> roleStrings = roleDAO.getAllRoles();
         dbAccess.closeConnection();
 
-        return menuStringItems;
+        return roleStrings;
     }
 
     public void doMenu() {
@@ -88,41 +98,44 @@ public class CreateUpdateUserController {
     }
 
     public void doCreateUpdateUser() {
+        // get role of user - and check validity
+        Object userRole = null;
+        userRole = roleComboBox.getValue();
+        if(userRole == null){
+            showErrorMessage("Er is geen rol geselecteerd");
+            return;
+        }
+        String userRoleInput = userRole.toString();
 
-        // check of de input of Id is an empty string -> zo ja, dan wordt er een nieuwe user aangemaakt
-        String userInputIdString = userIdTextField.getText();
+        // get userInput
         String userInputUsername = usernameTextField.getText();
         String userInputPassword = passwordTextField.getText();
-        String userRoleInput = "";
-        if(!(roleComboBox.getValue() == null)) {
-            // roleComboBox has value, now get it!
-            userRoleInput = roleComboBox.getValue().toString();
-        } else{
-            showErrorMessage("Er is geen rol geselecteerd");
-        }
 
+        // validate username and password
         if((!validateUsername(userInputUsername))||(!validatePassword(userInputPassword))){
             return;
         }
 
+        String userInputIdString = userIdTextField.getText();
         int userInputIdInt;
         if(userInputIdString.trim().isEmpty()){
             // maak nieuwe user aan
             createNewUser(userInputUsername, userInputPassword, userRoleInput);
-            String informationMessage = String.format("De nieuwe gebruiker met de username: %s is aangemaakt.",userInputUsername);
-            showInformationMessage(informationMessage);
+            showInformationMessage(String.format("De nieuwe gebruiker met de username: %s is aangemaakt.",userInputUsername));
         } else{
+            // pas bestaande gebruiker aan:
+            // first get user Id
             try {
                 userInputIdInt = Integer.parseInt(userInputIdString);
             } catch(NumberFormatException e){
                 showErrorMessage("Het id moet een geheel getal zijn.");
                 return;
             }
-            // pas bestaande gebruiker aan
+            // update user
             updateUserById(userInputIdInt, userInputUsername, userInputPassword, userRoleInput);
-            String informationMessage = String.format("De gebruiker met de username: %s is aangepast.",userInputUsername);
-            showInformationMessage(informationMessage);
+            showInformationMessage(String.format("De gebruiker met de username: %s is aangepast.",userInputUsername));
         }
+        // navigate back to menu
         doMenu();
     }
 
@@ -147,33 +160,24 @@ public class CreateUpdateUserController {
     }
 
     private void updateUserById(int id, String username, String password, String role) {
-        //Creëer dbAccess object
+        //update user in database by id
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-        // maak database-connectie
         dbAccess.openConnection();
-        //creëer userDAO instantie
         UserDAO userDAO = new UserDAO(dbAccess);
-        // roep save-methode aan
         userDAO.updateUser(id, username, password, role);
-        // sluit database connectie
         dbAccess.closeConnection();
     }
 
     private void createNewUser(String username, String password, String role) {
-        //Creëer dbAccess object
+        //Save new User in database
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-        // maak database-connectie
         dbAccess.openConnection();
-        //creëer userDAO instantie
         UserDAO userDAO = new UserDAO(dbAccess);
-        // roep save-methode aan
         userDAO.storeNewUser(username, password, role);
-        // sluit database connectie
         dbAccess.closeConnection();
     }
 
     private void fillRoleDropdown() {
-
         ArrayList<String> roleStrings = getAllRoleItems();
         for(String roleString: roleStrings){
             roleComboBox.getItems().add(roleString);

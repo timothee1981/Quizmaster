@@ -48,15 +48,6 @@ public class Main extends Application {
         groupCouchDBController.saveGroup(group);
     }
 
-    //Testgegevens van testgebruikers
-    private void createUserList() {
-        userList.add(new Teacher(1, "Stefan", "Stefan", "Docent"));
-        userList.add(new Student(2, "Timothee", "Timothee", "Student"));
-        userList.add(new Administrator(3, "Mireille", "Mireille", "Administrator"));
-        userList.add(new TechnicalAdministrator(4, "Ankie", "Ankie", "Technisch beheerder"));
-        userList.add(new Coordinator(5,"Michel","Michel","Coordinator"));
-    }
-
     public static SceneManager getSceneManager() {
         if (sceneManager == null) {
             sceneManager = new SceneManager(primaryStage);
