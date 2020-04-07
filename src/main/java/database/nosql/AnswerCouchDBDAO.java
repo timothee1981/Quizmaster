@@ -34,15 +34,15 @@ public class AnswerCouchDBDAO {
         }
 
     public Answer getAnswer(String answerText) {
-        Answer resultaat = null;
-        List<JsonObject> allAnswers = db.getClient().view("_all_docs").includeDocs(true).query(JsonObject.class);
+        Answer answer = null;
+        List<JsonObject> allAnswers = db.getClient().view("antwoord").includeDocs(true).query(JsonObject.class);
         for (JsonObject json : allAnswers) {
-            resultaat = gson.fromJson(json, Answer.class);
-            if (resultaat.getAnswer().equals(answerText)) {
-                return resultaat;
+            answer = gson.fromJson(json, Answer.class);
+            if (answer.getAnswer().equals(answerText)) {
+                return answer;
             }
         }
-        return resultaat;
+        return answer;
     }
 
     }

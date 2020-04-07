@@ -26,7 +26,7 @@ public class Question {
         this.quiz = quiz;
     }
 
-    @Override
+
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -41,10 +41,6 @@ public class Question {
     @Override
     public int hashCode() {
         return Objects.hash(questionId, question, answers, quiz, correctAnswer);
-    }
-
-    public Answer getCorrectAnswer() {
-        return correctAnswer;
     }
 
     public void setCorrectAnswer(Answer correctAnswer) {
