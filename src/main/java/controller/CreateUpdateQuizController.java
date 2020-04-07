@@ -23,6 +23,7 @@ public class CreateUpdateQuizController {
     DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
     QuestionDAO questionDAO = new QuestionDAO(dbAccess);
     AnswerDAO answerDAO = new AnswerDAO(dbAccess);
+    QuizDAO quizDAO = new QuizDAO(dbAccess);
     Quiz quiz;
     private String labelvul;
     private String labelwijzig;
@@ -159,6 +160,9 @@ public class CreateUpdateQuizController {
 
     public void doDeleteQuestion(){
         dbAccess.openConnection();
+        quizDAO = new QuizDAO(dbAccess);
+        int quizId = Integer.parseInt(idLabel.getText());
+        quiz = quizDAO.getOneById(quizId);
         Question question = questionList.getSelectionModel().getSelectedItem();
         int questionId = question.getQuestionId();
         answerDAO.deleteAnswerfromQuestion(questionId);
@@ -171,6 +175,7 @@ public class CreateUpdateQuizController {
 
         }
         questionDAO.deleteQuestion(question);
+        setup(quiz);
 
 
     }

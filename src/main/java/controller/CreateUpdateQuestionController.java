@@ -100,23 +100,31 @@ public class CreateUpdateQuestionController {
 
     @FXML
     public void doCreateUpdateQuestion(ActionEvent actionEvent) {
+        createQuestion();
+        createAnswerBijQuestion(question);
 
         // due to global datastorage - first clear question/answer etc.
 
-        createQuestion();
+
         // maak database-connectie
         dbAccess.openConnection();
         questionDAO = new QuestionDAO(dbAccess);
         answerDAO = new AnswerDAO(dbAccess);
-
-            // roep save-methode aan
-        if (titelLabel.getText().equals(labelvul)) { // bij nieuwe vraag
+        //check als er een nieuwe vraag moet komen of als een bestaande vraag moet gewijzigd worden
+        if (titelLabel.getText().equals(labelvul)) {//als titel op nieuwe is-----> nieuwe vraag
+            //check als combobox waarde heeft
             if (!(quizComboBox.getValue() == null)) {
+                //als combobox waarde creer vraag
+
                 // vul quiz in die bij vraag hoort
                 question.setQuiz(quizComboBox.getValue());
                 // check of je vraag een waarde heeft:
                 if(!(question.getQuestion().isEmpty())) {
                     // vraag heeft een waarde:
+
+
+                   // createAnswerBijQuestion(question);
+                   // answers = question.getAnswers();
 
                     // bepaal goede antwoord
                     Answer correctAnswer = new Answer(goodAnswerTextField.getText(), question);
@@ -124,7 +132,6 @@ public class CreateUpdateQuestionController {
 
                     // save question
                     questionDAO.storeOne(question);
-
                     // get all answers of question from database:
                     AnswerDAO answerDAO = new AnswerDAO(dbAccess);
                     ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(question.getQuestionId());
@@ -159,6 +166,28 @@ public class CreateUpdateQuestionController {
         Main.getSceneManager().showCoordinatorDashboard();
     }
 
+    private void createAnswerBijQuestion(Question   question) {
+        Answer answer = new Answer(goodAnswerTextField.getText(), question);
+        Answer answer2 = new Answer(answer2TextField.getText(), question);
+        Answer answer3 = new Answer(answer3TextField.getText(), question);
+        Answer answer4 = new Answer(answer4TextField.getText(), question);
+        question.voegAntwoordAanVraag(answer);
+        question.voegAntwoordAanVraag(answer2);
+        question.voegAntwoordAanVraag(answer3);
+        question.voegAntwoordAanVraag(answer4);
+        answers = question.getAnswers();
+        for(Answer answer1: answers){
+           boolean hasAnswer =  validateAnswerString(answer1.getAnswer());
+            if(!hasAnswer){
+                allAnswerFilledWarning();
+                return;
+
+            }
+        }
+
+
+    }
+
     private boolean validateAnswerString(String rawAnswerString) {
         if(rawAnswerString.equals("") || rawAnswerString == null){
             return false;
@@ -185,7 +214,7 @@ public class CreateUpdateQuestionController {
 
 
     private void warningTextNoQuestion() {
-        warningText.append("Je moet een vraag invullen\n");
+        warningText.append("Je moet een goede vraag invullen\n");
         Alert foutmelding = new Alert(Alert.AlertType.ERROR);
         foutmelding.setContentText(warningText.toString());
         foutmelding.show();
@@ -208,25 +237,10 @@ public class CreateUpdateQuestionController {
 
         dbAccess.openConnection();
         answerDAO = new AnswerDAO(dbAccess);
-        StringBuilder warningText = new StringBuilder();
-        boolean correcteInvoer = true;
-
         question = new Question(vraagTextField.getText());
-
-        Answer answer = new Answer(goodAnswerTextField.getText(), question);
-        Answer answer2 = new Answer(answer2TextField.getText(), question);
-        Answer answer3 = new Answer(answer3TextField.getText(), question);
-        Answer answer4 = new Answer(answer4TextField.getText(), question);
-        question.voegAntwoordAanVraag(answer);
-        question.voegAntwoordAanVraag(answer2);
-        question.voegAntwoordAanVraag(answer3);
-        question.voegAntwoordAanVraag(answer4);
-        answers = question.getAnswers();
 
         dbAccess.closeConnection();
 
-        String actualAnswer = "";
-        int actualIndex = 0;
     }
 
     private ArrayList<Quiz> getAllQuizItems() {
