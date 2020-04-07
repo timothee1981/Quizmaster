@@ -38,6 +38,7 @@ public class Main extends Application {
         Answer answer = new Answer(1,"this");
         Question question = new Question(1,"Hoofdstad VS");
         Course course = new Course("Maanvissen", 5);
+        Group group = new Group(40, "STAMgasten", user);
 
         UserCouchDBController userCouchDBController = new UserCouchDBController();
         AnswerCouchDBcontroller answerCouchDBcontroller = new AnswerCouchDBcontroller();
