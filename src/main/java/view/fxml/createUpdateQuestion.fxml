@@ -59,10 +59,10 @@
       </children>
    </GridPane>
    <Label fx:id="titelLabel" layoutX="188.0" layoutY="45.0" text="Label" visible="false" />
-   <Label fx:id="idQuestion" layoutX="23.0" layoutY="102.0" text="LabelQ" visible="true" />
-   <Label fx:id="idGoodAnswer" layoutX="23.0" layoutY="154.0" text="LabelVG" visible="true" />
-    <Label fx:id="idAnswer2" layoutX="23.0" layoutY="154.0" text="LabelVG" visible="true" />
-   <Label fx:id="idAnswer3" layoutX="23.0" layoutY="228.0" text="Label" visible="true" />
-   <Label fx:id="idAnswer4" layoutX="23.0" layoutY="260.0" text="Label" visible="true" />
-   <Label fx:id="idQuiz" layoutX="23.0" layoutY="93.0" text="QLabel" visible="true" />
+   <Label fx:id="idQuestion" layoutX="23.0" layoutY="102.0" text="LabelQ" visible="false" />
+   <Label fx:id="idGoodAnswer" layoutX="23.0" layoutY="154.0" text="LabelVG" visible="false" />
+    <Label fx:id="idAnswer2" layoutX="23.0" layoutY="154.0" text="LabelVG" visible="false" />
+   <Label fx:id="idAnswer3" layoutX="23.0" layoutY="228.0" text="Label" visible="false" />
+   <Label fx:id="idAnswer4" layoutX="23.0" layoutY="260.0" text="Label" visible="false" />
+   <Label fx:id="idQuiz" layoutX="23.0" layoutY="93.0" text="QLabel" visible="falsegit" />
 </AnchorPane>
