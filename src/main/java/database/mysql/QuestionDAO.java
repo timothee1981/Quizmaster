@@ -180,12 +180,12 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
             preparedStatement.setInt(2, question.getQuestionId());
 
             executeManipulatePreparedStatement(preparedStatement);
-            AnswerDAO answerDAO = new AnswerDAO(dBaccess);
+           /* AnswerDAO answerDAO = new AnswerDAO(dBaccess);
             ArrayList<Answer> answers = answerDAO.getAnswersByQuestionId(question.getQuestionId());
 
             for(Answer answer: answers){
                 answerDAO.updateAnswer(answer);
-            }
+            }*/
 
         } catch (SQLException e){
             System.out.println(e.getMessage());

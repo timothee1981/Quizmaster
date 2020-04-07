@@ -26,7 +26,7 @@ public class CreateUpdateQuestionController {
     private StringBuilder warningText = new StringBuilder();
 
     @FXML
-    private  Label idQuestion, idGoodAnswer,idAnswer2,idAnswer3,idAnswer4, idQuiz;
+    private  Label idQuestion, idGoodAnswer,idAnswer2 ,idAnswer3,idAnswer4;
 
     @FXML
     private Label titelLabel;
@@ -79,6 +79,16 @@ public class CreateUpdateQuestionController {
             answer2TextField.setText(question.getAnswers().get(1).toString());
             answer3TextField.setText(question.getAnswers().get(2).toString());
             answer4TextField.setText(question.getAnswers().get(3).toString());
+            String goodAnswerId = String.format("%d",question.getAnswers().get(0).getAnswerId());
+            String answer2 = String.format("%d",question.getAnswers().get(1).getAnswerId());
+            String answer3 = String.format("%d",question.getAnswers().get(2).getAnswerId());
+            String answer4 = String.format("%d",question.getAnswers().get(3).getAnswerId());
+            idGoodAnswer.setText(goodAnswerId);
+            idAnswer2.setText(answer2);
+            idAnswer3.setText(answer3);
+            idAnswer4.setText(answer4);
+
+
         }
     }
 
@@ -100,8 +110,8 @@ public class CreateUpdateQuestionController {
 
     @FXML
     public void doCreateUpdateQuestion(ActionEvent actionEvent) {
-        createQuestion();
-        createAnswerBijQuestion(question);
+       createQuestion();
+      //  createAnswerBijQuestion(question);
 
         // due to global datastorage - first clear question/answer etc.
 
@@ -119,11 +129,10 @@ public class CreateUpdateQuestionController {
                 // vul quiz in die bij vraag hoort
                 question.setQuiz(quizComboBox.getValue());
                 // check of je vraag een waarde heeft:
+
                 if(!(question.getQuestion().isEmpty())) {
                     // vraag heeft een waarde:
 
-
-                   // createAnswerBijQuestion(question);
                    // answers = question.getAnswers();
 
                     // bepaal goede antwoord
@@ -159,6 +168,7 @@ public class CreateUpdateQuestionController {
             int id = Integer.valueOf(idQuestion.getText());
             question.setQuestionId(id);
             updateQuestionById(question);
+            updateAnswersFromQuestion(question);
             System.out.println(("vraag gewijzigd"));
         }
         dbAccess.closeConnection();
@@ -166,7 +176,29 @@ public class CreateUpdateQuestionController {
         Main.getSceneManager().showCoordinatorDashboard();
     }
 
-    private void createAnswerBijQuestion(Question   question) {
+    private void updateAnswersFromQuestion(Question question) {
+        //haal aantwoorden uit vragen en zet ze in een array
+
+        answers = question.getAnswers();
+
+        answers.get(0).setAnswerId(Integer.valueOf(idGoodAnswer.getText()));
+        answers.get(1).setAnswerId(Integer.parseInt(idAnswer2.getText()));
+        answers.get(2).setAnswerId(Integer.parseInt(idAnswer3.getText()));
+        answers.get(3).setAnswerId(Integer.parseInt(idAnswer4.getText()));
+
+
+
+
+
+        //update voor iedere vraag hun String
+        for(Answer answer: answers){
+            answerDAO.updateAnswer(answer);
+        }
+
+
+    }
+
+   private void createAnswerBijQuestion(Question   question) {
         Answer answer = new Answer(goodAnswerTextField.getText(), question);
         Answer answer2 = new Answer(answer2TextField.getText(), question);
         Answer answer3 = new Answer(answer3TextField.getText(), question);
@@ -184,7 +216,6 @@ public class CreateUpdateQuestionController {
 
             }
         }
-
 
     }
 
@@ -236,8 +267,8 @@ public class CreateUpdateQuestionController {
     private void createQuestion() {
 
         dbAccess.openConnection();
-        answerDAO = new AnswerDAO(dbAccess);
         question = new Question(vraagTextField.getText());
+        createAnswerBijQuestion(question);
 
         dbAccess.closeConnection();
 
