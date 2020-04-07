@@ -25,11 +25,26 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
             ResultSet resultSet = super.executeSelectPreparedStatement(preparedStatement);
             Quiz quiz;
             while (resultSet.next()) {
+
                 String question = resultSet.getString("quizNaam");
                 double cesuur = resultSet.getDouble("cesuur");
-                int courseId = resultSet.getInt("cursusId");
+
+
                 quiz = new Quiz(question,cesuur);
-                quiz.setQuizId(resultSet.getInt("quiznummer"));
+
+                int cursusId = resultSet.getInt("cursusId");
+                quiz.setCourseId(cursusId);
+
+                int quizId = resultSet.getInt("quiznummer");
+                quiz.setQuizId(quizId);
+
+                // haal alle vragen op die bij de quiz horen en voeg ze toe als arrayList
+                QuestionDAO questionDAO = new QuestionDAO(dBaccess);
+                ArrayList questionObjectList = questionDAO.getAllQuestionByQuizId(quizId);
+                for(Object questionObject: questionObjectList){
+                    quiz.voegQuestionAanQuiz((Question)questionObject);
+                }
+
                 result.add(quiz);
             }
         } catch (SQLException e){
@@ -86,14 +101,19 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
 
     }
 
-    public void deleteQuizBiId(int quizId) {
+    public void deleteQuiz(Quiz quiz) {
 
         String sql = "DELETE FROM quiz WHERE quiznummer = ?";
 
+        QuestionDAO questionDAO = new QuestionDAO(dBaccess);
         try{
+            // verwijder eerst de quizVragen:
+            for(Question question: quiz.getQuestions()){
+                questionDAO.deleteQuestion(question);
+            }
 
             PreparedStatement preparedStatement = getStatement(sql);
-            preparedStatement.setInt(1, quizId);
+            preparedStatement.setInt(1, quiz.getQuizId());
             executeManipulatePreparedStatement(preparedStatement);
 
         } catch (SQLException e){
@@ -134,6 +154,7 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
                 Double cesuur = resultSet.getDouble("cesuur");
                 quiz = new Quiz(quizName,cesuur);
                 quiz.setQuizId(resultSet.getInt("quiznummer"));
+                quiz.setCourseId(resultSet.getInt("cursusId"));
                 quizzes.add(quiz);
 
                 // haal vragen op die bij quiz horen en voeg deze toe aan quiz
@@ -142,7 +163,6 @@ public class QuizDAO extends AbstractDAO implements GenericDAO{
                 for(Question question:questionArrayList){
                     quiz.voegQuestionAanQuiz(question);
                 }
-
             }
 
         }catch (SQLException sqlFout){

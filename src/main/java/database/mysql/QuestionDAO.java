@@ -97,7 +97,6 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
                 question = new Question(question1);
                 question.setQuestionId(resultSet.getInt("vraagId"));
 
-                //todo: antwoorden toevoegen
                 AnswerDAO answerDAO = new AnswerDAO(dBaccess);
                 ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(resultSet.getInt("vraagId"));
                 for(Answer answer: answerArrayList){
@@ -157,7 +156,13 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
 
         String sql = "DELETE FROM quizvraag WHERE vraag = ?";
 
+        AnswerDAO answerDAO = new AnswerDAO(dBaccess);
         try{
+            // verwijder eerst alle antwoorden
+            for(Answer answer: question.getAnswers()){
+                answerDAO.deleteAnswer(answer);
+            }
+
             PreparedStatement preparedStatement = getStatement(sql);
             preparedStatement.setString(1, question.getQuestion());
             executeManipulatePreparedStatement(preparedStatement);

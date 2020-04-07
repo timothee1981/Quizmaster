@@ -1,16 +1,11 @@
 package controller;
 
-import database.mysql.AnswerDAO;
 import database.mysql.DBAccess;
-import database.mysql.QuestionDAO;
 import database.mysql.QuizDAO;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
-import model.Question;
 import model.Quiz;
-import org.w3c.dom.Text;
 import view.Main;
 
 import java.util.ArrayList;
@@ -23,9 +18,14 @@ public class ManageQuizzesController {
     private ListView quizList;
 
     public void setup() {
+        //todo: vragen goed inladen in Quiz
+
         dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
         this.quizDAO = new QuizDAO(dbAccess);
+
+
+        // vul quizlijst met quiz-items
         quizList.getItems().clear();
         ArrayList<Quiz> getAllQuiz = quizDAO.getAll();
         for(Quiz quiz: getAllQuiz){
@@ -51,7 +51,6 @@ public class ManageQuizzesController {
             foutmelding.setContentText("Je moet een vraag aanklikken\n");
             foutmelding.show();
             return;
-
         }
 
         Main.getSceneManager().showCreateUpdateQuizScene(quiz);
@@ -60,25 +59,35 @@ public class ManageQuizzesController {
     public void doDeleteQuiz(){
         dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         dbAccess.openConnection();
-   //   Question questioDAO = new QuestionDAO(dbAccess);
-        Quiz quiz = (Quiz) quizList.getSelectionModel().getSelectedItem();
-        int quizId = quiz.getQuizId();
-     //   questioDAO.deleteAnswerfromQuestion(questionId);
 
-        if(quiz == null) {
-
-            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText("Je moet een customer aanklikken\n");
-            foutmelding.show();
+        Quiz quiz = null;
+        quiz = (Quiz) quizList.getSelectionModel().getSelectedItem();
+        if(quiz == null){
+            showErrorMessage("Selecteer een quiz");
             return;
-
         }
-        quizDAO.deleteQuizBiId(quizId);
+
+        quizDAO.deleteQuiz(quiz);
+
+        showInformationMessage(String.format("De quiz: %S is verwijderd",quiz.getQuizName()));
+
         setup();
     }
 
-    public void doDashboard(ActionEvent actionEvent) {
+    public void doDashboard() {
             Main.getSceneManager().showCoordinatorDashboard();
             dbAccess.closeConnection();
+    }
+
+    private void showErrorMessage(String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(errorMessage);
+        alert.show();
+    }
+
+    private void showInformationMessage(String informationMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(informationMessage);
+        alert.show();
     }
 }

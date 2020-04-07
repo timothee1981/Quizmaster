@@ -48,9 +48,14 @@
             <Font size="14.0" />
         </font>
     </Button>
-   <Button layoutX="15.0" layoutY="319.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
+   <Button layoutX="43.0" layoutY="349.0" mnemonicParsing="false" onAction="#doMenu" text="Menu">
       <font>
          <Font size="14.0" />
       </font>
    </Button>
+    <Button layoutX="140.0" layoutY="349.0" mnemonicParsing="false" onAction="#doCreateUpdateQuiz" text="Quiz Dashboard">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Button>
 </AnchorPane>
