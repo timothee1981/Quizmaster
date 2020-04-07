@@ -18,6 +18,8 @@ public class Answer {
         this.answer = answer;
     }
 
+
+
     public void setAnswerId(int answerId) {
         this.answerId = answerId;
     }
