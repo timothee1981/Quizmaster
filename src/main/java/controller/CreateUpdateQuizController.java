@@ -13,7 +13,14 @@ import java.util.List;
 
 public class CreateUpdateQuizController {
 
-
+    @FXML
+    public Label questionHeaderLabel;
+    @FXML
+    public Button questionCreateButton;
+    @FXML
+    public Button questionDeleteButton;
+    @FXML
+    public Button questionUpdateButton;
 
     DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
     QuestionDAO questionDAO = new QuestionDAO(dbAccess);
@@ -75,6 +82,10 @@ public class CreateUpdateQuizController {
             // nieuwe quiz
             labelvul = "Vul quiz en bijbehorende vragen";
             titelLable.setText(labelvul);
+            // todo: verberg het vragen-gedeelte -> na opslaan wordt er terug-genavigeerd naar het dashboard
+            // je mag alleen vragen toevoegen aan een bestaande quiz
+            hideQuestionFields();
+            
         } else {
             // bestaande quiz
             labelwijzig = "Wijzig Quiz";
@@ -88,6 +99,14 @@ public class CreateUpdateQuizController {
         }
     }
 
+    private void hideQuestionFields() {
+        questionList.setVisible(false);
+        questionCreateButton.setVisible(false);
+        questionDeleteButton.setVisible(false);
+        questionHeaderLabel.setVisible(false);
+        questionUpdateButton.setVisible(false);
+    }
+
     public void doDashBoard(){
         Main.getSceneManager().showCoordinatorDashboard();
     }
@@ -97,30 +116,6 @@ public class CreateUpdateQuizController {
     }
 
     public void doCreateUpdateQuiz() {
-        createQuiz();
-        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-        dbAccess.openConnection();
-        QuizDAO quizDAO = new QuizDAO(dbAccess);
-
-        if(quiz != null) {
-            if (titelLable.getText().equals(labelvul)) {
-                // = nieuwe quiz
-                quizDAO.storeOne(quiz);
-                System.out.println("Toegevoegd");
-            } else if (titelLable.getText().equals(labelwijzig)) {
-                int id = Integer.valueOf(idLabel.getText());
-                quiz.setQuizId(id);
-                quizDAO.updateQuiz(quiz);
-                System.out.println(("gewijzigd"));
-            }
-        }
-        dbAccess.closeConnection();
-
-        System.out.println("Quiz is aangepast of aangemaakt");
-
-    }
-
-    private void createQuiz() {
 
         StringBuilder warningText = new StringBuilder();
         boolean correcteInvoer = true;
@@ -135,11 +130,16 @@ public class CreateUpdateQuizController {
         }
 
         // get cesuur and validate:
-        double cesuur = 0.00;
+        double cesuur;
         try {
             cesuur = Double.parseDouble(cesuurTextField.getText());
         } catch (NumberFormatException e){
             warningText.append("Cesuur moet een getal zijn\n");
+            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
+            foutmelding.setContentText(warningText.toString());
+            foutmelding.show();
+            quiz = null;
+            return;
         }
 
         String quizName = quizNameTextField.getText();
@@ -153,11 +153,42 @@ public class CreateUpdateQuizController {
             foutmelding.setContentText(warningText.toString());
             foutmelding.show();
             quiz = null;
+            return;
         } else {
             // alle invoer is correct ->
             quiz = new Quiz(quizName,cesuur);
             quiz.setCourseId(courseId);
         }
+
+
+
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        dbAccess.openConnection();
+        QuizDAO quizDAO = new QuizDAO(dbAccess);
+
+        if(quiz != null) {
+            if (titelLable.getText().equals(labelvul)) {
+                // = nieuwe quiz
+                quizDAO.storeOne(quiz);
+                System.out.println("Er wordt een nieuwe quiz opgeslagen\n Je gaat nu terug naar het dashboard");
+
+                //navigeer naar dashboard terug
+                Main.getSceneManager().showCoordinatorDashboard();
+
+            } else if (titelLable.getText().equals(labelwijzig)) {
+                int id = Integer.valueOf(idLabel.getText());
+                quiz.setQuizId(id);
+                quizDAO.updateQuiz(quiz);
+                System.out.println("De quiz wordt aangepast");
+            }
+        }
+        dbAccess.closeConnection();
+
+        // toon user melding dat er een actie is gebeurd
+        Alert melding = new Alert(Alert.AlertType.INFORMATION);
+        melding.setContentText("De quiz is geüpdated of aangepast\n");
+        melding.show();
+
     }
 
     public void doCreateQuestion(){
@@ -194,12 +225,9 @@ public class CreateUpdateQuizController {
             foutmelding.setContentText("Je moet een vraag aanklikken\n");
             foutmelding.show();
             return;
-
         }
         questionDAO.deleteQuestion(question);
         setup(quiz);
-
-
     }
 
 }
