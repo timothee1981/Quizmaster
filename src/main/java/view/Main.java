@@ -1,9 +1,6 @@
 package view;
 
-import controller.AnswerCouchDBcontroller;
-import controller.CourseCouchDBController;
-import controller.QuestionCouchDBController;
-import controller.UserCouchDBController;
+import controller.*;
 import database.mysql.DBAccess;
 import database.nosql.CouchDBaccess;
 import javafx.application.Application;
@@ -29,7 +26,7 @@ public class Main extends Application {
         primaryStage.setTitle("Make IT Work - Project 1");
         getSceneManager().setWindowTool();
         primaryStage.show();
-        //CouchDBaccessTest();
+        /*CouchDBaccessTest();*/
     }
 
     private void CouchDBaccessTest() {
@@ -44,11 +41,13 @@ public class Main extends Application {
         AnswerCouchDBcontroller answerCouchDBcontroller = new AnswerCouchDBcontroller();
         QuestionCouchDBController questionCouchDBController = new QuestionCouchDBController();
         CourseCouchDBController courseCouchDBController = new CourseCouchDBController();
+        GroupCouchDBController groupCouchDBController = new GroupCouchDBController();
 
         answerCouchDBcontroller.saveAnswer(answer);
         userCouchDBController.saveUser(user);
         questionCouchDBController.saveQuestion(question);
         courseCouchDBController.saveCourse(course);
+        groupCouchDBController.saveGroup(group);
     }
 
     //Testgegevens van testgebruikers
