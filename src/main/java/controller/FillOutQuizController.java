@@ -1,5 +1,6 @@
 package controller;
 
+import com.mysql.cj.util.Util;
 import database.mysql.AnswerDAO;
 import database.mysql.DBAccess;
 import database.mysql.QuestionDAO;
@@ -15,160 +16,140 @@ import view.Main;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class FillOutQuizController {
-    private DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-    private QuestionDAO questionDAO;
-    private AnswerDAO answerDAO;
-    private Quiz quiz;
-    private QuizDAO quizDAO;
-    private int questionCount = 0;
-    private String answer1,answer2,answer3,answer4;
-    private String goodAnswer;
-    private QuizResult quizResult;
-    private int antwoordenJuist;
-
-
-
-
 
     @FXML
     private Label titleLabel;
     @FXML
     private TextArea questionArea;
-
     @FXML
     private Label  quizIdLabel,questionIdLabel;
 
-    public void setup(Quiz quiz) {
-        dbAccess.openConnection();
-        this.questionDAO = new QuestionDAO(dbAccess);
-        this.answerDAO = new AnswerDAO(dbAccess);
-        //check even welke quiz het om gaat
+    private Quiz quiz;
+    private int currentQuestion;
+    private ArrayList<Answer> currentAnswerOrder;
 
-        quizIdLabel.setText(String.valueOf(quiz.getQuizId()));
-        //haal antwoord bij quiz
-        ArrayList<Question> getAllQuestionFromQuiz = questionDAO.getAllQuestionByQuizId(quiz.getQuizId());
+    public void setup(Quiz inputQuiz) {
 
-        // haal vraag uit quiz afhankelijk van de vraag teller
-        showQuestion(getAllQuestionFromQuiz,questionCount);
+        // store Quiz as global data - so questions can be accessed
+        quiz = inputQuiz;
 
-        dbAccess.closeConnection();
-
-
-
-    }
-
-    private void showQuestion(ArrayList<Question> getAllQuestion,  int questionCount) {
-        dbAccess.openConnection();
-        this.questionDAO = new QuestionDAO(dbAccess);
-        this.answerDAO = new AnswerDAO(dbAccess);
-
-
-        //welke vraag willen we
-        Question question = getAllQuestion.get(questionCount);
-
-        int goedeAnswerId = questionDAO.getGoodAnswer(question.getQuestionId());
-        goodAnswer = answerDAO.getOneById(goedeAnswerId).getAnswer();
-
-        //check welke vraag id we hebben
-
-        questionIdLabel.setText(String.valueOf(question.getQuestionId()));
-        questionArea.clear();
-        //zet eerste vraag vvan quiz
-        questionArea.appendText(question.getQuestion() + "\n");
-        ArrayList<Answer> answers = answerDAO.getAnswersByQuestionId(question.getQuestionId());
-        //en full question area met antwoorden eerste vraag
-        fillanswerArea(answers);
-
-        dbAccess.closeConnection();
-    }
-
-    private void fillanswerArea(ArrayList<Answer> answers) {
-        dbAccess.openConnection();
-        answerDAO = new AnswerDAO(dbAccess);
-        //answers op andere index mixen
-        Collections.shuffle(answers);
-        //waarde verschillende antworden opslaan
-        answer1  = answers.get(0).getAnswer();
-        answer2 = answers.get(1).getAnswer();
-        answer3 = answers.get(2).getAnswer();
-        answer4 = answers.get(3).getAnswer();
-
-        //geef een integer waarde aan de anwtoorden string
-        int count = 1;
-        //print deze antwoorden uit
-        for(int arrayteller =0; arrayteller<answers.size();arrayteller++) {
-            questionArea.appendText("vraag " + count++ + ": " + answers.get(arrayteller).getAnswer() + "\n");
+        // check of de quiz vragen heeft, zo niet, dan foutmelding en wordt je teruggestuurd naar selectie-pagina
+        if(quiz.getQuestions().size() == 0){
+            UsefullStuff.showInformationMessage("Deze quiz heeft geen vragen\nJe wordt terug gestuurd naar de quiz-selectie-pagina");
+            Main.getSceneManager().showSelectQuizForStudent();
+            return;
         }
 
-        dbAccess.closeConnection();
+        // set current question to 1
+        currentQuestion = 1;
+
+        // vul labels
+        quizIdLabel.setText(String.valueOf(quiz.getQuizId()));
+
+        // toon huidige vraag
+        showQuestion();
+    }
+
+    private void showQuestion() {
+        // get question that needs to be shown
+        Question questionToShow = quiz.getQuestions().get(currentQuestion-1);
+
+        // clear working area
+        questionArea.clear();
+        // show question number:
+        questionArea.appendText(String.format("Vraag %d",currentQuestion));
+        // show question
+        questionArea.appendText(questionToShow + "\n\n");
+
+        ArrayList<Answer> answerListShuffled = questionToShow.getAnswers();
+        Collections.shuffle(answerListShuffled);
+        // save shuffledAnswer for later checking-purpose
+        currentAnswerOrder = answerListShuffled;
+        // show answers
+        for(Answer answer: answerListShuffled){
+            questionArea.appendText(answer.toString() + "\n");
+        }
+    }
+
+    private ArrayList<Answer> shuffle(ArrayList<Answer> answerListInOrder) {
+
+        // GHEGEH: deze is nog beter:         Collections.shuffle(answers); <- wel beetje laat gezien
+        ArrayList<Answer> answerListShuffled = new ArrayList<>();
+        int selectedItem;
+        do{
+            Random random = new Random();
+            selectedItem = random.nextInt(answerListInOrder.size());
+            answerListShuffled.add(answerListInOrder.get(selectedItem));
+            answerListInOrder.remove(selectedItem);
+        }while(answerListInOrder.size() > 0);
+        return answerListShuffled;
     }
 
     public void doRegisterA() {
-
-        if(answer1.equals(goodAnswer)) {
-            System.out.println("well done");
-            antwoordenJuist++;
-
-        }else{
-            System.out.println("pity");
-        }
-
-
+        int answerIndex = 0;
+        checkAnswer(answerIndex);
     }
 
     public void doRegisterB() {
-        if(answer2.equals(goodAnswer)) {
-            System.out.println("well done");
-            antwoordenJuist++;
-
-        }else{
-            System.out.println("pity");
-        }
+        int answerIndex = 1;
+        checkAnswer(answerIndex);
     }
 
     public void doRegisterC() {
-        if(answer3.equals(goodAnswer)) {
-            System.out.println("well done");
-            antwoordenJuist++;
-
-        }else{
-            System.out.println("pity");
-        }
+        int answerIndex = 2;
+        checkAnswer(answerIndex);
     }
 
     public void doRegisterD() {
-        if(answer4.equals(goodAnswer)){
-            System.out.println("well done");
-            antwoordenJuist++;
+        int answerIndex = 0;
+        checkAnswer(answerIndex);
+    }
 
-        }else{
-            System.out.println("pity");
+    private void checkAnswer(int answerIndex) {
+        // get correct answer
+        Answer correctAnswer = quiz.getQuestions().get(currentQuestion-1).getCorrectAnswer();
+        Answer filledOutAnswer = currentAnswerOrder.get(answerIndex);
+
+        //todo: nog iets met bijhouden van juist antwoorden
+
+        //todo: checken of de antwoorden daadwerkelijk juist worden gevalideerd.....
+
+        if(correctAnswer.equals(filledOutAnswer)){
+            // antwoorden zijn gelijk - HOEZEE
+            UsefullStuff.showInformationMessage("Het antwoord is juist!!!\nJe gaat nu door naar de volgende vraag");
         }
+        UsefullStuff.showInformationMessage("Het antwoord is onjuist!!!\nJe gaat nu door naar de volgende vraag");
+        doNextQuestion();
     }
 
     public void doNextQuestion() {
-        //ga na volgend vraag in de quiz....setup methode aanroep
-        dbAccess.openConnection();
-        quizDAO = new QuizDAO(dbAccess);
-        int quizId = Integer.parseInt(quizIdLabel.getText());
-        quiz = quizDAO.getOneById(quizId);
-        //zverandert tekst titel lable
-        titleLabel.setText("Vraag " + (++questionCount));
-        setup(quiz);
-        dbAccess.closeConnection();
-
+        // check of dit de laatste vraag is
+        if(currentQuestion == quiz.getQuestions().size()){
+            UsefullStuff.showInformationMessage("Dit is de laatste vraag\n je kan niet verder");
+            return;
+        }
+        //als er nog vragen zijn, toon dan de volgende vraag
+        currentQuestion++;
+        showQuestion();
     }
 
     public void doPreviousQuestion() {
 
-
-        //ga na vorige vraag in de quiz.....setup methode aanroep
+        // check of dit de eerste vraag is
+        if(currentQuestion == 1){
+            UsefullStuff.showInformationMessage("Dit is de eerste vraag\n je kan niet verder terug");
+            return;
+        }
+        //als er nog vragen zijn, toon dan de volgende vraag
+        currentQuestion--;
+        showQuestion();
     }
 
     public void doMenu() {
         // Ga naar welkomscherm
-        Main.getSceneManager().showManageUserScene();
+        Main.getSceneManager().showWelcomeScene();
     }
 }

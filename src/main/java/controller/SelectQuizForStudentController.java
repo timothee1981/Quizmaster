@@ -11,21 +11,35 @@ import view.Main;
 import java.util.ArrayList;
 
 public class SelectQuizForStudentController {
-    DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-    QuizDAO quizDAO;
+
 
     @FXML
     ListView<Quiz> quizList;
 
     public void setup() {
 
-        dbAccess.openConnection();
-        this.quizDAO = new QuizDAO(dbAccess);
+        // clear quizList
         quizList.getItems().clear();
-        ArrayList<Quiz> getAllQuiz = quizDAO.getAll();
-        for(Quiz quiz: getAllQuiz){
+
+        // fill quizListwithAllQuizes
+        fillQuizList();
+    }
+
+    private void fillQuizList() {
+        ArrayList<Quiz> quizArrayList =  getAllQuizesFromDatabase();
+
+        for(Quiz quiz: quizArrayList){
             quizList.getItems().add(quiz);
         }
+    }
+
+    private ArrayList<Quiz> getAllQuizesFromDatabase() {
+        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+        QuizDAO quizDAO = new QuizDAO(dbAccess);
+        dbAccess.openConnection();
+        ArrayList<Quiz> getAllQuiz = quizDAO.getAll();
+        dbAccess.closeConnection();
+        return getAllQuiz;
     }
 
     public void doMenu() {
@@ -34,15 +48,12 @@ public class SelectQuizForStudentController {
     }
 
     public void doQuiz() {
-        Quiz quiz = (Quiz) quizList.getSelectionModel().getSelectedItem();
-        if(quiz == null){ foulmeldingGeenQuiz();}
+        Quiz quiz = null;
+        quiz = (Quiz)quizList.getSelectionModel().getSelectedItem();
+        if(quiz == null){
+            UsefullStuff.showErrorMessage("Je moet een quiz aanklikken");
+            return;
+        }
         Main.getSceneManager().showFillOutQuiz(quiz);
-    }
-
-    private void foulmeldingGeenQuiz() {
-        Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-        foutmelding.setContentText("Je moet een quiz aanklikken\n");
-        foutmelding.show();
-        return;
     }
 }

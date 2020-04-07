@@ -89,6 +89,7 @@ public class Question {
       return question;
     }
 
-
-
+    public Answer getCorrectAnswer() {
+        return correctAnswer;
+    }
 }

@@ -99,12 +99,17 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
                 String question1= resultSet.getString("vraag");
                 question = new Question(question1);
                 question.setQuestionId(resultSet.getInt("vraagId"));
+                int correctAnswerId = resultSet.getInt("antwoordJuist");
 
                 AnswerDAO answerDAO = new AnswerDAO(dBaccess);
+                // get all answers
                 ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(resultSet.getInt("vraagId"));
                 for(Answer answer: answerArrayList){
                     question.voegAntwoordAanVraag(answer);
                 }
+                // get correctAnswer
+                Answer correctAnswer = answerDAO.getOneById(correctAnswerId);
+                question.setCorrectAnswer(correctAnswer);
                 questions.add(question);
             }
 

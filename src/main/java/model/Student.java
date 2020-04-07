@@ -27,10 +27,6 @@ public class Student extends User {
         menuItem2.setOnAction(actionEvent -> Main.getSceneManager().showSelectQuizForStudent());
         menuItems.add(menuItem2);
 
-        MenuItem menuItem3 = new MenuItem("Quiz invullen");
-        menuItem3.setOnAction(actionEvent -> Main.getSceneManager().showSelectQuizForStudent());
-        menuItems.add(menuItem3);
-
         return menuItems;
     }
 }

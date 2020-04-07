@@ -10,6 +10,7 @@ import model.User;
 import view.Main;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ManageUsersController {
 
@@ -21,8 +22,9 @@ public class ManageUsersController {
         // clear list view
         userList.getItems().clear();
 
-        // get all users
+        // get all users en sorteer deze
         ArrayList<User> userArrayList = getAllUsers();
+        Collections.sort(userArrayList);
 
         // show users in grid/box-thing
         for(User user:userArrayList) {
@@ -31,15 +33,11 @@ public class ManageUsersController {
     }
 
     private ArrayList<User> getAllUsers() {
-        //Creëer dbAccess object
+        //get all users from database
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-        // maak database-connectie
         dbAccess.openConnection();
-        //creëer userDAO instantie
         UserDAO userDAO = new UserDAO(dbAccess);
-        // roep save-methode aan
         ArrayList<User> userArrayList =  userDAO.getAll();
-        // sluit database connectie
         dbAccess.closeConnection();
         return userArrayList;
     }
