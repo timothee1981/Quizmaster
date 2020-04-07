@@ -1,4 +1,4 @@
-package controller;
+package CouchDBControllers;
 
 import database.nosql.AnswerCouchDBDAO;
 import database.nosql.CouchDBaccess;

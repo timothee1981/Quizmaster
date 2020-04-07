@@ -1,23 +1,22 @@
-package controller;
+package CouchDBControllers;
 
 import database.nosql.CouchDBaccess;
-import database.nosql.GroupCouchDBDAO;
 import database.nosql.UserCouchDBDAO;
-import model.Group;
+import model.Teacher;
 import model.User;
 
-public class GroupCouchDBController {
+public class UserCouchDBController {
 
     private CouchDBaccess db;
-    private GroupCouchDBDAO cdbf;
+    private UserCouchDBDAO cdbf;
 
-    public GroupCouchDBController(){
+    public UserCouchDBController(){
         super();
         db = new CouchDBaccess();
-        cdbf = new GroupCouchDBDAO(db);
+        cdbf = new UserCouchDBDAO(db);
     }
 
-    public void saveGroup(Group group){
+    public void saveUser(User user){
         try {
             db.setupConnection();
             System.out.println("Connection open");
@@ -26,7 +25,7 @@ public class GroupCouchDBController {
             System.out.println("\nEr is iets fout gegaan\n");
             e.printStackTrace();
         }
-        cdbf.saveSingleGroup(group);
+        cdbf.saveSingleUser(user);
     }
 
 }

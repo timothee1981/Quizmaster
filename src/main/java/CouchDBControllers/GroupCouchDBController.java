@@ -1,20 +1,23 @@
-package controller;
+package CouchDBControllers;
 
 import database.nosql.CouchDBaccess;
-import database.nosql.AnswerCouchDBDAO;
-import model.Answer;
+import database.nosql.GroupCouchDBDAO;
+import database.nosql.UserCouchDBDAO;
+import model.Group;
+import model.User;
 
-public class AnswerCouchDBcontroller {
+public class GroupCouchDBController {
+
     private CouchDBaccess db;
-    private AnswerCouchDBDAO answerCouchDBDAO;
+    private GroupCouchDBDAO cdbf;
 
-    public AnswerCouchDBcontroller(){
+    public GroupCouchDBController(){
         super();
         db = new CouchDBaccess();
-        answerCouchDBDAO = new AnswerCouchDBDAO(db);
+        cdbf = new GroupCouchDBDAO(db);
     }
 
-    public void saveAnswer(Answer answer){
+    public void saveGroup(Group group){
         try {
             db.setupConnection();
             System.out.println("Connection open");
@@ -23,7 +26,7 @@ public class AnswerCouchDBcontroller {
             System.out.println("\nEr is iets fout gegaan\n");
             e.printStackTrace();
         }
-        answerCouchDBDAO.saveSingleQuestion(answer);
-
+        cdbf.saveSingleGroup(group);
     }
+
 }
