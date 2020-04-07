@@ -70,8 +70,8 @@ public class CreateUpdateQuizController {
         } else {
             // bestaande quiz
             setupForExistingQuiz(quiz);
-
         }
+        dbAccess.closeConnection();
     }
 
     private void setupForExistingQuiz(Quiz quiz) {
@@ -231,36 +231,47 @@ public class CreateUpdateQuizController {
 
     public void doUpdateQuestion(){
         Question question = null;
-        question = questionList.getSelectionModel().getSelectedItem();
+        question = getQuestionFomPage();
         if(question == null){
-            System.out.println("Selecteer een vraag");
             return;
         }
-        question.setQuiz(getCurrentQuiz());
 
         Main.getSceneManager().showCreateUpdateQuestionScene(question);
     }
 
-    public void doDeleteQuestion(){
-
-        dbAccess.openConnection();
-        quizDAO = new QuizDAO(dbAccess);
-
+    private Question getQuestionFomPage() {
         Question question = null;
         question = questionList.getSelectionModel().getSelectedItem();
         if(question == null){
-            System.out.println("er is geen vraag geselecteerd");
+            UsefullStuff.showInformationMessage("Selecteer een vraag");
+            return question;
+        }
+        question.setQuiz(getCurrentQuiz());
+        return question;
+    }
+
+    public void doDeleteQuestion(){
+        // get question information
+        Question question = null;
+        question = getQuestionFomPage();
+        if(question == null){
             return;
         }
-        questionDAO.deleteQuestion(question);
 
-        quiz = getCurrentQuiz();
-        setup(quiz);
+        // delete question
+        dbAccess.openConnection();
+        questionDAO.deleteQuestion(question);
+        dbAccess.closeConnection();
+
+        // refresh page
+        setup(question.getQuiz());
     }
 
     private Quiz getCurrentQuiz() {
         QuizDAO quizDAO = new QuizDAO(dbAccess);
+        dbAccess.openConnection();
         Quiz currentQuiz = quizDAO.getOneById(Integer.parseInt(idLabel.getText()));
+        dbAccess.closeConnection();
         return currentQuiz;
     }
 }
