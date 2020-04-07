@@ -123,45 +123,50 @@ public class CreateUpdateQuestionController {
         //check als er een nieuwe vraag moet komen of als een bestaande vraag moet gewijzigd worden
         if (titelLabel.getText().equals(labelvul)) {//als titel op nieuwe is-----> nieuwe vraag
             //check als combobox waarde heeft
-            if (!(quizComboBox.getValue() == null)) {
-                //als combobox waarde creer vraag
+            if(question != null) {
+                if (!(quizComboBox.getValue() == null)) {
+                    //als combobox waarde creer vraag
 
-                // vul quiz in die bij vraag hoort
-                question.setQuiz(quizComboBox.getValue());
-                // check of je vraag een waarde heeft:
+                    // vul quiz in die bij vraag hoort
+                    question.setQuiz(quizComboBox.getValue());
+                    // check of je vraag een waarde heeft:
 
-                if(!(question.getQuestion().isEmpty())) {
-                    // vraag heeft een waarde:
+                    if (!(question.getQuestion().isEmpty())) {
+                        // vraag heeft een waarde:
 
-                   // answers = question.getAnswers();
+                        // answers = question.getAnswers();
 
-                    // bepaal goede antwoord
-                    Answer correctAnswer = new Answer(goodAnswerTextField.getText(), question);
-                    question.setCorrectAnswer(correctAnswer);
+                        // bepaal goede antwoord
+                        Answer correctAnswer = new Answer(goodAnswerTextField.getText(), question);
+                        question.setCorrectAnswer(correctAnswer);
 
-                    // save question
-                    questionDAO.storeOne(question);
-                    // get all answers of question from database:
-                    AnswerDAO answerDAO = new AnswerDAO(dbAccess);
-                    ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(question.getQuestionId());
-                    int correctAnswerId = 0;
-                    for(Answer answer: answerArrayList){
-                        if(correctAnswer.getAnswer().equals(answer.getAnswer())){
-                            correctAnswerId = answer.getAnswerId();
+                        // save question
+                        questionDAO.storeOne(question);
+                        // get all answers of question from database:
+                        AnswerDAO answerDAO = new AnswerDAO(dbAccess);
+                        ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(question.getQuestionId());
+                        int correctAnswerId = 0;
+                        for (Answer answer : answerArrayList) {
+                            if (correctAnswer.getAnswer().equals(answer.getAnswer())) {
+                                correctAnswerId = answer.getAnswerId();
+                            }
                         }
-                    }
-                    //check if correct question == that question -> get externalId -> pass this id to updateGoedeAntwoordId method
-                    questionDAO.updateGoedAntwoodId(correctAnswerId, question.getQuestionId());
+                        //check if correct question == that question -> get externalId -> pass this id to updateGoedeAntwoordId method
+                        questionDAO.updateGoedAntwoodId(correctAnswerId, question.getQuestionId());
 
-                    System.out.println(("nieuwe vraag opgeslagen"));
-                }else{
-                    // toon waarschuwing, je moet nog een vraag invullen
-                    warningTextNoQuestion();
+                        System.out.println(("nieuwe vraag opgeslagen"));
+                    } else {
+                        // toon waarschuwing, je moet nog een vraag invullen
+                        warningTextNoQuestion();
+                        return;
+                    }
+                } else {
+                    // toon melding: je moet nog een quiz selecteren
+                    noQuizWarning();
                     return;
                 }
-            } else {
-                // toon melding: je moet nog een quiz selecteren
-                noQuizWarning();
+
+            }else {
                 return;
             }
         } else if (titelLabel.getText().equals(labelwijzig)) { //dit is bij wijziging van een vraag
@@ -199,6 +204,7 @@ public class CreateUpdateQuestionController {
     }
 
    private void createAnswerBijQuestion(Question   question) {
+
         Answer answer = new Answer(goodAnswerTextField.getText(), question);
         Answer answer2 = new Answer(answer2TextField.getText(), question);
         Answer answer3 = new Answer(answer3TextField.getText(), question);
@@ -208,14 +214,6 @@ public class CreateUpdateQuestionController {
         question.voegAntwoordAanVraag(answer3);
         question.voegAntwoordAanVraag(answer4);
         answers = question.getAnswers();
-        for(Answer answer1: answers){
-           boolean hasAnswer =  validateAnswerString(answer1.getAnswer());
-            if(!hasAnswer){
-                allAnswerFilledWarning();
-                return;
-
-            }
-        }
 
     }
 
@@ -269,6 +267,16 @@ public class CreateUpdateQuestionController {
         dbAccess.openConnection();
         question = new Question(vraagTextField.getText());
         createAnswerBijQuestion(question);
+        boolean hasAnswer = true;
+        for(Answer answer1: answers){
+            hasAnswer =  validateAnswerString(answer1.getAnswer());
+
+
+        }
+        if(!hasAnswer){
+            allAnswerFilledWarning();
+            question = null;
+        }
 
         dbAccess.closeConnection();
 
