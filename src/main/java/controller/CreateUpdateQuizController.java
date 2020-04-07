@@ -1,17 +1,19 @@
 package controller;
 
-import com.mysql.cj.xdevapi.DbDoc;
 import database.mysql.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.*;
 import view.Main;
-
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class CreateUpdateQuizController {
+
+    DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+    QuestionDAO questionDAO = new QuestionDAO(dbAccess);
+    AnswerDAO answerDAO = new AnswerDAO(dbAccess);
+    QuizDAO quizDAO = new QuizDAO(dbAccess);
+    Quiz quiz;
 
     @FXML
     public Label questionHeaderLabel;
@@ -21,30 +23,20 @@ public class CreateUpdateQuizController {
     public Button questionDeleteButton;
     @FXML
     public Button questionUpdateButton;
-
-    DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-    QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-    AnswerDAO answerDAO = new AnswerDAO(dbAccess);
-    QuizDAO quizDAO = new QuizDAO(dbAccess);
-    Quiz quiz;
+    @FXML
     private String labelvul;
+    @FXML
     private String labelwijzig;
-
     @FXML
     private TextField quizNameTextField;
-
     @FXML
     public ComboBox cursusComboBox;
-
     @FXML
     private  TextField cesuurTextField;
-
     @FXML
     private Label titelLable, idLabel;
-
     @FXML
     private ListView<Question> questionList;
-
     @FXML
     public TextField courseIdTextField;
 
@@ -141,86 +133,114 @@ public class CreateUpdateQuizController {
 
     public void doCreateUpdateQuiz() {
 
-        StringBuilder warningText = new StringBuilder();
-        boolean correcteInvoer = true;
+        // start fresh with empty quiz
+        quiz = null;
 
         // get Id of course
-        String courseIdString = courseIdTextField.getText();
+        int courseId = getCourseIdFromPage();
+        if(courseId == 0){
+            return;
+        }
+
+        Course course = getCourseFromPage();
+        if(course == null){
+            return;
+        }
+
+        double cesuur = getCesuurFromPage();
+        if(cesuur == 0.00){
+            return;
+        }
+
+        String quizName = getQuizNameFromPage();
+        if(quizName.equals("")){
+            return;
+        }
+
+        // als je hier bent gekomen, is alle invoer correct :) yay
+        updateQuizParameters(quizName, cesuur, courseId);
+
+        if(quiz != null) {
+            if (titelLable.getText().equals(labelvul)) {
+                // = nieuwe quiz -> opslaan en message tonen
+                StoreNewQuiz();
+
+                UsefullStuff.showInformationMessage("De nieuwe quiz is opgeslagen\n Je gaat nu terug naar het dashboard");
+
+                //navigeer naar dashboard terug
+                Main.getSceneManager().showCoordinatorDashboard();
+
+            } else if (titelLable.getText().equals(labelwijzig)) {
+                // bestaande quiz - set Id -> opslaan en message tonen
+
+                // set Quiz Id and save
+                quiz.setQuizId(Integer.parseInt(idLabel.getText()));
+                saveExistingQuiz();
+
+                UsefullStuff.showInformationMessage("De quiz is geüpdated");
+            }
+        }
+
+        // toon user melding dat er een actie is gebeurd
+        UsefullStuff.showInformationMessage("De quiz is geüpdated of aangepast");
+    }
+
+    private void updateQuizParameters(String quizName, double cesuur, int courseId) {
+        // alle invoer is correct -> Vul Quiz-object met juiste data (want globaal opgeslagen)
+        quiz = new Quiz(quizName,cesuur);
+        quiz.setCourseId(courseId);
+    }
+
+    private String getQuizNameFromPage() {
+        String quizName = "";
+        quizName = quizNameTextField.getText();
+        if (quizName.isEmpty()) {
+            UsefullStuff.showErrorMessage("Je moet een quiznaam invullen");
+        }
+        return quizName;
+    }
+
+    private double getCesuurFromPage() {
+        double cesuur = 0.00;
+        try {
+            cesuur = Double.parseDouble(cesuurTextField.getText());
+        } catch (NumberFormatException e){
+            UsefullStuff.showErrorMessage("Cesuur moet een getal zijn");
+        }
+        return cesuur;
+    }
+
+    private Course getCourseFromPage() {
+        Course course = null;
+        course = (Course)cursusComboBox.getValue();
+        if(course == null){
+            UsefullStuff.showErrorMessage("Selecteer een cursus");
+        }
+        return course;
+    }
+
+    private int getCourseIdFromPage() {
         int courseId = 0;
         try {
             courseId = Integer.parseInt(courseIdTextField.getText());
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
+        return courseId;
+    }
 
-        Course course = null;
-        course = (Course)cursusComboBox.getValue();
-        if(course == null){
-            System.out.println("Selecteer een cursus");
-            return;
-        }
-
-        // get cesuur and validate:
-        double cesuur;
-        try {
-            cesuur = Double.parseDouble(cesuurTextField.getText());
-        } catch (NumberFormatException e){
-            warningText.append("Cesuur moet een getal zijn\n");
-            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText(warningText.toString());
-            foutmelding.show();
-            quiz = null;
-            return;
-        }
-
-        String quizName = quizNameTextField.getText();
-        // check if input = correct
-        if (quizName.isEmpty() || cesuurTextField.getText().isEmpty()) {
-            warningText.append("Je moet een quiznaam invullen en een cesuur\n");
-            correcteInvoer = false;
-        }
-        if (!correcteInvoer) {
-            Alert foutmelding = new Alert(Alert.AlertType.ERROR);
-            foutmelding.setContentText(warningText.toString());
-            foutmelding.show();
-            quiz = null;
-            return;
-        } else {
-            // alle invoer is correct -> Vul Quiz-object met juiste data (want globaal opgeslagen)
-            quiz = new Quiz(quizName,cesuur);
-            quiz.setCourseId(courseId);
-            quiz.setCourseId(course.getCursusId());
-        }
-
-
-
-        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+    private void saveExistingQuiz() {
+        // update the prepared quiz
         dbAccess.openConnection();
-        QuizDAO quizDAO = new QuizDAO(dbAccess);
-
-        if(quiz != null) {
-            if (titelLable.getText().equals(labelvul)) {
-                // = nieuwe quiz
-                quizDAO.storeOne(quiz);
-                System.out.println("Er wordt een nieuwe quiz opgeslagen\n Je gaat nu terug naar het dashboard");
-
-                //navigeer naar dashboard terug
-                Main.getSceneManager().showCoordinatorDashboard();
-
-            } else if (titelLable.getText().equals(labelwijzig)) {
-                int id = Integer.parseInt(idLabel.getText());
-                quiz.setQuizId(id);
-                quizDAO.updateQuiz(quiz);
-                System.out.println("De quiz wordt aangepast");
-            }
-        }
+        quizDAO.updateQuiz(quiz);
         dbAccess.closeConnection();
+    }
 
-        // toon user melding dat er een actie is gebeurd
-        Alert melding = new Alert(Alert.AlertType.INFORMATION);
-        melding.setContentText("De quiz is geüpdated of aangepast\n");
-        melding.show();
-
+    private void StoreNewQuiz() {
+        // save the prepared quiz
+        dbAccess.openConnection();
+        quizDAO.storeOne(quiz);
+        dbAccess.closeConnection();
     }
 
     public void doCreateQuestion(){
