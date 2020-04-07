@@ -169,7 +169,10 @@ public class CreateUpdateQuestionController {
             }else {
                 return;
             }
-        } else if (titelLabel.getText().equals(labelwijzig)) { //dit is bij wijziging van een vraag
+        } else if (titelLabel.getText().equals(labelwijzig)) {//dit is bij wijziging van een vraag
+            if(question == null){
+                return;
+            }
             int id = Integer.valueOf(idQuestion.getText());
             question.setQuestionId(id);
             updateQuestionById(question);

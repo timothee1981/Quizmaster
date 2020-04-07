@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Answer {
     private int answerId;
     private String answer;
@@ -18,7 +20,20 @@ public class Answer {
         this.answer = answer;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Answer answer1 = (Answer) o;
+        return answerId == answer1.answerId &&
+                answer.equals(answer1.answer) &&
+                question.equals(answer1.question);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(answerId, answer, question);
+    }
 
     public void setAnswerId(int answerId) {
         this.answerId = answerId;
