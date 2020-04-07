@@ -1,6 +1,7 @@
 package view;
 
 import controller.AnswerCouchDBcontroller;
+import controller.CourseCouchDBController;
 import controller.QuestionCouchDBController;
 import controller.UserCouchDBController;
 import database.mysql.DBAccess;
@@ -36,15 +37,17 @@ public class Main extends Application {
         Teacher user = new Teacher(1337, "Stefan", "Stefan", "Docent");
         Answer answer = new Answer(1,"this");
         Question question = new Question(1,"Hoofdstad VS");
+        Course course = new Course("Maanvissen", 5);
 
         UserCouchDBController userCouchDBController = new UserCouchDBController();
         AnswerCouchDBcontroller answerCouchDBcontroller = new AnswerCouchDBcontroller();
         QuestionCouchDBController questionCouchDBController = new QuestionCouchDBController();
+        CourseCouchDBController courseCouchDBController = new CourseCouchDBController();
 
         answerCouchDBcontroller.saveAnswer(answer);
         userCouchDBController.saveUser(user);
         questionCouchDBController.saveQuestion(question);
-
+        courseCouchDBController.saveCourse(course);
     }
 
     //Testgegevens van testgebruikers
