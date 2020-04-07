@@ -5,15 +5,13 @@ import model.Course;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-/*In deze test ga ik controleren of de showInformation-methode de juiste melding toont, bij het aanmaken, updaten
- en deleten van een cursus.*/
+/*In deze test ga ik controleren of de app de juiste cursus ophaalt uit de database.*/
 
 class ManageCoursesControllerTest {
 
     /*private Course course;
     private String CursusNaam = "Beginnerscursus";
     String informationMessage = String.format("Cursus %s is verwijderd.", course.getCursusNaam());
-
 
     @Test
     private void showInformationMessage(String informationMessage) {
