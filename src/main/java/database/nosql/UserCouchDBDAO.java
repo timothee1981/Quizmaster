@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import model.Teacher;
 import model.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserCouchDBDAO {
@@ -29,9 +30,30 @@ public class UserCouchDBDAO {
     }
 
     public User getUserByDocId(String doc_Id) {
-        JsonObject json = db.getClient().find(JsonObject.class, doc_Id);
-        User resultaat = gson.fromJson(json, User.class);
-        return resultaat;
+        // maak lege user aan
+        User user = null;
+
+        // loop alle children na:
+        Teacher teacher = getTeacherByDocId(doc_Id);
+
+        // bepaal welk subtype het is: (niet null)
+        if(teacher != null){
+            user = teacher;
+        }
+        //todo: voor admin / student / techAdmin / coordinator
+
+        return user;
     }
 
+    public Teacher getTeacherByDocId(String doc_id) {
+        JsonObject json = db.getClient().find(JsonObject.class, doc_id);
+        Teacher teacher = null;
+        try {
+            teacher = gson.fromJson(json, Teacher.class);
+
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return teacher;
+    }
 }
