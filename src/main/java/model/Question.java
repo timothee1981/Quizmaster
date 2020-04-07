@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Question {
     final static public int DEFAULT_VRAAG = -1;
@@ -18,6 +19,23 @@ public class Question {
     public Question(String question) {
         this.question = question;
         answers = new ArrayList<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question1 = (Question) o;
+        return questionId == question1.questionId &&
+                question.equals(question1.question) &&
+                answers.equals(question1.answers) &&
+                quiz.equals(question1.quiz) &&
+                correctAnswer.equals(question1.correctAnswer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(questionId, question, answers, quiz, correctAnswer);
     }
 
     public Answer getCorrectAnswer() {
