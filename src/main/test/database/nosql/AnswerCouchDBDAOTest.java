@@ -38,7 +38,7 @@ class AnswerCouchDBDAOTest {
         Answer answerExpected = answerCouchDBDAO.getAnswerByDocId("8fe39325cf2641a08669bca4e67cade9");
 
         //sla op als expected antwoord
-        //sluit couch cd connectie ??
+
         //creer dbobject
         DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
         //connectie met dbsql

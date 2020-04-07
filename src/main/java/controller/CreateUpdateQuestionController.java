@@ -125,22 +125,19 @@ public class CreateUpdateQuestionController {
     @FXML
     public void doCreateUpdateQuestion() {
        createQuestion();
-      //  createAnswerBijQuestion(question);
-        // maak database-connectie
-        dbAccess.openConnection();
+        dbAccess.openConnection();                      // maak database-connectie
         //check als er een nieuwe vraag moet komen of als een bestaande vraag moet gewijzigd worden
-        if (titelLabel.getText().equals(labelvul)) {//als titel op nieuwe is-----> nieuwe vraag
-            checkIfQuestionFilled(question); //check als combobox waarde heeft
-        } else if (titelLabel.getText().equals(labelwijzig)) {//dit is bij wijziging van een vraag
+        if (titelLabel.getText().equals(labelvul)) {    //als titel op nieuwe is-----> nieuwe vraag
+            checkIfQuestionFilled(question);            //check als combobox waarde heeft
+        } else if (titelLabel.getText().equals(labelwijzig)) {  //dit is bij wijziging van een vraag als titel op wijzig is
             if(question == null){
                 return;
             }
             int questionId = Integer.parseInt(idQuestion.getText());
             updateQuestion(questionId);
         }
-        dbAccess.closeConnection();
-        // ga terug naar dashboard
-        Main.getSceneManager().showCoordinatorDashboard();
+        dbAccess.closeConnection();                           //sluit database
+        Main.getSceneManager().showCoordinatorDashboard();   // ga terug naar dashboard
     }
 
     private void updateQuestion(int questionId) {
@@ -172,22 +169,18 @@ public class CreateUpdateQuestionController {
         // check of je vraag een waarde heeft:
         if (!(question.getQuestion().isEmpty())) {
             // vraag heeft een waarde:
-            // answers = question.getAnswers();
             // bepaal goede antwoord
 
             Answer correctAnswer = new Answer(goodAnswerTextField.getText(), question);
             question.setCorrectAnswer(correctAnswer);
-            // save question
             QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-            questionDAO.storeOne(question);
-            // get all answers of question from database:
-            AnswerDAO answerDAO = new AnswerDAO(dbAccess);
+            questionDAO.storeOne(question);     // save question
+            AnswerDAO answerDAO = new AnswerDAO(dbAccess);           // get all answers of question from database:
             ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(question.getQuestionId());
             getCorrectAnswer(answerArrayList, correctAnswer);
         } else {
             // toon waarschuwing, je moet nog een vraag invullen
             warningTextNoQuestion();
-            return;
         }
     }
 
@@ -293,7 +286,6 @@ public class CreateUpdateQuestionController {
             hasAnswer =  validateAnswerString(answer1.getAnswer());
 
         }
-
         if(!hasAnswer){
             allAnswerFilledWarning();
             question = null;
