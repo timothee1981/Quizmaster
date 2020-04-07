@@ -29,7 +29,7 @@ public class Main extends Application {
         primaryStage.setTitle("Make IT Work - Project 1");
         getSceneManager().setWindowTool();
         primaryStage.show();
-        //CouchDBaccessTest();
+//        CouchDBaccessTest();
     }
 
     private void CouchDBaccessTest() {
