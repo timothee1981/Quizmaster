@@ -233,20 +233,24 @@ public class CreateUpdateQuestionController {
     }
 
     private void allAnswerFilledWarning() {
+        StringBuilder warningText = new StringBuilder();
         warningText.append("Je moet een antwoord invullen\n");
         Alert foutmelding = new Alert(Alert.AlertType.ERROR);
         foutmelding.setContentText(warningText.toString());
         foutmelding.show();
-        return;
+        warningText.delete(0,warningText.length());
+        return ;
 
     }
 
 
     private void warningTextNoQuestion() {
+
         warningText.append("Je moet een goede vraag invullen\n");
         Alert foutmelding = new Alert(Alert.AlertType.ERROR);
         foutmelding.setContentText(warningText.toString());
         foutmelding.show();
+
     }
 
     private void updateQuestionById(Question question) {
@@ -263,7 +267,6 @@ public class CreateUpdateQuestionController {
     }
 
     private void createQuestion() {
-
         dbAccess.openConnection();
         question = new Question(vraagTextField.getText());
         createAnswerBijQuestion(question);
@@ -271,12 +274,13 @@ public class CreateUpdateQuestionController {
         for(Answer answer1: answers){
             hasAnswer =  validateAnswerString(answer1.getAnswer());
 
-
         }
+
         if(!hasAnswer){
             allAnswerFilledWarning();
             question = null;
         }
+
 
         dbAccess.closeConnection();
 
