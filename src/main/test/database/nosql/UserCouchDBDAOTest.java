@@ -20,6 +20,5 @@ class UserCouchDBDAOTest {
         Teacher actualTeacher = (Teacher)user;
 
         Assert.assertEquals(expectedTeacher,actualTeacher);
-
     }
 }
