@@ -181,7 +181,9 @@ public class QuestionDAO extends AbstractDAO implements GenericDAO{
 
             executeManipulatePreparedStatement(preparedStatement);
             AnswerDAO answerDAO = new AnswerDAO(dBaccess);
-            for(Answer answer: question.getAnswers()){
+            ArrayList<Answer> answers = answerDAO.getAnswersByQuestionId(question.getQuestionId());
+
+            for(Answer answer: answers){
                 answerDAO.updateAnswer(answer);
             }
 
