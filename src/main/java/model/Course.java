@@ -44,9 +44,7 @@ public class Course {
     //String representatie van Cursus
     @Override
     public String toString() {
-    StringBuilder courseToString = new StringBuilder("");
-    courseToString.append(cursusNaam);
-    return courseToString.toString();
+        return "" + cursusNaam;
     }
 
     //Cursus getters en setters. Hiermee kan de Administrator straks cursussen bekijken en bewerken.
@@ -62,9 +60,8 @@ public class Course {
         return cursusNaam;
     }
 
-    public int getUserIdCoordinator() { return userIdCoordinator; }
-
-    public ArrayList<Quiz> getQuizzes() {
-        return quizzes;
+    public int getUserIdCoordinator() {
+        return userIdCoordinator;
     }
+
 }

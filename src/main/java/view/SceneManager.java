@@ -101,11 +101,11 @@ public class SceneManager {
         controller.setup(quiz);
     }
 
-    public void showManageQuestionsScene() {
+    /*public void showManageQuestionsScene() {
         FXMLLoader loader = getScene("/view/fxml/manageQuestions.fxml");
         ManageQuestionsController controller = loader.getController();
         controller.setup();
-    }
+    }*/
 
     public void showCreateUpdateQuestionScene(Question question) {
         FXMLLoader loader = getScene("/view/fxml/createUpdateQuestion.fxml");
@@ -131,11 +131,11 @@ public class SceneManager {
         controller.setup(quiz);
     }
 
-    public void showStudentFeedback(Quiz quiz) {
+    /*public void showStudentFeedback(Quiz quiz) {
         FXMLLoader loader = getScene("/view/fxml/studentFeedback.fxml");
         StudentFeedbackController controller = loader.getController();
         controller.setup(quiz);
-    }
+    }*/
 
     public void showCoordinatorDashboard() {
         FXMLLoader loader = getScene("/view/fxml/coordinatorDashboard.fxml");
