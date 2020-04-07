@@ -26,10 +26,15 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="quizNameTextField" prefHeight="26.0" prefWidth="132.0" GridPane.columnIndex="1" />
-                  <Label text="Quiz Naam" />
-                  <Label prefHeight="50.0" prefWidth="148.0" text="Quizcesuur in pct" GridPane.rowIndex="1" />
-                  <TextField fx:id="cesuurTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label prefHeight="27.0" prefWidth="142.0"  text="Cursus:"/>
+                  <ComboBox fx:id="cursusComboBox"  prefHeight="25.0" prefWidth="301.0" GridPane.columnIndex="1" />
+
+                   <Label text="Quiz Naam" GridPane.rowIndex="1" />
+                  <TextField fx:id="quizNameTextField" prefHeight="26.0" prefWidth="132.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+
+                  <Label prefHeight="50.0" prefWidth="148.0" text="Quizcesuur in pct" GridPane.rowIndex="2" />
+                  <TextField fx:id="cesuurTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Label layoutX="376.0" layoutY="32.0" text="Vragen Lijst" />

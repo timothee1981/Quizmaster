@@ -7,12 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserCouchDBDAOTest {
 
     @Test
-    void saveSingleUser() {
-    }
-
-    @Test
     void getUserByDocId() {
-
 
     }
 }

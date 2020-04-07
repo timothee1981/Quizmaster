@@ -52,6 +52,7 @@ public class CourseDAO extends AbstractDAO implements GenericDAO {
                 while (resultSet.next()){
                     String cursusNaam = resultSet.getString(2);
                     int userIdcoordinator = resultSet.getInt("userIdcoordinator");
+                    course = new Course(cursusNaam, userIdcoordinator);
                     course.setCursusId(resultSet.getInt(1));
                 }
             } catch (SQLException sqlFout){

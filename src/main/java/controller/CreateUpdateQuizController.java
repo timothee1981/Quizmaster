@@ -1,16 +1,10 @@
 package controller;
 
 import com.mysql.cj.xdevapi.DbDoc;
-import database.mysql.AnswerDAO;
-import database.mysql.DBAccess;
-import database.mysql.QuestionDAO;
-import database.mysql.QuizDAO;
+import database.mysql.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import model.Answer;
-import model.Question;
-import model.Quiz;
-import model.User;
+import model.*;
 import view.Main;
 
 import java.util.ArrayList;
@@ -18,6 +12,7 @@ import java.util.List;
 
 
 public class CreateUpdateQuizController {
+
 
 
     DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
@@ -30,6 +25,9 @@ public class CreateUpdateQuizController {
 
     @FXML
     private TextField quizNameTextField;
+
+    @FXML
+    public ComboBox cursusComboBox;
 
     @FXML
     private  TextField questionTextField;
@@ -51,6 +49,16 @@ public class CreateUpdateQuizController {
 
     public void setup(Quiz quiz) {
         dbAccess.openConnection();
+
+        // vul cursus-combobox met alle cursussen
+        CourseDAO courseDAO = new CourseDAO(dbAccess);
+        ArrayList<Course> courseArrayList = courseDAO.getAll();
+        for(Course course: courseArrayList) {
+            cursusComboBox.getItems().add(course);
+        }
+        // selecteer de juiste cursus
+        Course selectedCourse = (Course)courseDAO.getOneById(quiz.getCourseId());
+        cursusComboBox.setValue(selectedCourse);
 
         // vul id van cursus in
         courseIdTextField.setText(String.valueOf(quiz.getCourseId()));
@@ -117,10 +125,24 @@ public class CreateUpdateQuizController {
         StringBuilder warningText = new StringBuilder();
         boolean correcteInvoer = true;
 
-        // get quizname and Id
-        String quizName = quizNameTextField.getText();
-        int courseId = Integer.parseInt(courseIdTextField.getText());
+        // get Id of course
+        String courseIdString = courseIdTextField.getText();
+        int courseId = 0;
+        try {
+            courseId = Integer.parseInt(courseIdTextField.getText());
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
 
+        // get cesuur and validate:
+        double cesuur = 0.00;
+        try {
+            cesuur = Double.parseDouble(cesuurTextField.getText());
+        } catch (NumberFormatException e){
+            warningText.append("Cesuur moet een getal zijn\n");
+        }
+
+        String quizName = quizNameTextField.getText();
         // check if input = correct
         if (quizName.isEmpty() || cesuurTextField.getText().isEmpty()) {
             warningText.append("Je moet een quiznaam invullen en een cesuur\n");
@@ -132,7 +154,7 @@ public class CreateUpdateQuizController {
             foutmelding.show();
             quiz = null;
         } else {
-            double cesuur = Double.parseDouble(cesuurTextField.getText());
+            // alle invoer is correct ->
             quiz = new Quiz(quizName,cesuur);
             quiz.setCourseId(courseId);
         }

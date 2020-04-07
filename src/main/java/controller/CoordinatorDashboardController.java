@@ -3,6 +3,7 @@ package controller;
 import database.mysql.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
@@ -81,8 +82,6 @@ public class CoordinatorDashboardController {
 
     private void fillAnswerListview() {
 
-        //todo: answer need to be added to the question
-
         dbAccess.openConnection();
         QuestionDAO questionDAO = new QuestionDAO(dbAccess);
         Quiz quiz = quizList.getSelectionModel().getSelectedItem();
@@ -116,14 +115,21 @@ public class CoordinatorDashboardController {
     }
 
     public void doEditQuiz() {
-        Quiz quiz = quizList.getSelectionModel().getSelectedItem();
+        Course course = null;
+        course = courseList.getSelectionModel().getSelectedItem();
+        if(course == null){
+            // geen cursus geselecteerd
+            showErrorMessage("Selecteer een cursus waar je de quiz aan wilt toevoegen");
+            return;
+        }
 
+        Quiz quiz = null;
+        quiz = quizList.getSelectionModel().getSelectedItem();
         if(quiz == null){
             Alert foutmelding = new Alert(Alert.AlertType.ERROR);
             foutmelding.setContentText("Je moet een quiz aanklikken\n");
             foutmelding.show();
             return;
-
         }
 
         Main.getSceneManager().showCreateUpdateQuizScene(quiz);
@@ -171,10 +177,19 @@ public class CoordinatorDashboardController {
         Main.getSceneManager().showWelcomeScene();
     }
 
+    public void doCreateUpdateQuiz() {
+        Main.getSceneManager().showManageQuizScene();
+    }
+
     private void showErrorMessage(String errorMessage) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText(errorMessage);
         alert.show();
     }
 
+    private void showInformationMessage(String informationMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(informationMessage);
+        alert.show();
+    }
 }
