@@ -21,7 +21,6 @@ public class Quiz {
         this.quizId = getQuizId();
         this.quizName = quizName;
         this.cesuur = cesuur;
-       // this.courseId = courseId;
         this.questions = new ArrayList<>();
     }
 
