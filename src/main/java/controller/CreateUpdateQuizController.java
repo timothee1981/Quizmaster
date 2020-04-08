@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class CreateUpdateQuizController {
 
     DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
+    CourseDAO courseDAO = new CourseDAO(dbAccess);
     QuestionDAO questionDAO = new QuestionDAO(dbAccess);
     AnswerDAO answerDAO = new AnswerDAO(dbAccess);
     QuizDAO quizDAO = new QuizDAO(dbAccess);
@@ -40,28 +41,28 @@ public class CreateUpdateQuizController {
     @FXML
     public TextField courseIdTextField;
 
-    public void setup(Quiz quiz) {
+    public void setup(Quiz inputQuiz) {
         dbAccess.openConnection();
 
         // vul dropdown met alle cursussen
         fillCourseComboBox();
 
         // selecteer de juiste cursus
-        SelectCourseOfQuiz(quiz);
+        SelectCourseOfQuiz(inputQuiz);
 
         // vul tekstvelden cursus (id-veld)
-        fillFields(quiz);
+        fillFields(inputQuiz);
 
         // vul lijst met vragen behorende bij quiz
-        fillQuestionList(quiz);
+        fillQuestionList(inputQuiz);
 
         // check of het een nieuwe of een bestaande quiz is
-        if(quiz.getQuizId() == Question.DEFAULT_VRAAG) {
+        if(inputQuiz.getQuizId() == Question.DEFAULT_VRAAG) {
             // nieuwe quiz
             setupForNewQuiz();
         } else {
             // bestaande quiz
-            setupForExistingQuiz(quiz);
+            setupForExistingQuiz(inputQuiz);
         }
         dbAccess.closeConnection();
     }
@@ -101,7 +102,6 @@ public class CreateUpdateQuizController {
 
     private void SelectCourseOfQuiz(Quiz quiz) {
         // selecteer de juiste cursus
-        CourseDAO courseDAO = new CourseDAO(dbAccess);
         Course selectedCourse = (Course)courseDAO.getOneById(quiz.getCourseId());
         cursusComboBox.setValue(selectedCourse);
     }
@@ -138,7 +138,7 @@ public class CreateUpdateQuizController {
 
         // get Id of course
         int courseId = getCourseIdFromPage();
-        if(courseId == 0){
+        if(courseId == -1){
             return;
         }
 
@@ -157,8 +157,10 @@ public class CreateUpdateQuizController {
             return;
         }
 
+
+
         // als je hier bent gekomen, is alle invoer correct :) yay
-        updateQuizParameters(quizName, cesuur, courseId);
+        updateQuizParameters(quizName, cesuur, course.getCursusId());
 
         if(quiz != null) {
             if (titelLable.getText().equals(labelvul)) {
@@ -180,9 +182,6 @@ public class CreateUpdateQuizController {
                 UsefullStuff.showInformationMessage("De quiz is geüpdated");
             }
         }
-
-        // toon user melding dat er een actie is gebeurd
-        UsefullStuff.showInformationMessage("De quiz is geüpdated of aangepast");
     }
 
     private void updateQuizParameters(String quizName, double cesuur, int courseId) {
@@ -220,11 +219,12 @@ public class CreateUpdateQuizController {
     }
 
     private int getCourseIdFromPage() {
-        int courseId = 0;
+        int courseId = -1;
         try {
-            courseId = Integer.parseInt(courseIdTextField.getText());
+            String courseidText = courseIdTextField.getText();
+            courseId = Integer.parseInt(courseidText);
         } catch(Exception e){
-            System.out.println(e.getMessage());
+           System.out.println(e.getMessage());
         }
         return courseId;
     }
