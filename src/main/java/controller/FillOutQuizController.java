@@ -99,7 +99,7 @@ public class FillOutQuizController {
         Answer correctAnswer = quiz.getQuestions().get(currentQuestion-1).getCorrectAnswer();
         Answer filledOutAnswer = currentAnswerOrder.get(answerIndex);
 
-        //todo: nog iets met bijhouden van juist antwoorden
+        //todo: nog iets met bijhouden van juist antwoorden 
 
         String message = "";
         if(correctAnswer.equals(filledOutAnswer)){
