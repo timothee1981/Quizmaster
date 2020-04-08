@@ -1,5 +1,6 @@
 package controller;
 
+import CouchDBControllers.QuestionCouchDBController;
 import database.mysql.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -56,17 +57,29 @@ public class CreateUpdateQuestionController {
 
     public void setup(Question question) {
         dbAccess.openConnection();
-        fillQuizDropdown();                         // vul dropdown met alle quizes
-        setQuizDropdownOfUser(question.getQuiz());  // vul bijbehorende quiz aan dropdown
+
+        // vul dropdown met alle quizes
+        fillQuizDropdown();
+
+        // vul bijbehorende quiz in
+        setQuizDropdownOfUser(question.getQuiz());
+
         if (question.getQuestionId() == Question.DEFAULT_VRAAG) {
-            labelvul = "Vul Vraag en antwoord";     // zet label op nieuw vrag
+            // nieuwe vraag
+            labelvul = "Vul Vraag en antwoord";
             titelLabel.setText(labelvul);
         } else {
-            labelwijzig = "Wijzig Vraag";             // bestaande vraaag
-            titelLabel.setText(labelwijzig);           // vul vraag-textveld in:
+            // bestaande vraaag
+            labelwijzig = "Wijzig Vraag";
+            titelLabel.setText(labelwijzig);
+            // vul vraag-textveld in:
             setQuestionTextField(question);
-            setAnswersField(question.getAnswers());   // vul antwoorden in:
-            setAnswersLableId(question.getAnswers());   //zet idlabel op waarde van id aantwoorden
+            // vul antwoorden in:
+            setAnswersField(question.getAnswers());
+           //zet idlabel op waarde van id aantwoorden
+            setAnswersLableId(question.getAnswers());
+
+
         }
     }
 
@@ -111,38 +124,23 @@ public class CreateUpdateQuestionController {
 
     @FXML
     public void doCreateUpdateQuestion() {
-<<<<<<< HEAD
-        createQuestion();
-        dbAccess.openConnection(); // maak database-connectie
-        //check als er een nieuwe vraag moet komen of als een bestaande vraag moet gewijzigd worden
-
-        if (titelLabel.getText().equals(labelvul)) {    //als titel op nieuwe is-----> nieuwe vraag
-            checkIfQuestionFilled(question);            //check als combobox waarde heeft en vull vraag
-            if(question == null){
-                return;
-            }
-        } else if (titelLabel.getText().equals(labelwijzig)) {  //dit is bij wijziging van een vraag
-=======
        createQuestion();
         dbAccess.openConnection();                      // maak database-connectie
         //check als er een nieuwe vraag moet komen of als een bestaande vraag moet gewijzigd worden
         if (titelLabel.getText().equals(labelvul)) {    //als titel op nieuwe is-----> nieuwe vraag
-            checkIfQuestionFilled(question);            //check als combobox waarde heeft
+            checkIfQuestionFilled(question);//check als combobox waarde heeft
+            if(question == null){
+                return;
+            }
         } else if (titelLabel.getText().equals(labelwijzig)) {  //dit is bij wijziging van een vraag als titel op wijzig is
->>>>>>> codeschoonmaken
             if(question == null){
                 return;
             }
             int questionId = Integer.parseInt(idQuestion.getText());
             updateQuestion(questionId);
         }
-<<<<<<< HEAD
-        dbAccess.closeConnection();
-        Main.getSceneManager().showCoordinatorDashboard();        // ga terug naar dashboard
-=======
         dbAccess.closeConnection();                           //sluit database
         Main.getSceneManager().showCoordinatorDashboard();   // ga terug naar dashboard
->>>>>>> codeschoonmaken
     }
 
     private void updateQuestion(int questionId) {
@@ -154,31 +152,21 @@ public class CreateUpdateQuestionController {
 
     private void checkIfQuestionFilled(Question question) {
         if(question != null) {
-            if (!(quizComboBox.getValue() == null)) {  //als combobox waarde creer vraag
+            if (!(quizComboBox.getValue() == null)) {
+                //als combobox waarde creer vraag
                 vullVraagBijQuizz(quizComboBox.getValue()); // vul quiz in die bij vraag hoort
             } else {
-                noQuizWarning();// toon melding: je moet nog een quiz selecteren
+                // toon melding: je moet nog een quiz selecteren
+                noQuizWarning();
+                return;
             }
+        }else {
+            return;
         }
     }
 
     //vull vraag die bij quiz hoort
     private void vullVraagBijQuizz(Quiz value) {
-<<<<<<< HEAD
-        question.setQuiz(value);                    // check of je vraag een waarde heeft:
-        if (!(question.getQuestion().isEmpty())) {  // vraag heeft een waarde:
-            Answer correctAnswer = new Answer(goodAnswerTextField.getText(), question); // bepaal goede antwoord
-            question.setCorrectAnswer(correctAnswer);
-            QuestionDAO questionDAO = new QuestionDAO(dbAccess); // save question
-            questionDAO.storeOne(question);
-            AnswerDAO answerDAO = new AnswerDAO(dbAccess);   // get all answers of question from database:
-            ArrayList<Answer> answerArrayList = answerDAO.getAnswersByQuestionId(question.getQuestionId());
-            getCorrectAnswer(answerArrayList, correctAnswer);
-        } else {
-            warningTextNoQuestion();          // toon waarschuwing, je moet nog een vraag invullen
-
-            return;
-=======
 
         question.setQuiz(value);
         // check of je vraag een waarde heeft:
@@ -196,7 +184,6 @@ public class CreateUpdateQuestionController {
         } else {
             // toon waarschuwing, je moet nog een vraag invullen
             warningTextNoQuestion();
->>>>>>> codeschoonmaken
         }
     }
 
@@ -216,18 +203,27 @@ public class CreateUpdateQuestionController {
     }
 
     private void updateAnswersFromQuestion(Question question) {
+        //haal aantwoorden uit vragen en zet ze in een array
         AnswerDAO answerDOA = new AnswerDAO(dbAccess);
-        answers = question.getAnswers();        //haal aantwoorden uit vragen en zet ze in een array
+        answers = question.getAnswers();
+
         answers.get(0).setAnswerId(Integer.parseInt(idGoodAnswer.getText()));
         answers.get(1).setAnswerId(Integer.parseInt(idAnswer2.getText()));
         answers.get(2).setAnswerId(Integer.parseInt(idAnswer3.getText()));
         answers.get(3).setAnswerId(Integer.parseInt(idAnswer4.getText()));
+
+
+
+        //update voor iedere vraag hun String
         for(Answer answer: answers){
-            answerDOA.updateAnswer(answer);  //update voor iedere vraag hun String
+            answerDOA.updateAnswer(answer);
         }
+
+
     }
 
    private void createAnswerBijQuestion(Question   question) {
+
         Answer answer = new Answer(goodAnswerTextField.getText(), question);
         Answer answer2 = new Answer(answer2TextField.getText(), question);
         Answer answer3 = new Answer(answer3TextField.getText(), question);
@@ -268,7 +264,6 @@ public class CreateUpdateQuestionController {
         Alert foutmelding = new Alert(Alert.AlertType.ERROR);
         foutmelding.setContentText(warningText.toString());
         foutmelding.show();
-        return;
 
     }
 
@@ -292,12 +287,15 @@ public class CreateUpdateQuestionController {
         boolean hasAnswer = true;
         for(Answer answer1: answers){
             hasAnswer =  validateAnswerString(answer1.getAnswer());
+
         }
         if(!hasAnswer){
             allAnswerFilledWarning();
             question = null;
         }
+
         dbAccess.closeConnection();
+
     }
 
     private ArrayList<Quiz> getAllQuizItems() {
