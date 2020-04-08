@@ -17,6 +17,10 @@ public class Quiz {
         quizId = DEFAULT_QUIZ;
     }
 
+    public Quiz(int quizId) {
+        this.quizId = quizId;
+    }
+
     public Quiz(String quizName, double cesuur) {
         this.quizId = getQuizId();
         this.quizName = quizName;
@@ -24,16 +28,25 @@ public class Quiz {
         this.questions = new ArrayList<>();
     }
 
+    public Quiz(int quizId, String quizName, double cesuur, int courseId) {
+        this.quizId = quizId;
+        this.quizName = quizName;
+        this.cesuur = cesuur;
+        this.courseId = courseId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quiz quiz = (Quiz) o;
-        return quizId == quiz.quizId &&
+        return  quizId == quiz.quizId &&
+                quizName.equals(quiz.quizName) ; /*&&
                 Double.compare(quiz.cesuur, cesuur) == 0 &&
-                courseId == quiz.courseId &&
-                quizName.equals(quiz.quizName) &&
-                questions.equals(quiz.questions);
+                courseId == quiz.courseId;*/
+
+
+         //       questions.equals(quiz.questions);
     }
 
     @Override
