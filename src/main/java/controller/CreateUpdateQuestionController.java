@@ -143,7 +143,7 @@ public class CreateUpdateQuestionController {
         question.setQuestionId(questionId);
         updateQuestionById(question);
         updateAnswersFromQuestion(question);
-        System.out.println(("vraag gewijzigd"));
+        UsefullStuff.showInformationMessage("Vraag gewijzigd");
     }
 
     private void checkIfQuestionFilled(Question question) {
@@ -278,12 +278,22 @@ public class CreateUpdateQuestionController {
 
     private void createQuestion() {
         dbAccess.openConnection();
+
+        // validate question-input
+        String questionInput = "";
+        questionInput = vraagTextField.getText();
+        if(questionInput.equals("")){
+            question = null;
+            UsefullStuff.showErrorMessage("Vul een vraag in");
+        }
+
+        // als het fout is, zet quiz op null
+
         question = new Question(vraagTextField.getText());
         createAnswerBijQuestion(question);
         boolean hasAnswer = true;
         for(Answer answer1: answers){
             hasAnswer =  validateAnswerString(answer1.getAnswer());
-
         }
         if(!hasAnswer){
             allAnswerFilledWarning();
