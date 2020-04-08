@@ -32,10 +32,7 @@ public class Question {
         if (o == null || getClass() != o.getClass()) return false;
         Question question1 = (Question) o;
         return questionId == question1.questionId &&
-                question.equals(question1.question) &&
-                answers.equals(question1.answers) &&
-                quiz.equals(question1.quiz) &&
-                correctAnswer.equals(question1.correctAnswer);
+                question.equals(question1.question);
     }
 
     @Override

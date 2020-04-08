@@ -78,8 +78,6 @@ public class CreateUpdateQuestionController {
             setAnswersField(question.getAnswers());
            //zet idlabel op waarde van id aantwoorden
             setAnswersLableId(question.getAnswers());
-
-
         }
     }
 
