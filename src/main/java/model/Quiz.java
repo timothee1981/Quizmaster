@@ -35,10 +35,10 @@ public class Quiz {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quiz quiz = (Quiz) o;
-        return  quizId == quiz.quizId &&
-                quizName.equals(quiz.quizName) ; /*&&
-                Double.compare(quiz.cesuur, cesuur) == 0 &&
-                courseId == quiz.courseId;*/
+        return
+                quizName.equals(quiz.quizName) &&
+                Double.compare(quiz.cesuur, cesuur) == 0 ;
+              //  courseId == quiz.courseId;
 
 
          //       questions.equals(quiz.questions);
