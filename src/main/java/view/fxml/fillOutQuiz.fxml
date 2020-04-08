@@ -22,6 +22,4 @@
             <Font size="14.0" />
         </font>
     </Button>
-   <Label fx:id="quizIdLabel" layoutX="104.0" layoutY="19.0" text="Label" />
-   <Label fx:id="questionIdLabel" layoutX="155.0" layoutY="19.0" text="QLabel" />
 </AnchorPane>
