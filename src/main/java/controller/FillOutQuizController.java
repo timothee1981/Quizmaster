@@ -101,19 +101,34 @@ public class FillOutQuizController {
 
         //todo: nog iets met bijhouden van juist antwoorden
 
+        String message = "";
         if(correctAnswer.equals(filledOutAnswer)){
             // antwoorden zijn gelijk - HOEZEE
-            UsefullStuff.showInformationMessage("Het antwoord is juist!!!\nJe gaat nu door naar de volgende vraag");
+            message = "Het antwoord is juist!!!\n";
+            if(!(currentQuestion == quiz.getQuestions().size())){
+                // er is een volgende vraag:
+                message += "Je gaat nu door naar de volgende vraag";
+            } else{
+                // dit is de laatste vraag
+                message += "Dit is de laatste vraag";
+            }
         } else {
-            UsefullStuff.showInformationMessage("Het antwoord is onjuist!!!\nJe gaat nu door naar de volgende vraag");
+            // antwoorden zijn niet gelijk - foute antwoord gegeven
+            message = "Het antwoord is onjuist!!!\n";
+            if(!(currentQuestion == quiz.getQuestions().size())){
+                // er is een volgende vraag:
+                message += "Je gaat nu door naar de volgende vraag";
+            } else{
+                // dit is de laatste vraag
+                message += "Dit is de laatste vraag";
+            }
         }
+        UsefullStuff.showInformationMessage(message);
 
         // check of dit de laatste vraag is
-        if(currentQuestion == quiz.getQuestions().size()){
-            // dit is de laatste vraag
-            // ga niet door naar de volgend vraag
-            UsefullStuff.showInformationMessage("Dit is de laatste vraag");
-        } else{
+        if(! (currentQuestion == quiz.getQuestions().size())){
+            // er is een volgende vraag aanwezig
+            // ga door naar volgende vraag
             doNextQuestion();
         }
     }
@@ -121,7 +136,7 @@ public class FillOutQuizController {
     public void doNextQuestion() {
         // check of dit de laatste vraag is
         if(currentQuestion == quiz.getQuestions().size()){
-            UsefullStuff.showInformationMessage("Dit is de laatste vraag\n je kan niet verder");
+            UsefullStuff.showInformationMessage("Dit is de laatste vraag\nJe kan niet verder");
             return;
         }
         //als er nog vragen zijn, toon dan de volgende vraag
@@ -133,7 +148,7 @@ public class FillOutQuizController {
 
         // check of dit de eerste vraag is
         if(currentQuestion == 1){
-            UsefullStuff.showInformationMessage("Dit is de eerste vraag\n je kan niet verder terug");
+            UsefullStuff.showInformationMessage("Dit is de eerste vraag\nJe kan niet verder terug");
             return;
         }
         //als er nog vragen zijn, toon dan de volgende vraag
