@@ -46,9 +46,6 @@ public class FillOutQuizController {
         // set current question to 1
         currentQuestion = 1;
 
-        // vul labels
-        quizIdLabel.setText(String.valueOf(quiz.getQuizId()));
-
         // toon huidige vraag
         showQuestion();
     }
@@ -57,10 +54,13 @@ public class FillOutQuizController {
         // get question that needs to be shown
         Question questionToShow = quiz.getQuestions().get(currentQuestion-1);
 
+        // update label:
+        titleLabel.setText(String.format("Vraag %d", currentQuestion));
+
         // clear working area
         questionArea.clear();
         // show question number:
-        questionArea.appendText(String.format("Vraag %d",currentQuestion));
+        questionArea.appendText(String.format("Vraag: "));
         // show question
         questionArea.appendText(questionToShow + "\n\n");
 
@@ -72,20 +72,6 @@ public class FillOutQuizController {
         for(Answer answer: answerListShuffled){
             questionArea.appendText(answer.toString() + "\n");
         }
-    }
-
-    private ArrayList<Answer> shuffle(ArrayList<Answer> answerListInOrder) {
-
-        // GHEGEH: deze is nog beter:         Collections.shuffle(answers); <- wel beetje laat gezien
-        ArrayList<Answer> answerListShuffled = new ArrayList<>();
-        int selectedItem;
-        do{
-            Random random = new Random();
-            selectedItem = random.nextInt(answerListInOrder.size());
-            answerListShuffled.add(answerListInOrder.get(selectedItem));
-            answerListInOrder.remove(selectedItem);
-        }while(answerListInOrder.size() > 0);
-        return answerListShuffled;
     }
 
     public void doRegisterA() {
@@ -115,14 +101,21 @@ public class FillOutQuizController {
 
         //todo: nog iets met bijhouden van juist antwoorden
 
-        //todo: checken of de antwoorden daadwerkelijk juist worden gevalideerd.....
-
         if(correctAnswer.equals(filledOutAnswer)){
             // antwoorden zijn gelijk - HOEZEE
             UsefullStuff.showInformationMessage("Het antwoord is juist!!!\nJe gaat nu door naar de volgende vraag");
+        } else {
+            UsefullStuff.showInformationMessage("Het antwoord is onjuist!!!\nJe gaat nu door naar de volgende vraag");
         }
-        UsefullStuff.showInformationMessage("Het antwoord is onjuist!!!\nJe gaat nu door naar de volgende vraag");
-        doNextQuestion();
+
+        // check of dit de laatste vraag is
+        if(currentQuestion == quiz.getQuestions().size()){
+            // dit is de laatste vraag
+            // ga niet door naar de volgend vraag
+            UsefullStuff.showInformationMessage("Dit is de laatste vraag");
+        } else{
+            doNextQuestion();
+        }
     }
 
     public void doNextQuestion() {
