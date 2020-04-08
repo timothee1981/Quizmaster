@@ -34,15 +34,5 @@ public class QuestionCouchDBAO {
         return resultaat;
     }
 
-    public Question getQuestion(String questionText) {
-        Question resultaat = null;
-        List<JsonObject> allQuestion = db.getClient().view("_all_docs").includeDocs(true).query(JsonObject.class);
-        for (JsonObject json : allQuestion) {
-            resultaat = gson.fromJson(json, Question.class);
-            if (resultaat.getQuestion().equals(questionText)) {
-                return resultaat;
-            }
-        }
-        return resultaat;
-    }
+
 }
