@@ -58,7 +58,7 @@ public class ManageUsersController {
         User user = (User)userList.getSelectionModel().getSelectedItem();
 
         if(user == null){
-            showInformationMessage("Er is geen gebruiker geselecteerd om te verwijderen.");
+            showInformationMessage("Er is geen gebruiker geselecteerd om aan te passen.");
             return;
         }
 

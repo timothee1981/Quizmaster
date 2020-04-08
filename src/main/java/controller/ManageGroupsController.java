@@ -93,7 +93,7 @@ public class ManageGroupsController {
         Group group = (Group)groupListView.getSelectionModel().getSelectedItem();
 
         if(group == null){
-            showInformationMessage("Er is geen groep geselecteerd om te wijzigen.");
+            showInformationMessage("Er is geen groep geselecteerd om te verwijderen.");
             return;
         }
 
