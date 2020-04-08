@@ -28,12 +28,7 @@ public class Quiz {
         this.questions = new ArrayList<>();
     }
 
-    public Quiz(int quizId, String quizName, double cesuur, int courseId) {
-        this.quizId = quizId;
-        this.quizName = quizName;
-        this.cesuur = cesuur;
-        this.courseId = courseId;
-    }
+
 
     @Override
     public boolean equals(Object o) {
