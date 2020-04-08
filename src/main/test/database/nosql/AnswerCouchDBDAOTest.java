@@ -35,27 +35,18 @@ class AnswerCouchDBDAOTest {
         //creer een AntwoordcouchDBAOcontroller instantie
         AnswerCouchDBDAO answerCouchDBDAO = new AnswerCouchDBDAO(couchDBaccess);
         //haal antwoord uit couch db
-        Answer answerExpected = answerCouchDBDAO.getAnswerByDocId("8fe39325cf2641a08669bca4e67cade9");
+        Answer answerTobeTested= answerCouchDBDAO.getAnswerByDocId("8fe39325cf2641a08669bca4e67cade9");
 
         //sla op als expected antwoord
 
-        //creer dbobject
-        DBAccess dbAccess = new DBAccess(DBAccess.getDatabaseName(), DBAccess.getMainUser(), DBAccess.getMainUserPassword());
-        //connectie met dbsql
-        dbAccess.openConnection();
-        //creer een VraagDAO instantie
-        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-        //haal id goede antwoord in vraag op die goede aantwoord geef van hoofstad van Vs
-        int idGoedeVraag = questionDAO.getGoodAnswer(123);
-        //creer een AntwoordDAO instantie
-        AnswerDAO answerDAO = new AnswerDAO(dbAccess);
+
         //haal antwoord op op basis van de id vraag
-        Answer answerToBeTested = answerDAO.getOneById(idGoedeVraag);
+        Answer answerExpected = new Answer(1,"Washington");
         //sla aantwoord op als antwoord to check
         //sluit dbsql connectie
-        dbAccess.closeConnection();
+
         //vergelijke beide antwoorden
 
-        Assert.assertEquals(answerExpected,answerToBeTested);
+        Assert.assertEquals(answerExpected,answerTobeTested);
     }
 }
