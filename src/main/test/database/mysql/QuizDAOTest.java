@@ -18,19 +18,13 @@ class QuizDAOTest {
         //creer quiz instantie
         QuizDAO quizDAO = new QuizDAO(dbAccess);
 
-        //creer vraag instantie
-        QuestionDAO questionDAO = new QuestionDAO(dbAccess);
-
-        //haal quiz op quizid op die hoort bij vraag USA
-         int quizId = questionDAO.getOneById(123).getQuiz().getQuizId();
-         Quiz quizToTest = quizDAO.getOneById(quizId);
-
-
-        //haal quiz op Geographie....quiz die we verwachten
-        Quiz quizexpected = quizDAO.getOneById(5);
+        //haal quiz op quizid
+        Quiz quizToTest = quizDAO.getOneById(5);
 
         //sluit connectieDb
         dbAccess.closeConnection();
+
+        Quiz quizexpected = new Quiz(5,"Geography",51,1);
 
         //vergelijk als quizid die is bij vraag USA overeenkomt met quizid bij Geographie
         Assert.assertEquals(quizToTest, quizexpected);
