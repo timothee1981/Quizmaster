@@ -157,8 +157,6 @@ public class CreateUpdateQuizController {
             return;
         }
 
-
-
         // als je hier bent gekomen, is alle invoer correct :) yay
         updateQuizParameters(quizName, cesuur, course.getCursusId());
 
@@ -267,6 +265,7 @@ public class CreateUpdateQuizController {
             return question;
         }
         question.setQuiz(getCurrentQuiz());
+        question.getQuiz().setCourseId(Integer.parseInt(courseIdTextField.getText()));
         return question;
     }
 
