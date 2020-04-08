@@ -116,8 +116,6 @@ public class CreateUpdateQuestionController {
         quizComboBox.setValue(quiz);
     }
 
-
-
     public void doMenu() {
         Main.getSceneManager().showCoordinatorDashboard();
     }
