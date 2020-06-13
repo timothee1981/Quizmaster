@@ -124,36 +124,9 @@ public class UserDAO extends AbstractDAO implements GenericDAO {
             PreparedStatement preparedStatement = getStatement(sql);
             
             ResultSet resultset = preparedStatement.executeQuery();
-            while(resultset.next()){
+            user = getUserByRole(resultset);
+            userList.add(user);
 
-                int userId = resultset.getInt(1);
-                String username = resultset.getString(2) ;
-                String password = resultset.getString(3);
-                String role = resultset.getString(4);
-
-                // afhankelijk van de rol, creëer en return het juiste object
-                switch (role){
-                    case "Student":
-                        user = new Student(userId, username, password, role);
-                        break;
-                    case "Docent":
-                        user = new Teacher(userId, username, password, role);
-                        break;
-                    case "Coordinator":
-                        user = new Coordinator(userId, username, password, role);
-                        break;
-                    case "Administrator":
-                        user = new Administrator(userId, username, password, role);
-                        break;
-                    case "Technisch beheerder":
-                        user = new TechnicalAdministrator(userId, username, password, role);
-                        break;
-                    default:
-                        user = null;
-                        break;
-                }
-                userList.add(user);
-            }
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -176,36 +149,42 @@ public class UserDAO extends AbstractDAO implements GenericDAO {
             preparedStatement.setInt(1, id);
 
             ResultSet resultset = preparedStatement.executeQuery();
-            while(resultset.next()){
-                int userId = resultset.getInt(1);
-                String username = resultset.getString(2) ;
-                String password = resultset.getString(3);
-                String role = resultset.getString(4);
-
-                // afhankelijk van de rol, creëer en return het juiste object
-                switch (role){
-                    case "Student":
-                        user = new Student(userId, username, password, role);
-                        break;
-                    case "Docent":
-                        user = new Teacher(userId, username, password, role);
-                        break;
-                    case "Coordinator":
-                        user = new Coordinator(userId, username, password, role);
-                        break;
-                    case "Administrator":
-                        user = new Administrator(userId, username, password, role);
-                        break;
-                    case "Technisch beheerder":
-                        user = new TechnicalAdministrator(userId, username, password, role);
-                        break;
-                    default:
-                        user = null;
-                        break;
-                }
-            }
+            user = getUserByRole(resultset);
         } catch (SQLException e){
             System.out.println(e.getMessage());
+        }
+        return user;
+    }
+
+    private User getUserByRole(ResultSet resultset) throws SQLException {
+        User user = null;
+        while (resultset.next()) {
+            int userId = resultset.getInt(1);
+            String username = resultset.getString(2);
+            String password = resultset.getString(3);
+            String role = resultset.getString(4);
+
+            // afhankelijk van de rol, creëer en return het juiste object
+            switch (role) {
+                case "Student":
+                    user = new Student(userId, username, password, role);
+                    break;
+                case "Docent":
+                    user = new Teacher(userId, username, password, role);
+                    break;
+                case "Coordinator":
+                    user = new Coordinator(userId, username, password, role);
+                    break;
+                case "Administrator":
+                    user = new Administrator(userId, username, password, role);
+                    break;
+                case "Technisch beheerder":
+                    user = new TechnicalAdministrator(userId, username, password, role);
+                    break;
+                default:
+                    user = null;
+                    break;
+            }
         }
         return user;
     }
@@ -235,35 +214,7 @@ public class UserDAO extends AbstractDAO implements GenericDAO {
             preparedStatement.setString(1, usernameInput);
 
             ResultSet resultset = preparedStatement.executeQuery();
-            while(resultset.next()){
-
-                int userId = resultset.getInt(1);
-                String username = resultset.getString(2) ;
-                String password = resultset.getString(3);
-                String role = resultset.getString(4);
-
-                // afhankelijk van de rol, creëer en return het juiste object
-                switch (role){
-                    case "Student":
-                        user = new Student(userId, username, password, role);
-                        break;
-                    case "Docent":
-                        user = new Teacher(userId, username, password, role);
-                        break;
-                    case "Coordinator":
-                        user = new Coordinator(userId, username, password, role);
-                        break;
-                    case "Administrator":
-                        user = new Administrator(userId, username, password, role);
-                        break;
-                    case "Technisch beheerder":
-                        user = new TechnicalAdministrator(userId, username, password, role);
-                        break;
-                    default:
-                        user = null;
-                        break;
-                }
-            }
+            user = getUserByRole(resultset);
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }

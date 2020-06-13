@@ -218,7 +218,9 @@ public class CreateUpdateQuestionController {
 
     }
 
-   private void createAnswerBijQuestion(Question   question) {
+
+
+   private void createAnswerBijQuestion(Question question) {
 
         Answer answer = new Answer(goodAnswerTextField.getText(), question);
         Answer answer2 = new Answer(answer2TextField.getText(), question);

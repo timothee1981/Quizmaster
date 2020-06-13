@@ -24,7 +24,7 @@ public class Main extends Application {
         primaryStage.setTitle("Make IT Work - Project 1");
         getSceneManager().setWindowTool();
         primaryStage.show();
-        //CouchDBaccessTest();
+        CouchDBaccessTest();
     }
 
     private void CouchDBaccessTest() {
@@ -35,17 +35,17 @@ public class Main extends Application {
         Course course = new Course("Maanvissen", 5);
         Group group = new Group(40, "STAMgasten", user);
 
-        UserCouchDBController userCouchDBController = new UserCouchDBController();
+ //       UserCouchDBController userCouchDBController = new UserCouchDBController();
         AnswerCouchDBcontroller answerCouchDBcontroller = new AnswerCouchDBcontroller();
         QuestionCouchDBController questionCouchDBController = new QuestionCouchDBController();
-        CourseCouchDBController courseCouchDBController = new CourseCouchDBController();
-        GroupCouchDBController groupCouchDBController = new GroupCouchDBController();
+   //     CourseCouchDBController courseCouchDBController = new CourseCouchDBController();
+    //    GroupCouchDBController groupCouchDBController = new GroupCouchDBController();
 
         answerCouchDBcontroller.saveAnswer(answer);
-        userCouchDBController.saveUser(user);
+      //  userCouchDBController.saveUser(user);
         questionCouchDBController.saveQuestion(question);
-        courseCouchDBController.saveCourse(course);
-        groupCouchDBController.saveGroup(group);
+       // courseCouchDBController.saveCourse(course);
+        //groupCouchDBController.saveGroup(group);
     }
 
     public static SceneManager getSceneManager() {
